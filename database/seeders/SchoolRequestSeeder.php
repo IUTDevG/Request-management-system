@@ -39,7 +39,9 @@ class SchoolRequestSeeder extends Seeder
             ];
         foreach ($paths as $path){
 
-         $schoolRequest->addMedia(storage_path($path))->toMediaCollection('school-request');
+         $schoolRequest->addMedia(storage_path($path))
+             ->preservingOriginal()
+             ->toMediaCollection('school-request');
         }
 
     }
