@@ -37,6 +37,16 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10),
 
         ]);
+        $user->assignRole(RoleType::COMPUTER_CELL);
+        $user= User::factory()->create([
+            'name'=>'fotso',
+            'firstName' => 'darwin',
+            'username' => 'darwin_nathan',
+            'email' => 'fotsodarwin@gmail.com',
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+
+        ]);
 
         $user->assignRole(RoleType::COMPUTER_CELL);
 
