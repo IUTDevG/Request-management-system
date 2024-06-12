@@ -21,7 +21,7 @@ use Livewire\Component;
         $this->validate([
             'name'=>'required',
             'email' => 'required|unique:users,email|email',
-            'username'=>'required|unique:users,username',
+            'username'=>'required|unique:users',
             'password'=> 'required|min:6',
             'password_confirmation' => 'required|same:password',
         ]);
