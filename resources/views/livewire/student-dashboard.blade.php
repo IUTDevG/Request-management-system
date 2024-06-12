@@ -172,7 +172,7 @@
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
                                                 <span
-                                                    class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-green-100 text-green-800 rounded-full dark:bg-green-500/10 dark:text-green-500">
+                                                    class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-green-100 text-primary/80 rounded-full dark:text-primary/50">
                                                     <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16"
                                                         height="16" fill="currentColor" viewBox="0 0 16 16">
                                                         <path

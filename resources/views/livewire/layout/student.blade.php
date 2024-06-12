@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css'])
     <title>{{$title.'- IUT'??'Dashboard'}}</title>
 </head>
-<body class="font-montserrat bg-background overflow-x-hidden antialiased">
+<body class="bg-background overflow-x-hidden antialiased">
 <!-- ========== HEADER ========== -->
 <header
     class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-800 antialiased shadow-lg z-50 w-full text-sm py-2 sm:py-0">
@@ -184,7 +184,7 @@
                                 </div>
                             </a>
                         </div>
-                        <a href="#"
+                        <a href="{{ route('student.notifications') }}"
                            class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
                             <div class="inline-flex items-center ">
                                 <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"

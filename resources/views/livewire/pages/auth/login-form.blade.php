@@ -53,7 +53,7 @@
             </div>
             <div>
                 <button type="submit"
-                        class="w-full font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none p-2 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">
+                        class="w-full font-semibold rounded-lg border border-transparent bg-green-500 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none p-2 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">
                     <span wire:loading.remove>{{__('Connexion')}}</span><span
                         wire:loading>{{__('Nous vérifions vos informations...')}}</span></button>
             </div>

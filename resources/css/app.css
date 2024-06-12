@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.font-montserrat{
+.font-poppins{
     font-family: 'Poppins', sans-serif;
 }
 @layer base {
@@ -12,50 +12,51 @@
 
         @layer base {
             :root {
-                --background: 109 34% 98%;
-                --foreground: 109 52% 1%;
-                --muted: 229 8% 90%;
-                --muted-foreground: 229 14% 29%;
-                --popover: 109 34% 97%;
-                --popover-foreground: 0 0% 0%;
-                --card: 109 34% 97%;
-                --card-foreground: 0 0% 0%;
-                --border: 109 12% 93%;
-                --input: 109 12% 93%;
-                --primary: 109 100% 49%;
-                --primary-foreground: 109 100% 9%;
-                --secondary: 229 100% 49%;
-                --secondary-foreground: 0 0% 100%;
-                --accent: 349 100% 49%;
-                --accent-foreground: 0 0% 100%;
-                --destructive: 15 90% 20%;
-                --destructive-foreground: 15 90% 80%;
-                --ring: 109 100% 49%;
+                --background: 106 48% 99%;
+                --foreground: 106 60% 5%;
+                --muted: 76 30% 88%;
+                --muted-foreground: 76 15% 36%;
+                --popover: 106 48% 98%;
+                --popover-foreground: 106 60% 4%;
+                --card: 106 48% 98%;
+                --card-foreground: 106 60% 4%;
+                --border: 106 5% 89%;
+                --input: 106 5% 89%;
+                --primary: 106 100% 50%;
+                --primary-foreground: 106 100% 10%;
+                --secondary: 76 100% 50%;
+                --secondary-foreground: 76 100% 10%;
+                --accent: 136 100% 50%;
+                --accent-foreground: 136 100% 10%;
+                --destructive: 15 99% 21%;
+                --destructive-foreground: 15 99% 81%;
+                --ring: 106 100% 50%;
                 --radius: 0.5rem;
             }
 
             .dark {
-                --background: 109 58% 3%;
-                --foreground: 109 28% 99%;
-                --muted: 229 8% 10%;
-                --muted-foreground: 229 14% 71%;
-                --popover: 109 58% 4%;
-                --popover-foreground: 0 0% 100%;
-                --card: 109 58% 4%;
-                --card-foreground: 0 0% 100%;
-                --border: 109 12% 14%;
-                --input: 109 12% 14%;
-                --primary: 129.18 100% 45.69%;
-                --primary-foreground: 109 100% 9%;
-                --secondary: 54.65 100% 50%;
-                --secondary-foreground: 0 0% 100%;
-                --accent: 349 100% 49%;
-                --accent-foreground: 0 0% 100%;
-                --destructive: 15 90% 52%;
+                --background: 34 197% 94%;
+                --foreground: 106 31% 98%;
+                --muted: 76 30% 12%;
+                --muted-foreground: 76 15% 64%;
+                --popover: 106 38% 2%;
+                --popover-foreground: 106 31% 99%;
+                --card: 106 38% 2%;
+                --card-foreground: 106 31% 99%;
+                --border: 106 5% 12%;
+                --input: 106 5% 12%;
+                --primary: 106 100% 50%;
+                --primary-foreground: 106 100% 10%;
+                --secondary: 76 100% 50%;
+                --secondary-foreground: 76 100% 10%;
+                --accent: 136 100% 50%;
+                --accent-foreground: 136 100% 10%;
+                --destructive: 15 99% 53%;
                 --destructive-foreground: 0 0% 100%;
-                --ring: 109 100% 49%;
+                --ring: 106 100% 50%;
             }
         }
+
 
 
     }
@@ -67,7 +68,7 @@
     }
 
     body {
-        @apply dark:bg-background bg-white;
+        @apply dark:bg-background bg-white font-poppins;
     }
 }
 
