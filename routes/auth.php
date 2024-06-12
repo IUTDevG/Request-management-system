@@ -20,11 +20,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('student', \App\Livewire\StudentDashboard::class)
         ->name('student.home');
-    Route::post('logout', function (){
+    Route::get('/logout', function () {
         auth()->logout();
-        return redirect('/');
-    })
-        ->name('logout');
+        return redirect(route('login'));
+    })->name('student.logout');
 
     Volt::route('verify-email', 'pages.auth.verify-email')
         ->name('verification.notice');

@@ -2,7 +2,7 @@
     <!--====Start Body====-->
     <section>
         <!--Banner -->
-        <div class="bg-white/60 backdrop-blur-lg dark:bg-neutral-900/60">
+        <div class="bg-background backdrop-blur-lg">
             <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto">
                 <!-- Grid -->
                 <div class="flex justify-center max-[835px]:flex-col">
@@ -125,8 +125,8 @@
                                 <thead class="bg-gray-50 dark:bg-neutral-800">
                                     <tr>
 
-                                        <th scope="col" class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3 text-start">
-                                            <div class="flex items-center gap-x-2">
+                                        <th scope="col" class="ps-6 pe-6 py-3 text-start">
+                                            <div class="py-3">
                                                 <span
                                                     class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
                                                     reason for deposit
@@ -160,7 +160,7 @@
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                                     <tr>
                                         <td class="size-px whitespace-nowrap">
-                                            <div class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                                            <div class="ps-6 py-3">
                                                 <div class="flex items-center gap-x-3">
                                                     <div class="grow">
                                                         <span
