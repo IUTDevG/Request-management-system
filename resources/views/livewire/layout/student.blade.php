@@ -234,7 +234,7 @@
 
                                 {{__('Profile')}}
                             </a>
-                            
+
                             <a href="{{ route('student.logout') }}" wire:navigate
                                   class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -283,8 +283,6 @@
 <!--====== END BODY =======-->
 @vite('resources/js/app.js')
 <script>
-    // This code should be added to <head>.
-    // It's used to prevent page load glitches.
     const html = document.querySelector('html');
     const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
     const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
