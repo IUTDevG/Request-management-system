@@ -20,8 +20,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('student', \App\Livewire\StudentDashboard::class)
         ->name('student.home');
-    Route::post('logout', function (){
+    Route::get('logout', function (){
         auth()->logout();
+        session()->invalidate();
+        session()->regenerateToken();
         return redirect('/');
     })
         ->name('logout');

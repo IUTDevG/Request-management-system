@@ -48,6 +48,6 @@ class SchoolRequest extends Model implements HasMedia
     {
         $this->addMediaCollection('school-request')
             ->useDisk('private')
-            ->acceptsMimeTypes(['application/pdf']);
+            ->acceptsMimeTypes(['application/pdf',]);
     }
 }
