@@ -68,7 +68,7 @@
     }
 
     body {
-        @apply dark:bg-background bg-white font-poppins;
+        @apply dark:bg-background bg-white font-sans;
     }
 }
 
