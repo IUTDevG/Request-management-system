@@ -1,3 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.font-poppins{
+    font-family: 'Poppins', sans-serif;
+}
+@layer base {
+    @layer base {
+
+
+        @layer base {
+            :root {
+                --background: 106 58% 98%;
+                --foreground: 106 57% 4%;
+                --muted: 106 37% 95%;
+                --muted-foreground: 106 10% 33%;
+                --popover: 106 58% 97%;
+                --popover-foreground: 106 57% 3%;
+                --card: 106 58% 97%;
+                --card-foreground: 106 57% 3%;
+                --border: 106 7% 92%;
+                --input: 106 7% 92%;
+                --primary: 106 100% 50%;
+                --primary-foreground: 106 100% 10%;
+                --secondary: 106 19% 81%;
+                --secondary-foreground: 106 19% 21%;
+                --accent: 106 19% 81%;
+                --accent-foreground: 106 19% 21%;
+                --destructive: 19 81% 24%;
+                --destructive-foreground: 19 81% 84%;
+                --ring: 106 100% 50%;
+                --radius: 0.5rem;
+            }
+
+            .dark {
+                --background: 106 53% 4%;
+                --foreground: 106 26% 100%;
+                --muted: 106 37% 5%;
+                --muted-foreground: 106 10% 67%;
+                --popover: 106 53% 5%;
+                --popover-foreground: 0 0% 100%;
+                --card: 106 53% 5%;
+                --card-foreground: 0 0% 100%;
+                --border: 106 7% 13%;
+                --input: 106 7% 13%;
+                --primary: 106 100% 50%;
+                --primary-foreground: 106 100% 10%;
+                --secondary: 106 7% 20%;
+                --secondary-foreground: 106 7% 80%;
+                --accent: 106 7% 20%;
+                --accent-foreground: 106 7% 80%;
+                --destructive: 19 81% 54%;
+                --destructive-foreground: 0 0% 0%;
+                --ring: 106 100% 50%;
+            }
+        }
+
+
+
+
+    }
+}
+
+@layer base {
+    * {
+        @apply box-border p-0 m-0 border-border;
+    }
+
+    body {
+        @apply dark:bg-background bg-white font-sans;
+    }
+}
+
+

@@ -6,8 +6,8 @@
     @vite('resources/css/app.css')
     <title>Sign-up page</title>
 </head>
-<body class="font-montserrat">
-<div class="flex h-screen  overflow-hidden">
+<body>
+<div class="flex sm:px-0 px-5  overflow-hidden sm:overflow-x-hidden">
     <!-- Left Pane -->
     <div class="hidden lg:flex items-center justify-center flex-1">
         <div class="w-full text-center">

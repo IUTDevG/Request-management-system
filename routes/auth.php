@@ -13,14 +13,15 @@ Route::middleware('guest')->group(function () {
         ->name('forgot-password');
 
     Route::get('reset-password/{token}', ResetPassword::class)
-        ->name('reset-password');
+        ->name('password.reset');
 });
 
 Route::middleware('auth')->group(function () {
 
     Route::get('student', \App\Livewire\StudentDashboard::class)
         ->name('student.home');
-    Route::get('logout', function (){
+    Route::get('student/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
+    Route::get('/logout', function () {
         auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
