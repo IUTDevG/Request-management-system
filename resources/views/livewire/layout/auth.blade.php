@@ -7,7 +7,7 @@
     <title>Sign-up page</title>
 </head>
 <body class="font-montserrat">
-<div class="flex h-screen  overflow-hidden">
+<div class="flex">
     <!-- Left Pane -->
     <div class="hidden lg:flex items-center justify-center flex-1">
         <div class="w-full text-center">
