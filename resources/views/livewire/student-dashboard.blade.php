@@ -452,6 +452,6 @@
             </div>
         </div>
     </div>
-    @dump(auth()->user())
+    {{-- @dump(auth()->user()) --}}
     <!-- End Table Section -->
 </div>
