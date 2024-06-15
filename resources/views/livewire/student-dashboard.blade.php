@@ -188,8 +188,7 @@
                                                     12:12</span>
                                             </div>
                                         </td>
-
-                                        <td class="size-px whitespace-nowrap">
+                                        <td class=" relative size-px items-end  whitespace-nowrap">
                                             <div class="px-6 py-1.5">
                                                 <div class="hs-dropdown relative inline-flex">
                                                     <button id="dropdown-custom-trigger" type="button"

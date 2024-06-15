@@ -23,11 +23,11 @@ class LoginForm extends Component
     public function submitForm()
     {
         $this->validate([
-            'email' => 'required|email|max:255',
+            'email' => 'required|max:255',
             'password' => ['required', Password::min(6)]
         ]);
-        $user = User::where('email', $this->email)->first();
-        if ($user->matricule == null || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember)) {
+        $user = User::where('email', $this->email)->orWhere('matricule', $this->email)->first();
+        if (($user && $user->matricule == null) || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember)) {
             if(Auth::attempt(['matricule'=>$this->email, 'password'=>$this->password, 'is_activated' => true], $this->remember)){
                 session()->flash('success', 'Connexion reussie');
                 redirect()->route('student.home');
