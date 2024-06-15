@@ -17,10 +17,10 @@
                     <x-input-error for="name"></x-input-error>
                 </div>
                 <div>
-                    <label for="username" class="block text-sm font-medium">{{__("Username")}}</label>
-                    <input type="text" id="username" name="username" wire:model="username"
+                    <label for="matricule" class="block text-sm font-medium">{{__("Matricule")}}</label>
+                    <input type="text" id="matricule" name="matricule" wire:model="matricule"
                            class="mt-1 p-2 w-full border rounded-md focus:border-b-current bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
-                    <x-input-error for="user_name"></x-input-error>
+                    <x-input-error for="matricule"></x-input-error>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-medium">{{__("Email")}}</label>

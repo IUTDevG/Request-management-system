@@ -220,11 +220,11 @@
                         <div class="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
                             <p class="text-sm text-gray-500 dark:text-neutral-400">Signed in as</p>
                             <p class="text-sm font-medium text-gray-800 dark:text-neutral-300">
-                                info@devjiordi.site</p>
+                                {{auth()->user()->username}}</p>
                         </div>
                         <div class="mt-2 py-2 first:pt-0 last:pb-0">
                             <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                               href="profile-student.html">
+                               href="profile">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
                                      height="24">
@@ -242,6 +242,7 @@
                                          height="24">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                               d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"/>
+                                    </svg>
                                     </svg>
                                     disconnect
                             </a>

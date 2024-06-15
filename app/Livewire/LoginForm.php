@@ -2,15 +2,16 @@
 
 namespace App\Livewire;
 
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
+use Livewire\Component;
+use Livewire\Attributes\Validate;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
 
 class LoginForm extends Component
 {
@@ -25,13 +26,17 @@ class LoginForm extends Component
             'email' => 'required|email|max:255',
             'password' => ['required', Password::min(6)]
         ]);
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        $user = User::where('email', $this->email)->first();
+        if ($user->matricule !== null || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember)) {
+            if(Auth::attempt(['matricule'=>$this->email, 'password'=>$this->password, 'is_activated' => true], $this->remember)){
+                session()->flash('success', 'Connexion reussie');
+                redirect()->route('student.home');
+            }
+            // dd($user);
             session()->flash('error', 'Données d\'authentification incorrect');
-//             redirect()->route('login');
-
         } else {
             session()->flash('success', 'Connexion reussie');
-             redirect()->route('student.home');
+            redirect()->route('student.home');
         }
 
     }

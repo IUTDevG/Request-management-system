@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('request_code')->unique();
             $table->text('description');
             $table->string('status')->default(SchoolRequestStatus::Draft);
-            $table->string('matricule');
+            
             $table->foreignId('level_id')
                 ->constrained()
                 ->cascadeOnDelete();

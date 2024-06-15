@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('avatar_type')->default('avatar');
             $table->string('phone_number')->nullable();
             $table->string('google_profile')->nullable();
+            $table->string('matricule')->nullable();
             $table->datetime('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
             $table->boolean('is_activated')->default(true);

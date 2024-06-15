@@ -26,7 +26,6 @@ class SchoolRequestSeeder extends Seeder
             'title' => 'Absence de notes en algorithme',
             'description' => fake()->paragraph(4),
             'status' => SchoolRequestStatus::Submitted,
-            'matricule' => Str::random(8),
             'level_id' => (int) Level::first()->id,
             'department_id' => (int) Department::first()->id,
             'user_id' => (int) $user->id,

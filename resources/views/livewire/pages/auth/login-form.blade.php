@@ -58,7 +58,7 @@
                     </label>
                 </div>
                 <div>
-                    <a href="{{route('forgot-password')}}" class="font-semibold text-sm hover:underline text-nowrap">
+                    <a href="{{route('student.forgot-password')}}" class="font-semibold text-sm hover:underline text-nowrap">
                         {{__('Forgot your password?')}}
                     </a>
                 </div>

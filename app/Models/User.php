@@ -26,6 +26,7 @@ class User extends Authenticatable
         'avatar',
         'avatar_type',
         'phone_number',
+        'matricule',
         'google_profile',
         'last_login_at',
         'last_login_ip',

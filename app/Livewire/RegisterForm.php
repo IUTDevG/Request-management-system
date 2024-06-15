@@ -2,16 +2,17 @@
 
 namespace App\Livewire;
 
-use App\Enums\RoleType;
 use App\Models\User;
+use App\Enums\RoleType;
+use Livewire\Component;
+use Illuminate\Support\Str;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 
     class RegisterForm extends Component
 {
     public string $name;
-    public ?string $username;
+    public ?string $matricule;
     public string $email;
     public string $password;
     public string $password_confirmation;
@@ -21,7 +22,7 @@ use Livewire\Component;
         $this->validate([
             'name'=>'required',
             'email' => 'required|unique:users,email|email',
-            'username'=>'required|unique:users  ',
+            'matricule'=>'required|max:7|min:7|unique:users,matricule',
             'password'=> 'required|min:6',
             'password_confirmation' => 'required|same:password',
         ]);
@@ -39,16 +40,18 @@ use Livewire\Component;
         $ip = filter_var($ip, FILTER_VALIDATE_IP);
         $ip = ($ip === false) ? '0.0.0.0' : $ip;
 
-        $user = User::create([
+        $user =  new User([
             'name' => $this->name,
-            'username' => $this->username,
+            'username' => Str::slug($this->name),
             'email' => $this->email,
             'password' => $this->password,
+            'matricule' => $this->matricule,
             'last_login_at' => now(),
             'last_login_ip' => $ip,
             'is_activated' => true
         ]);
-
+        // dd($user);
+        $user->save();
         $user->assignRole(RoleType::STUDENT);
 
         Auth::attempt($this->only(['email', 'password']),);
