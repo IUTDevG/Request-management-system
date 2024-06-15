@@ -27,7 +27,7 @@ class LoginForm extends Component
             'password' => ['required', Password::min(6)]
         ]);
         $user = User::where('email', $this->email)->first();
-        if ($user->matricule !== null || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember)) {
+        if ($user->matricule == null || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember)) {
             if(Auth::attempt(['matricule'=>$this->email, 'password'=>$this->password, 'is_activated' => true], $this->remember)){
                 session()->flash('success', 'Connexion reussie');
                 redirect()->route('student.home');
