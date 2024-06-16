@@ -3,12 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Panel;
+use App\Enums\RoleType;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable,HasRoles;
 
@@ -77,4 +83,28 @@ class User extends Authenticatable
     protected $appends = [
         'fullname'
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if($panel->getId() === 'dashboard'){
+            return $this->hasRole(RoleType::ACADEMIC_MANAGER) || $this->hasRole(RoleType::DEPUTY_DIRECTOR) || $this->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $this->hasRole(RoleType::DIRECTOR) || $this->hasRole(RoleType::COMPUTER_CELL);
+        }
+        elseif($panel->getId() === 'admin'){
+            return $this->hasRole(RoleType::COMPUTER_CELL);
+        }
+    }
+
+
+    public function assignRoleWithDepartment(string $roleName, int $departmentId = null)
+    {
+        // Assigner le rôle à l'utilisateur
+        $role = Role::findByName($roleName);
+        $this->assignRole($role);
+
+        // Mettre à jour la table model_has_roles avec le department_id
+        $modelHasRole = DB::table('model_has_roles')
+            ->where('model_id', $this->id)
+            ->where('role_id', $role->id)
+            ->update(['department_id' => $departmentId]);
+    }
 }
