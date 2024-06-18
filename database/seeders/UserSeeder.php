@@ -50,12 +50,12 @@ class UserSeeder extends Seeder
 
         $user->assignRole(RoleType::COMPUTER_CELL);
 
-        User::factory(10)->create()->each(function ($user){
-            $user->assignRole(RoleType::ACADEMIC_MANAGER);
+        User::factory(2)->create()->each(function ($user){
+            $user->assignRoleWithDepartment(RoleType::ACADEMIC_MANAGER->value, 1);
         });
 
-        User::factory(5)->create()->each(function ($user){
-           $user->assignRole(RoleType::SCHOOLING);
+        User::factory(2)->create()->each(function ($user){
+           $user->assignRoleWithDepartment(RoleType::SCHOOLING->value,1);
        });
 
         User::factory(5)->create()->each(function ($user){

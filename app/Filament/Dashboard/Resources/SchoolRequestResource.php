@@ -2,6 +2,7 @@
 
 namespace App\Filament\Dashboard\Resources;
 
+use App\Enums\SchoolRequestStatus;
 use App\Filament\Dashboard\Resources\SchoolRequestResource\Pages;
 use App\Filament\Dashboard\Resources\SchoolRequestResource\RelationManagers;
 use App\Models\SchoolRequest;
@@ -36,20 +37,20 @@ class SchoolRequestResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->default('draft'),
-                Forms\Components\TextInput::make('level_id')
+                Forms\Components\Select::make('level_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('department_id')
+                    ->relationship('level', 'name'),
+                Forms\Components\Select::make('user_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                    ->relationship('user', 'name'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $query = SchoolRequest::query()
+            ->where('status', '!=', SchoolRequestStatus::Draft)
+            ->where('departement_id', auth()->user()->getDepartment()->id );
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
@@ -58,30 +59,16 @@ class SchoolRequestResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('level_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('department_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,9 +88,9 @@ class SchoolRequestResource extends Resource
     {
         return [
             'index' => Pages\ListSchoolRequests::route('/'),
-            'create' => Pages\CreateSchoolRequest::route('/create'),
+            // 'create' => Pages\CreateSchoolRequest::route('/create'),
             'view' => Pages\ViewSchoolRequest::route('/{record}'),
-            'edit' => Pages\EditSchoolRequest::route('/{record}/edit'),
+            // 'edit' => Pages\EditSchoolRequest::route('/{record}/edit'),
         ];
     }
 }

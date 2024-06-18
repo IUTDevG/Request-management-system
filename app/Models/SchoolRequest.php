@@ -17,7 +17,7 @@ class SchoolRequest extends Model implements HasMedia
 
 
     protected $fillable = [
-        'title','request_code','description','status','matricule',
+        'title','request_code','description','status',
         'level_id','department_id','user_id'
     ];
 
@@ -41,7 +41,10 @@ class SchoolRequest extends Model implements HasMedia
 
     protected static function generateUniqueRequestCode():string
     {
-        return Str::random(15);
+        do {
+            $request_code = Str::random(15);
+        } while (SchoolRequest::where('request_code', $request_code)->exists());
+        return $request_code;
     }
 //    defining media collections for SchoolRequest
     public function registerMediaCollections(): void
@@ -49,5 +52,17 @@ class SchoolRequest extends Model implements HasMedia
         $this->addMediaCollection('school-request')
             ->useDisk('private')
             ->acceptsMimeTypes(['application/pdf',]);
+    }
+
+    public function level(){
+        return $this->belongsTo(Level::class);
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }
