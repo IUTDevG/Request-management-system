@@ -8,7 +8,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    @stack('styles')
+    @livewireStyles
     <title>{{$title.'- IUT'??'Dashboard'}}</title>
 </head>
 <body class="bg-background overflow-x-hidden antialiased">
@@ -17,7 +19,7 @@
 <header
     class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-800 antialiased shadow-lg z-50 w-full text-sm py-2 sm:py-0">
     <!--===Navbar section===-->
-    <nav class="relative max-w-[85rem] w-full mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8"
+    <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
         <div class="flex items-center justify-between w-full">
             <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('student.home') }}"
@@ -202,6 +204,9 @@
 {{$slot}}
 <!--====== END BODY =======-->
 @vite('resources/js/app.js')
+@stack('scripts')
+@livewireScripts
+{{--<script src="https://unpkg.com/filepond/dist/filepond.js"></script>--}}
 <script>
     const html = document.querySelector('html');
     const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -211,92 +216,6 @@
     else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
     else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
     else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('dark');
-</script>
-<script>
-    const fileInput = document.getElementById('file-upload');
-    const dropZone = document.getElementById('drop-zone');
-    const progressBar = document.getElementById('progress-bar');
-    const previewContainer = document.getElementById('preview-container');
-    const previewContent = document.getElementById('preview-content');
-    const statusMessage = document.getElementById('status-message');
-
-    // Gestionnaire d'événements pour la sélection de fichier
-    fileInput.addEventListener('change', handleFileSelect);
-
-    // Gestionnaires d'événements pour le glisser-déposer
-    dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('drop', handleDrop);
-
-    function handleFileSelect(event) {
-        const file = event.target.files[0];
-        uploadFile(file);
-    }
-
-    function handleDragOver(event) {
-        event.preventDefault();
-        dropZone.classList.add('bg-gray-200');
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        dropZone.classList.remove('bg-gray-200');
-        const file = event.dataTransfer.files[0];
-        uploadFile(file);
-    }
-
-    function uploadFile(file) {
-        if (file) {
-            statusMessage.textContent = 'Chargement en cours...';
-            const reader = new FileReader();
-
-            reader.onloadstart = () => {
-                progressBar.style.width = '0%';
-            };
-
-            reader.onprogress = (event) => {
-                if (event.lengthComputable) {
-                    const percentComplete = (event.loaded / event.total) * 100;
-                    progressBar.style.width = `${percentComplete}%`;
-                }
-            };
-
-            reader.onload = () => {
-                previewContainer.classList.remove('hidden');
-                previewContent.innerHTML = '';
-
-                if (file.type.includes('image')) {
-                    const img = document.createElement('img');
-                    img.src = reader.result;
-                    img.classList.add('object-cover', 'w-full', 'h-full');
-                    previewContent.appendChild(img);
-                } else if (file.type.includes('pdf')) {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = reader.result;
-                    iframe.classList.add('w-full', 'h-full');
-                    previewContent.appendChild(iframe);
-                } else {
-                    const link = document.createElement('a');
-                    link.href = reader.result;
-                    link.target = '_blank';
-                    link.textContent = 'Ouvrir le fichier';
-                    previewContent.appendChild(link);
-                }
-
-                statusMessage.textContent = 'Chargement réussi !';
-                setTimeout(() => {
-                    statusMessage.textContent = '';
-                }, 3000);
-            };
-
-            reader.onerror = () => {
-                statusMessage.textContent = 'Une erreur est survenue lors du chargement du fichier.';
-            };
-
-            reader.readAsDataURL(file);
-        } else {
-            statusMessage.textContent = 'Veuillez sélectionner un fichier.';
-        }
-    }
 </script>
 </body>
 </html>

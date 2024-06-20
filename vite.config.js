@@ -12,6 +12,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/css/utils/filepond.css',
+                'resources/js/utils/filepond.js'
             ],
             refresh: true,
         }),

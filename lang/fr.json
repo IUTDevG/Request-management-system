@@ -119,5 +119,9 @@
     "Home": "Accueil",
     "About": "À propos",
     "My requests": "Mes requêtes",
-    "Signed in as:": "Connecté en tant que:"
+    "Signed in as:": "Connecté en tant que:",
+    "Title":"Titre",
+    "Description": "Description",
+    "Submit": "Envoyer",
+    "Drag & Drop your file or": "Glisser & Déposer votre fichier ou"
 }

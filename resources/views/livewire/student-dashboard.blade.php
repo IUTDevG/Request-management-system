@@ -21,16 +21,15 @@
                     <div class="text-center sm:text-start flex sm:justify-start sm:items-center gap-x-3 md:gap-x-4">
 
 
-                        <button type="button"
-                            class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300 hover:scale-100 transition duration-700 ease-in-out"
-                            data-hs-overlay="#hs-modal">
+                        <a href="{{ route('student.new-request') }}"
+                            class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300 hover:scale-100 transition duration-700 ease-in-out">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
 
-                            New request
-                        </button>
+                            {{__('New request')}}
+                        </a>
 
                     </div>
                     <!-- End Col -->
@@ -343,112 +342,4 @@
         </div>
     </footer>
     <!-- ========== END FOOTER ========== -->
-    <div id="hs-modal"
-        class="hs-overlay hs-overlay-backdrop-open:bg-neutral-400  hs-overlay-backdrop-open:backdrop-blur-lg  hs-overlay-backdrop-open:dark:bg-neutral-900/60 hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
-        <div
-            class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-2xl sm:w-full m-3 sm:mx-auto">
-            <div class="flex flex-col bg-white dark:bg-gray-800 text-black dark:text-white pointer-events-auto rounded">
-                <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-                    <h3 class="font-bold">
-                        New request
-                    </h3>
-                    <button type="button"
-                        class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
-                        data-hs-overlay="#hs-modal">
-                        <span class="sr-only">Close</span>
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6 6 18"></path>
-                            <path d="m6 6 12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <!-- form Section -->
-                <div class="w-auto mx-auto">
-                    <div class="mb-8">
-                        <h2 class="text-xl font-bold">
-                            Request N°{{time()}}
-                        </h2>
-                        <p class="text-sm text-gray-600 dark:text-neutral-400">
-                            Please write your request carefully to avoid rejection.
-                        </p>
-                    </div>
-
-                    <form>
-                        <!--Start Form-->
-                        <div class="col-span-full">
-                            <label for="title" class="block text-sm font-medium leading-6">Title</label>
-                            <div class="mt-2">
-                                <input type="text" id="title" name="about"
-                                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-green-500 dark:focus:border-green-600 focus:ring-green-500 dark:focus:ring-green-600 rounded-md shadow-sm mt-1 block w-full" />
-                            </div>
-                        </div>
-                        <div class="col-span-full">
-                            <label for="about" class="block text-sm font-medium leading-6">About</label>
-                            <div class="mt-2">
-                                <textarea id="about" name="about" rows="3"
-                                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-green-500 dark:focus:border-green-600 focus:ring-green-500 dark:focus:ring-green-600 rounded-md shadow-sm mt-1 block w-full"></textarea>
-                            </div>
-                            <p class="mt-3 text-sm leading-6">Write a few sentences about yourself.</p>
-                        </div>
-                        <div class="flex flex-col items-center justify-center">
-                            <div class="w-full max-w-md">
-                                <label for="file-upload" id="drop-zone"
-                                    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                    <div id="image-preview" class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                            </path>
-                                        </svg>
-                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                            <span class="font-semibold">Cliquez pour uploader</span> ou glissez-déposez
-                                        </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">
-                                            SVG, PNG, JPG ou GIF (MAX. 800x400px)
-                                        </p>
-                                    </div>
-                                    <input id="file-upload" type="file" class="hidden" accept="*"
-                                        capture="environment" />
-                                </label>
-                            </div>
-                            <div class="w-full max-w-md mt-4">
-                                <div class="relative pt-1">
-                                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-green-200">
-                                        <div id="progress-bar" style="width: 0%"
-                                            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-500">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="preview-container" class="w-full max-w-md mt-4 hidden">
-                                <div id="preview-content" class="aspect-square relative overflow-hidden"></div>
-                            </div>
-
-                            <p id="status-message" class="mt-4 text-sm text-gray-500"></p>
-                        </div>
-
-                    </form>
-                    <!-- End Col -->
-                    <!-- End Card -->
-                </div>
-                <!-- End form Section -->
-                <div class="flex justify-end items-center gap-x-2 py-3 px-4">
-                    <button type="button"
-                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
-                        data-hs-overlay="#hs-modal">
-                        Close
-                    </button>
-                    <button type="submit"
-                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
-                        Submit my request
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
