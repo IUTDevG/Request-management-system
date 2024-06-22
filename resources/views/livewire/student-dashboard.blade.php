@@ -156,7 +156,7 @@
                 <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
                         <div
-                            class="fi-ta-ctn divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10">
+                            class="divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10">
                             <!-- Header -->
                             <div
                                 class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
@@ -250,14 +250,14 @@
                                         <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
                                             wire:key="{!! $request->id !!}.column.status">
                                             <a href="" class="flex w-full disabled:pointer-events-none justify-start text-start">
-                                                <div class="fi-ta-text grid w-full gap-y-1 px-3 py-4">
+                                                <div class="grid w-full gap-y-1 px-3 py-4">
 
                                                     <div class="flex gap-1.5 flex-wrap ">
 
                                                         <div class="flex w-max">
                                                             <div
                                                                 style="--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);"
-                                                                class="flex items-center justify-center gap-x-1 rounded-md text-xs font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 fi-color-custom bg-success-50 text-success-500 ring-success-600/10 dark:bg-success-400/10 dark:text-success-400 dark:ring-success-400/30">
+                                                                class="flex items-center justify-center gap-x-1 rounded-md text-xs font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-success-50 text-success-500 ring-success-600/10 dark:bg-success-400/10 dark:text-success-400 dark:ring-success-400/30">
 
 
                                                                 <span class="grid">
