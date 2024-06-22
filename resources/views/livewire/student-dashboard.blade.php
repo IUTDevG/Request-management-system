@@ -353,11 +353,11 @@
                                                             <div class="p-1">
                                                                 <a
                                                                     href="2"
-                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 fi-color-gray fi-dropdown-list-item-color-gray hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 fi-ac-grouped-action"
+                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 text-info-500"
                                                                     type="button">
 
                                                                     <svg
-                                                                        class="h-5 w-5 text-primary"
+                                                                        class="h-5 w-5"
                                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                         viewBox="0 0 24 24" stroke-width="1.5"
                                                                         stroke="currentColor" aria-hidden="true"
@@ -370,7 +370,7 @@
                                                                               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
                                                                     </svg>
                                                                     <span
-                                                                        class="flex-1 truncate text-start text-primary">
+                                                                        class="flex-1 truncate text-start">
                                                                             {!! __('See') !!}
                                                                  </span>
 
