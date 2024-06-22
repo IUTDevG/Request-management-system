@@ -123,5 +123,11 @@
     "Title":"Titre",
     "Description": "Description",
     "Submit": "Envoyer",
-    "Drag & Drop your file or": "Glisser & Déposer votre fichier ou"
+    "Drag & Drop your file or": "Glisser & Déposer votre fichier ou",
+    "level": "niveau",
+    "title": "titre",
+    "files": "fichiers",
+    "department": "département",
+    "status": "statut",
+    "created at": "crée le"
 }

@@ -11,29 +11,70 @@
                         <x-slot name="description">
                             {{ __('Ces informations sont modifiables par l\'administration.') }}
                         </x-slot>
+
                         <x-slot:form>
-                            <input type="hidden" wire:model="user_id" value="{{auth()->user()->id}}"/>
+
                             <div class="mb-3">
-                                <x-label value="{{__('Title')}}"/>
-                                <x-input wire:model="name" type="text" wire:model="title"/>
+                                <x-label for="title" value="{{ __('Title') }}"/>
+                                <x-input id="title" wire="title" type="text"/>
                                 <x-input-error for="title"/>
                             </div>
+
                             <div class="mb-3">
-                                <x-label value="{{__('Description')}}"/>
-                                <x-input wire:model="first_name" type="text" wire:model="description"/>
+                                <x-label for="description" value="{{ __('Description') }}"/>
+                                <x-textarea id="description" wire="description"/>
                                 <x-input-error for="description"/>
                             </div>
+
+                            <x-select
+                                label="{{ __('Filière') }}"
+                                id="level"
+                                name="level_id"
+                                :options="$levels"
+                                wire="level_id"
+                                placeholder="{{ __('Sélectionnez votre filière') }}"
+                            />
+                            <x-input-error for="level_id"/>
+
+                            <x-select
+                                label="{{ __('Department') }}"
+                                id="department"
+                                name="department_id"
+                                :options="$departments"
+                                wire="department_id"
+                                placeholder="{{ __('Sélectionnez votre département') }}"
+                            />
+                            <x-input-error for="department_id"/>
                             <div class="mb-3">
-                                <x-label value="{{__('Files')}}"/>
-                                <x-file-upload-alpine wire:model="files"/>
+                                <x-label for="files" value="{{ __('Files') }}"/>
+                                <x-file-upload-alpine wire:model="files" multiple/>
                                 <x-input-error for="files"/>
                             </div>
                         </x-slot:form>
-                        <x-slot:actions class="flex flex-row items-center col-span-2 text-nowrap">
-                            <x-flash-message class="mr-3" on="saved">{{__('Saved.')}}</x-flash-message>
-                            <x-button type="submit">
-                                {{ __('Submit')}}
-                            </x-button>
+
+                        <x-slot:actions>
+                            <div class="flex flex-col sm:flex-row items-center justify-between w-full">
+                                <x-flash-message class="mb-3 sm:mb-0 sm:mr-3" on="saved">
+                                    {{ __('Saved.') }}
+                                </x-flash-message>
+                                <x-button type="submit">
+                                    {{ __('Submit') }}
+                                </x-button>
+                            </div>
+                            @if (session('status'))
+                                <x-flash-message class="mt-3" on="submit">
+
+                                    <div class="text-green-500">
+                                        {{ session('status') }}
+                                    </div>
+                                </x-flash-message>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="text-red-500">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
 
                         </x-slot:actions>
                     </x-form-section>

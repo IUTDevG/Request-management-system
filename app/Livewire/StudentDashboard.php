@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\SchoolRequest;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -12,6 +13,9 @@ class StudentDashboard extends Component
 
     public function render()
     {
-        return view('livewire.student-dashboard')->layout('livewire.layout.student');
+        $requests = SchoolRequest::query();
+        return view('livewire.student-dashboard', [
+            'requests' => $requests->paginate(4),
+        ])->layout('livewire.layout.student');
     }
 }

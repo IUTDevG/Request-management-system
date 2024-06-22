@@ -1,4 +1,58 @@
 <div>
+    @if (session('status'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const notification = document.getElementById('dismiss-toast');
+                if (notification) {
+
+
+                    setTimeout(function () {
+                        // notification.classList.remove('opacity-100');
+                        notification.classList.add('opacity-0');
+                        setTimeout(function () {
+                            notification.style.display = 'none';
+                        }, 1000);
+                    }, 3000);
+                }
+            });
+        </script>
+    @endif
+    <!-- Toast -->
+    @if(session('status'))
+        <div id="dismiss-toast"
+             class="hs-removing:translate-x-5 absolute top-20 end-2 z-[100] hs-removing:opacity-0 transition duration-300 max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700"
+             role="alert">
+            <div class="flex p-4">
+                <div class="flex-shrink-0">
+                    <svg class="flex-shrink-0 size-4 text-teal-500 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="16"
+                         height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                    </svg>
+                </div>
+                <div class="ms-3">
+                    <p class="text-sm text-gray-700 dark:text-neutral-400">
+                        {{session('status')}}
+                    </p>
+                </div>
+
+                <div class="ms-auto">
+                    <button type="button"
+                            class="inline-flex flex-shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-none focus:opacity-100 dark:text-white"
+                            data-hs-remove-element="#dismiss-toast">
+                        <span class="sr-only">Close</span>
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- End Toast -->
     <!--====Start Body====-->
     <section>
         <!--Banner -->
@@ -22,10 +76,10 @@
 
 
                         <a href="{{ route('student.new-request') }}"
-                            class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300 hover:scale-100 transition duration-700 ease-in-out">
+                           class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300 hover:scale-100 transition duration-700 ease-in-out">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                 stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
                             </svg>
 
                             {{__('New request')}}
@@ -77,9 +131,9 @@
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
                                 <svg class="flex-shrink-0 size-4 text-gray-400 dark:text-white/60"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <path d="m21 21-4.3-4.3"></path>
                                 </svg>
@@ -102,7 +156,7 @@
                 <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
                         <div
-                            class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-neutral-800 dark:border-neutral-700">
+                            class="fi-ta-ctn divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10">
                             <!-- Header -->
                             <div
                                 class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
@@ -117,148 +171,255 @@
 
 
                             </div>
-                            <!-- End Header -->
 
-                            <!-- Table -->
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                                <thead class="bg-gray-50 dark:bg-neutral-800">
-                                    <tr>
+                            <table
+                                class="w-full table-auto divide-y divide-gray-200 text-start dark:divide-white/5">
 
-                                        <th scope="col" class="ps-6 pe-6 py-3 text-start">
-                                            <div class="py-3">
-                                                <span
-                                                    class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                                    reason for deposit
-                                                </span>
-                                            </div>
-                                        </th>
+                                <thead class="divide-y divide-gray-200 dark:divide-white/5">
 
-                                        <th scope="col" class="px-6 py-3 text-start">
-                                            <div class="flex items-center gap-x-2">
-                                                <span
-                                                    class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                                    Status
-                                                </span>
-                                            </div>
-                                        </th>
+                                <tr class="bg-gray-50 dark:bg-white/5">
 
+                                    <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
+    <span class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+        <span class="text-sm font-semibold text-gray-950 dark:text-white">
+            {{__('title')}}
+        </span>
 
-                                        <th scope="col" class="px-6 py-3 text-start">
-                                            <div class="flex items-center gap-x-2">
-                                                <span
-                                                    class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                                    Created
-                                                </span>
-                                            </div>
-                                        </th>
+    </span>
+                                    </th>
+                                    <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
+    <span class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+        <span class="text-sm font-semibold text-gray-950 dark:text-white">
+           {{__('status')}}
+        </span>
 
-                                        <th scope="col" class="px-6 py-3 text-end"></th>
-                                    </tr>
+    </span>
+                                    </th>
+                                    <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
+    <span class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+        <span class="text-sm font-semibold text-gray-950 dark:text-white">
+           {{__('created at')}}
+        </span>
+    </span>
+                                    </th>
+
+                                    <th class="w-1"></th>
+
+                                </tr>
                                 </thead>
 
-                                <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                    <tr>
-                                        <td class="size-px whitespace-nowrap">
-                                            <div class="ps-6 py-3">
-                                                <div class="flex items-center gap-x-3">
-                                                    <div class="grow">
-                                                        <span
-                                                            class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">notes</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="size-px whitespace-nowrap">
-                                            <div class="px-6 py-3">
-                                                <span
-                                                    class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-green-100 text-primary/80 rounded-full dark:text-primary/50">
-                                                    <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16"
-                                                        height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                    resolved
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="size-px whitespace-nowrap">
-                                            <div class="px-6 py-3">
-                                                <span class="text-sm text-gray-500 dark:text-neutral-500">28 Dec,
-                                                    12:12</span>
-                                            </div>
-                                        </td>
-                                        <td class=" relative size-px items-end  whitespace-nowrap">
-                                            <div class="px-6 py-1.5">
-                                                <div class="hs-dropdown relative inline-flex">
-                                                    <button id="dropdown-custom-trigger" type="button"
-                                                        class="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-800">
-                                                        <svg class="flex-none size-4 text-gray-600 dark:text-neutral-500"
-                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <circle cx="12" cy="12" r="1" />
-                                                            <circle cx="12" cy="5" r="1" />
-                                                            <circle cx="12" cy="19" r="1" />
-                                                        </svg>
-                                                    </button>
+                                <tbody class="divide-y divide-gray-200 whitespace-nowrap dark:divide-white/5">
+                                @foreach($requests as $request)
+                                    <tr
+                                        class="[@media(hover:hover)]:transition [@media(hover:hover)]:duration-75 hover:bg-gray-50 dark:hover:bg-white/5"
+                                        wire:key="">
 
-                                                    <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700"
-                                                        aria-labelledby="dropdown-custom-trigger">
-                                                        <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                                            href="view-request.html">
-                                                            View
-                                                        </a>
-                                                        <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                                            href="#">
-                                                            Assign to
-                                                        </a>
+
+                                        <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
+                                            wire:key="{!! $request->id !!}.column.title">
+                                            <div class="">
+                                                <a
+                                                    href="http://mtkits.evenafro.ca/admin/clients/2"
+                                                    class="flex w-full disabled:pointer-events-none justify-start text-start">
+                                                    <div class="grid w-full gap-y-1 px-3 py-4">
+
+                                                        <div class="flex ">
+
+                                                            <div class="flex max-w-max">
+
+                                                                <div
+                                                                    class="inline-flex items-center gap-1.5 ">
+
+                                                                <span
+                                                                    class="text-sm leading-6 text-gray-950 dark:text-white  "
+                                                                    style="">{!! $request->title !!}</span>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
                                                     </div>
+
+                                                </a>
+
+                                            </div>
+                                        </td>
+
+                                        <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
+                                            wire:key="{!! $request->id !!}.column.status">
+                                            <a href="" class="flex w-full disabled:pointer-events-none justify-start text-start">
+                                                <div class="fi-ta-text grid w-full gap-y-1 px-3 py-4">
+
+                                                    <div class="flex gap-1.5 flex-wrap ">
+
+                                                        <div class="flex w-max">
+                                                            <div
+                                                                style="--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);"
+                                                                class="flex items-center justify-center gap-x-1 rounded-md text-xs font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 fi-color-custom bg-success-50 text-success-500 ring-success-600/10 dark:bg-success-400/10 dark:text-success-400 dark:ring-success-400/30">
+
+
+                                                                <span class="grid">
+                                                                    <span class="truncate">
+                                                                        Valide
+                                                                    </span>
+                                                                </span>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </a>
+                                        </td>
+
+                                        <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
+                                            wire:key="{!! $request->id !!}.column.created_at">
+                                            <div class="">
+                                                <a
+                                                    href="http://mtkits.evenafro.ca/admin/clients/2"
+                                                    class="flex w-full disabled:pointer-events-none justify-start text-start">
+                                                    <div class="grid w-full gap-y-1 px-3 py-4">
+
+                                                        <div class="flex ">
+
+                                                            <div class="flex max-w-max">
+
+                                                                <div
+                                                                    class="inline-flex items-center gap-1.5 ">
+
+                                                                    <span
+                                                                        class="text-sm leading-6 text-gray-950 dark:text-white  "
+                                                                        style="">
+                                  {!! $request->created_at !!}
+                                </span>
+
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </a>
+
+                                            </div>
+                                        </td>
+
+                                        <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3">
+                                            <div class="whitespace-nowrap px-3 py-4">
+                                                <div class="flex shrink-0 items-center gap-3 justify-end">
+
+                                                    <div x-data="{
+                                                            open:false
+                                                        }" class="relative">
+                                                        <div x-on:click="open =! open"
+                                                             class="flex cursor-pointer">
+
+                                                            <button
+                                                                class="relative flex items-center justify-center rounded-lg outline-none transition duration-75 focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-70 -m-2 h-9 w-9 text-primary/50 hover:text-primary/80 focus-visible:ring-primary/600 dark:text-primary-400 dark:hover:text-primary/30 dark:focus-visible:ring-primary/50 "
+                                                                type="button">
+
+                                                                <svg class="h-5 w-5"
+                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                     viewBox="0 0 20 20"
+                                                                     fill="currentColor" aria-hidden="true"
+                                                                     data-slot="icon">
+                                                                    <path
+                                                                        d="M10 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM10 8.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM11.5 15.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"></path>
+                                                                </svg>
+                                                            </button>
+
+                                                        </div>
+
+                                                        <div x-show="open" role="menu" aria-labelledby="menu-button"
+                                                             x-on:click.away="open = false"
+                                                             x-float.placement.bottom-end.flip.shift.teleport.offset="{ offset: 2 }"
+                                                             x-ref="panel"
+                                                             x-transition:enter="transition ease-out duration-200"
+                                                             x-transition:enter-start="opacity-0 scale-95"
+                                                             x-transition:enter-end="opacity-100 scale-100"
+                                                             x-transition:leave="transition ease-in duration-75"
+                                                             x-transition:leave-start="opacity-100 scale-100"
+                                                             x-transition:leave-end="opacity-0 scale-95"
+                                                             @keydown.escape.window="open = false"
+                                                             @keydown.tab.prevent="$focus.wrap()"
+                                                             class="absolute z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
+                                                             style="position: fixed; display: none;">
+
+                                                            <div class="p-1">
+                                                                <a
+                                                                    href="2"
+                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 fi-color-gray fi-dropdown-list-item-color-gray hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 fi-ac-grouped-action"
+                                                                    type="button">
+
+                                                                    <svg
+                                                                        class="h-5 w-5 text-primary"
+                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                        viewBox="0 0 24 24" stroke-width="1.5"
+                                                                        stroke="currentColor" aria-hidden="true"
+                                                                        data-slot="icon">
+                                                                        <path stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"></path>
+                                                                        <path stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                                                    </svg>
+                                                                    <span
+                                                                        class="flex-1 truncate text-start text-primary">
+                                                                            {!! __('See') !!}
+                                                                 </span>
+
+
+                                                                </a>
+                                                                <a
+                                                                    href="/edit"
+                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
+                                                                    >
+                                                                    <svg
+
+                                                                        class="h-5 w-5"
+                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                        viewBox="0 0 24 24" stroke-width="1.5"
+                                                                        stroke="currentColor" aria-hidden="true"
+                                                                        data-slot="icon">
+                                                                        <path stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"></path>
+                                                                    </svg>
+
+                                                                    <span
+                                                                        class="flex-1 truncate text-start"
+                                                                    >
+                                                                        {!! __('Delete') !!}
+                                                                    </span>
+                                                                </a>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </td>
+
                                     </tr>
-
-
+                                @endforeach
                                 </tbody>
+
                             </table>
                             <!-- End Table -->
 
                             <!-- Footer -->
                             <div
-                                class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
-                                <div>
-                                    <p class="text-sm text-gray-600 dark:text-neutral-400">
-                                        <span class="font-semibold text-gray-800 dark:text-neutral-200">12</span> total
-                                        requests
-                                    </p>
-                                </div>
+                                class="px-6 py-4 gap-3 flex justify-between items-center border-t border-gray-200 dark:border-neutral-700">
 
-                                <div>
-                                    <div class="inline-flex gap-x-2">
-                                        <button type="button"
-                                            class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
-                                            <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="m15 18-6-6 6-6" />
-                                            </svg>
-                                            Prev
-                                        </button>
-
-                                        <button type="button"
-                                            class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
-                                            Next
-                                            <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="m9 18 6-6-6-6" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
+                                {{$requests->links('vendor.livewire.tailwind')}}
                             </div>
                             <!-- End Footer -->
                         </div>
@@ -269,77 +430,5 @@
         </div>
     </section>
     <!--====End Body====-->
-    <!-- ========== FOOTER ========== -->
-    <footer
-        class="relative overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 dark:bg-gray-800 antialiased">
-        <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-            &copy; 2024-2025 <a href="#" class="hover:underline" target="_blank">IUT</a>. All rights reserved.
-        </p>
-        <div class="flex justify-center items-center space-x-1">
-            <div class="hs-tooltip">
-                <a href="#"
-                    class="hs-tooltip-toggle inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 8 19">
-                        <path fill-rule="evenodd"
-                            d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="sr-only">Facebook</span>
-                </a>
-                <span
-                    class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                    Like us on Facebook
-                </span>
-            </div>
-            <div class="hs-tooltip">
-                <a href="#"
-                    class="hs-tooltip-toggle inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path fill="currentColor"
-                            d="M12.186 8.672 18.743.947h-2.927l-5.005 5.9-4.44-5.9H0l7.434 9.876-6.986 8.23h2.927l5.434-6.4 4.82 6.4H20L12.186 8.672Zm-2.267 2.671L8.544 9.515 3.2 2.42h2.2l4.312 5.719 1.375 1.828 5.731 7.613h-2.2l-4.699-6.237Z" />
-                    </svg>
-                    <span class="sr-only">X</span>
-                </a>
-                <span
-                    class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                    Like us on X
-                </span>
-            </div>
-            <div class="hs-tooltip">
-                <a href="#"
-                    class="hs-tooltip-toggle inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="sr-only">GitHub</span>
-                </a>
-                <span
-                    class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                    Like us on Facebook
-                </span>
-            </div>
-            <div class="hs-tooltip">
-                <a href="#"
-                    class="hs-tooltip-toggle inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M10 0a10 10 0 1 0 10 10A10.009 10.009 0 0 0 10 0Zm6.613 4.614a8.523 8.523 0 0 1 1.93 5.32 20.094 20.094 0 0 0-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 0 0-.566-1.239 11.41 11.41 0 0 0 4.769-3.366ZM8 1.707a8.821 8.821 0 0 1 2-.238 8.5 8.5 0 0 1 5.664 2.152 9.608 9.608 0 0 1-4.476 3.087A45.758 45.758 0 0 0 8 1.707ZM1.642 8.262a8.57 8.57 0 0 1 4.73-5.981A53.998 53.998 0 0 1 9.54 7.222a32.078 32.078 0 0 1-7.9 1.04h.002Zm2.01 7.46a8.51 8.51 0 0 1-2.2-5.707v-.262a31.64 31.64 0 0 0 8.777-1.219c.243.477.477.964.692 1.449-.114.032-.227.067-.336.1a13.569 13.569 0 0 0-6.942 5.636l.009.003ZM10 18.556a8.508 8.508 0 0 1-5.243-1.8 11.717 11.717 0 0 1 6.7-5.332.509.509 0 0 1 .055-.02 35.65 35.65 0 0 1 1.819 6.476 8.476 8.476 0 0 1-3.331.676Zm4.772-1.462A37.232 37.232 0 0 0 13.113 11a12.513 12.513 0 0 1 5.321.364 8.56 8.56 0 0 1-3.66 5.73h-.002Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="sr-only">Dribble</span>
-                </a>
-                <span
-                    class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                    Like us on Dribble
-                </span>
-            </div>
-        </div>
-    </footer>
-    <!-- ========== END FOOTER ========== -->
+
 </div>
