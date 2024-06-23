@@ -66,7 +66,7 @@
     "Payment Required": "Paiement requis",
     "Please click the button below to verify your email address.": "Veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse e-mail :",
     "Processing times depend on the type and complexity of the request. However, we strive to process all requests as quickly as possible.": "Le temps de traitement dépend du type de requête et de sa complexité. Cependant, nous nous efforçons de traiter toutes les requêtes dans les meilleurs délais.",
-    "Profile": "Profil",
+    "Profile": "Mon profil",
     "Profile Information": "Informations du profil",
     "Regards": "Cordialement",
     "Register": "Inscription",
@@ -118,5 +118,6 @@
     "to": "à",
     "Home": "Accueil",
     "About": "À propos",
-    "My requests": "Mes requêtes"
+    "My requests": "Mes requêtes",
+    "Signed in as:": "Connecté en tant que:"
 }

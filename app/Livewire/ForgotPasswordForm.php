@@ -25,7 +25,6 @@ class ForgotPasswordForm extends Component
         $this->reset('email');
 
         session()->flash('status', __($status));
-        redirect()->route('student.login');
 
     }
     public function render()
