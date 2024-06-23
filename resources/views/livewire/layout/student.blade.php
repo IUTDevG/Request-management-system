@@ -14,7 +14,7 @@
     <script src="{!! asset('js/darkMode.js') !!}"></script>
     <title>{{$title.'- IUT'??'Dashboard'}}</title>
 </head>
-<body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased">
+<body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative min-h-screen">
 <!-- ========== HEADER ========== -->
 <x-preloader/>
 <header
@@ -296,7 +296,7 @@
 {{$slot}}
 <!-- ========== FOOTER ========== -->
 <footer
-    class="relative overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-90 antialiased">
+    class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
     <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
         &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500" target="_blank">IUT</a>. {{__('All rights reserved.')}}
     </p>

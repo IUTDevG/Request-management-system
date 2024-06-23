@@ -133,5 +133,18 @@
     "Attached files": "Pièces jointes",
     "Department": "Département",
     "Branche": "Filière",
-    "New request": "Nouvelle requête"
+    "New request": "Nouvelle requête",
+    "Manage my requests": "Gérer mes requêtes",
+    "Add Request, View and more.": "Ajouter une requête, voir et plus encore.",
+    "Lists of requests": "Listes des requêtes",
+    "Search": "Taper pour rechercher",
+    "View all": "Voir tout",
+    "Draft": "Brouillon",
+    "Submitted": "Soumis",
+    "Cancelled": "Annulé",
+    "In Review": "En révision",
+    "Escalated": "Escaladé",
+    "Rejected": "Rejeté",
+    "Completed": "Terminé",
+    "Filter": "Filtrer"
 }

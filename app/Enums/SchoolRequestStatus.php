@@ -13,6 +13,18 @@ enum SchoolRequestStatus: string
     case Rejected = 'rejected';
     case Completed = 'completed';
 
+    public function label(): string
+    {
+        return match($this) {
+            self::Draft => __('Draft'),
+            self::Submitted => __('Submitted'),
+            self::Cancelled => __('Cancelled'),
+            self::InReview => __('In Review'),
+            self::Escalated => __('Escalated'),
+            self::Rejected => __('Rejected'),
+            self::Completed => __('Completed'),
+        };
+    }
     //method to get a description of each status
     public function description(): string
     {
