@@ -24,7 +24,7 @@ class StudentDashboard extends Component
     #[Url(as: 'direction', history: true)]
     public $sortDirection = 'desc';
 
-    #[Url(as: 'filter', history: true,keep: false)]
+    #[Url(as: 'filter', history: true)]
     public $selectedFilter = '';
 
     public function updatingSearchTerm($value): void
@@ -49,18 +49,8 @@ class StudentDashboard extends Component
 
     public function setFilter($filter)
     {
-        if ($filter === '') {
-            $this->selectedFilter = null; // Utilisez null au lieu d'une chaîne vide
-        } else {
-            $this->selectedFilter = $filter;
-        }
+        $this->selectedFilter = $filter;
         $this->resetPage();
-    }
-    public function updatedSelectedFilter($value)
-    {
-        if ($value === '') {
-            $this->selectedFilter = null;
-        }
     }
 
     public function getFilterOptions()
@@ -77,6 +67,14 @@ class StudentDashboard extends Component
         }
 
         return $options;
+    }
+
+    public function cancelRequest($id)
+    {
+     $request = SchoolRequest::query()->findOrFail($id);
+     $request->status= SchoolRequestStatus::Cancelled;
+     $request->update();
+     return back()->with('status',__('Status successfully changed.'));
     }
 
     public function render()

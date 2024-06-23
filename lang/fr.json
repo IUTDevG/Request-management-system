@@ -146,5 +146,6 @@
     "Escalated": "Escaladé",
     "Rejected": "Rejeté",
     "Completed": "Terminé",
-    "Filter": "Filtrer"
+    "Filter": "Filtrer",
+    "Status successfully changed.": "Statut changé avec succès."
 }

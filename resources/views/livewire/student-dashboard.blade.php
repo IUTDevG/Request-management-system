@@ -1,57 +1,56 @@
 @use('App\Enums\SchoolRequestStatus')
 <div>
     @if (session('status'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const notification = document.getElementById('dismiss-toast');
-                if (notification) {
+        <style>
+            .toast-enter-active, .toast-leave-active {
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
 
-
-                    setTimeout(function () {
-                        // notification.classList.remove('opacity-100');
-                        notification.classList.add('opacity-0');
-                        setTimeout(function () {
-                            notification.style.display = 'none';
-                        }, 1000);
-                    }, 3000);
-                }
-            });
-        </script>
+            .toast-enter, .toast-leave-to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        </style>
     @endif
-    <!-- Toast -->
-    @if(session('status'))
-        <div id="dismiss-toast"
-             class="hs-removing:translate-x-5 absolute top-20 end-2 z-[100] hs-removing:opacity-0 transition duration-300 max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700"
-             role="alert">
-            <div class="flex p-4">
-                <div class="flex-shrink-0">
-                    <svg class="flex-shrink-0 size-4 text-teal-500 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="16"
-                         height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path
-                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
-                    </svg>
-                </div>
-                <div class="ms-3">
-                    <p class="text-sm text-gray-700 dark:text-neutral-400">
-                        {{session('status')}}
-                    </p>
-                </div>
 
-                <div class="ms-auto">
-                    <button type="button"
-                            class="inline-flex flex-shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-none focus:opacity-100 dark:text-white"
-                            data-hs-remove-element="#dismiss-toast">
-                        <span class="sr-only">Close</span>
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6 6 18"></path>
-                            <path d="m6 6 12 12"></path>
-                        </svg>
-                    </button>
-                </div>
+    <!-- Toast -->
+    @session('status')
+    <div x-data="{ show: false, timeout: null }" x-init="
+
+            show = true;
+            timeout = setTimeout(() => show = false, 3000);
+
+    " class="relative">
+        <!-- Toast Notification -->
+        <div x-show="show"
+             x-transition:enter="toast-enter"
+             x-transition:enter-start="toast-enter"
+             x-transition:leave="toast-leave"
+             x-transition:leave-end="toast-leave-to"
+             class="fixed z-[100] top-5 right-5 bg-success-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-4"
+             style="display: none;">
+            <div>
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                     color="#ffffff" fill="none">
+                    <path
+                        d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
+                        stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
             </div>
+            <div>
+                {!! session('status') !!} .
+            </div>
+            <button @click="show = false; clearTimeout(timeout)" class="text-white">
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                     fill="none">
+                    <path d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999" stroke="currentColor"
+                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </div>
+    </div>
     @endif
     <!-- End Toast -->
     <!--====Start Body====-->
@@ -80,7 +79,8 @@
                             href="{{ route('student.new-request') }}">
                             <svg
                                 class="transition duration-75 h-5 w-5 text-white"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true" data-slot="icon">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                             </svg>
@@ -138,10 +138,15 @@
                                          x-bind:class="{ 'bg-white dark:bg-neutral-900': !isOpen }"
                                          class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                                         <span class="inline-flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="mr-2">
-                                                <path d="M8.85746 12.5061C6.36901 10.6456 4.59564 8.59915 3.62734 7.44867C3.3276 7.09253 3.22938 6.8319 3.17033 6.3728C2.96811 4.8008 2.86701 4.0148 3.32795 3.5074C3.7889 3 4.60404 3 6.23433 3H17.7657C19.396 3 20.2111 3 20.672 3.5074C21.133 4.0148 21.0319 4.8008 20.8297 6.37281C20.7706 6.83191 20.6724 7.09254 20.3726 7.44867C19.403 8.60062 17.6261 10.6507 15.1326 12.5135C14.907 12.6821 14.7583 12.9567 14.7307 13.2614C14.4837 15.992 14.2559 17.4876 14.1141 18.2442C13.8853 19.4657 12.1532 20.2006 11.226 20.8563C10.6741 21.2466 10.0043 20.782 9.93278 20.1778C9.79643 19.0261 9.53961 16.6864 9.25927 13.2614C9.23409 12.9539 9.08486 12.6761 8.85746 12.5061Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                                 height="24" class="mr-2">
+                                                <path
+                                                    d="M8.85746 12.5061C6.36901 10.6456 4.59564 8.59915 3.62734 7.44867C3.3276 7.09253 3.22938 6.8319 3.17033 6.3728C2.96811 4.8008 2.86701 4.0148 3.32795 3.5074C3.7889 3 4.60404 3 6.23433 3H17.7657C19.396 3 20.2111 3 20.672 3.5074C21.133 4.0148 21.0319 4.8008 20.8297 6.37281C20.7706 6.83191 20.6724 7.09254 20.3726 7.44867C19.403 8.60062 17.6261 10.6507 15.1326 12.5135C14.907 12.6821 14.7583 12.9567 14.7307 13.2614C14.4837 15.992 14.2559 17.4876 14.1141 18.2442C13.8853 19.4657 12.1532 20.2006 11.226 20.8563C10.6741 21.2466 10.0043 20.782 9.93278 20.1778C9.79643 19.0261 9.53961 16.6864 9.25927 13.2614C9.23409 12.9539 9.08486 12.6761 8.85746 12.5061Z"
+                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round"/>
                                             </svg>
-                                            <span x-text="selectedOption ? options.find(o => o.value === selectedOption).label : '{{ __('Filter') }}'"></span>
+                                            <span
+                                                x-text="selectedOption ? options.find(o => o.value === selectedOption).label : '{{ __('Filter') }}'"></span>
                                         </span>
                                         <button type="button"></button>
                                     </div>
@@ -155,10 +160,13 @@
                                                     <span x-text="option.label"></span>
                                                     <span x-show="selectedOption === option.value"
                                                           class="hidden hs-selected:block">
-                                                        <svg class="flex-shrink-0 size-3.5 text-green-600 dark:text-green-500"
-                                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                             stroke-linejoin="round">
+                                                        <svg
+                                                            class="flex-shrink-0 size-3.5 text-green-600 dark:text-green-500"
+                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none" stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"/>
                                                         </svg>
                                                     </span>
@@ -231,7 +239,8 @@
                             @if(!$searchTerm || !$requests->isEmpty())
                                 @if($requests->isEmpty())
                                     <div class="p-6">
-                                        <p class="text-gray-700 text-center dark:text-gray-300">Aucun message disponible
+                                        <p class="text-gray-700 text-center dark:text-gray-300">Aucune requête
+                                            disponible
                                             pour le
                                             moment.</p>
                                     </div>
@@ -322,29 +331,30 @@
                                                                 <div class="flex w-max">
                                                                     <div
                                                                         @php
+                                                                            $status = SchoolRequestStatus::from($request->status);
                                                                             $styleVariables = match($request->status) {
-                                                                                SchoolRequestStatus::Submitted->value => [
-                                                                                    '--c-400' => 'var(--info-400)',
-                                                                                    '--c-500' => 'var(--info-500)',
-                                                                                    '--c-600' => 'var(--info-600)',
-                                                                                    '--c-50'  => 'var(--info-50)',
-                                                                                ],
-                                                                                SchoolRequestStatus::Completed->value => [
-                                                                                    '--c-400' => 'var(--success-400)',
-                                                                                    '--c-500' => 'var(--success-500)',
-                                                                                    '--c-600' => 'var(--success-600)',
-                                                                                    '--c-50'  => 'var(--success-50)',
-                                                                                ],
-                                                                                 SchoolRequestStatus::Draft->value => [
-                                                                                    '--c-400' => 'var(--warning-400)',
-                                                                                    '--c-500' => 'var(--warning-500)',
-                                                                                    '--c-600' => 'var(--warning-600)',
-                                                                                    '--c-50'  => 'var(--warning-50)',
-                                                                                ],
-                                                                                default => [],
-                                                                            };
+                                                                        SchoolRequestStatus::Submitted->value => [
+                                                                            '--c-400' => 'var(--info-400)',
+                                                                            '--c-500' => 'var(--info-500)',
+                                                                            '--c-600' => 'var(--info-600)',
+                                                                            '--c-50'  => 'var(--info-50)',
+                                                                        ],
+                                                                        SchoolRequestStatus::Completed->value => [
+                                                                            '--c-400' => 'var(--success-400)',
+                                                                            '--c-500' => 'var(--success-500)',
+                                                                            '--c-600' => 'var(--success-600)',
+                                                                            '--c-50'  => 'var(--success-50)',
+                                                                        ],
+                                                                         SchoolRequestStatus::Draft->value => [
+                                                                            '--c-400' => 'var(--warning-400)',
+                                                                            '--c-500' => 'var(--warning-500)',
+                                                                            '--c-600' => 'var(--warning-600)',
+                                                                            '--c-50'  => 'var(--warning-50)',
+                                                                        ],
+                                                                        default => [],
+                                                                    };
 
-                                                                            $style = collect($styleVariables)->map(fn($value, $key) => "$key:$value")->implode(';');
+                                                                    $style = collect($styleVariables)->map(fn($value, $key) => "$key:$value")->implode(';');
                                                                         @endphp
 
                                                                         style="{{ $style }}"
@@ -353,7 +363,7 @@
 
                                                                 <span class="grid">
                                                                     <span class="truncate capitalize">
-                                                                        {!! $request->status !!}
+                                                                        {!! $status->label() !!}
                                                                     </span>
                                                                 </span>
 
@@ -438,40 +448,46 @@
                                                                             href="{{ route('student.request.details',$request->id) }}"
                                                                             class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 text-info-500"
                                                                             type="button">
-                                                                            <svg class="h-5 w-5"
+                                                                            <svg class="size-5"
                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                 fill="none" viewBox="0 0 24 24"
-                                                                                 stroke-width="1.5"
-                                                                                 stroke="currentColor"
-                                                                                 aria-hidden="true">
-                                                                                <path stroke-linecap="round"
-                                                                                      stroke-linejoin="round"
-                                                                                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"></path>
-                                                                                <path stroke-linecap="round"
-                                                                                      stroke-linejoin="round"
-                                                                                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                                                                 viewBox="0 0 24 24" width="24"
+                                                                                 height="24" fill="none">
+                                                                                <path
+                                                                                    d="M21.544 11.045C21.848 11.4713 22 11.6845 22 12C22 12.3155 21.848 12.5287 21.544 12.955C20.1779 14.8706 16.6892 19 12 19C7.31078 19 3.8221 14.8706 2.45604 12.955C2.15201 12.5287 2 12.3155 2 12C2 11.6845 2.15201 11.4713 2.45604 11.045C3.8221 9.12944 7.31078 5 12 5C16.6892 5 20.1779 9.12944 21.544 11.045Z"
+                                                                                    stroke="currentColor"
+                                                                                    stroke-width="1.5"/>
+                                                                                <path
+                                                                                    d="M15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12Z"
+                                                                                    stroke="currentColor"
+                                                                                    stroke-width="1.5"/>
                                                                             </svg>
                                                                             <span class="flex-1 truncate text-start">
                         {!! __('See') !!}
                     </span>
                                                                         </a>
-                                                                        <a
-                                                                            href="/edit"
-                                                                            class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
-                                                                            <svg class="h-5 w-5"
-                                                                                 xmlns="http://www.w3.org/2000/svg"
-                                                                                 fill="none" viewBox="0 0 24 24"
-                                                                                 stroke-width="1.5"
-                                                                                 stroke="currentColor"
-                                                                                 aria-hidden="true">
-                                                                                <path stroke-linecap="round"
-                                                                                      stroke-linejoin="round"
-                                                                                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"></path>
-                                                                            </svg>
-                                                                            <span class="flex-1 truncate text-start">
-                        {!! __('Delete') !!}
-                    </span>
-                                                                        </a>
+                                                                        @if($request->status !== SchoolRequestStatus::Cancelled->value)
+
+                                                                            <button type="button"
+                                                                                    wire:click="cancelRequest({!! $request->id !!})"
+                                                                                    wire:key="{!! $request->id !!}"
+                                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
+                                                                                <svg class="size-5"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     viewBox="0 0 24 24" width="24"
+                                                                                     height="24" fill="none">
+                                                                                    <path
+                                                                                        d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999"
+                                                                                        stroke="currentColor"
+                                                                                        stroke-width="1.5"
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"/>
+                                                                                </svg>
+                                                                                <span
+                                                                                    class="flex-1 truncate text-start">
+                                                                                {!! __('Cancel') !!}
+                                                                            </span>
+                                                                            </button>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
