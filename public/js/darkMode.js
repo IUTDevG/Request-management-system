@@ -1,8 +1,36 @@
-const html = document.querySelector('html');
-const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
-const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
-else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
-else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
-else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
+function themeSwitcher() {
+    return {
+        theme: localStorage.getItem('theme') || 'system',
+        systemPrefersDark: window.matchMedia('(prefers-color-scheme: dark)').matches,
+        init() {
+            this.applyTheme();
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                this.systemPrefersDark = e.matches;
+                if (this.theme === 'system') {
+                    this.applyTheme();
+                }
+            });
+        },
+        setTheme(theme) {
+            this.theme = theme;
+            localStorage.setItem('theme', theme);
+            this.applyTheme();
+        },
+        applyTheme() {
+            if (this.theme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else if (this.theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                if (this.systemPrefersDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        },
+        get themeClass() {
+            return this.theme === 'dark' || (this.theme === 'system' && this.systemPrefersDark) ? 'dark' : '';
+        }
+    }
+}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{str_replace('_','-',app()->getLocale())}}">
+<html lang="{{str_replace('_','-',app()->getLocale())}}" x-data="themeSwitcher()">
 <head>
     <meta charset="UTF-8">
     <meta name="application-name" content="{{ config('app.name') }}">
@@ -8,16 +8,19 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css','resources/js/app.js'/*,'resources/js/alpine.js'*/])
+    @stack('styles')
+    @livewireStyles
+    <script src="{!! asset('js/darkMode.js') !!}"></script>
     <title>{{$title.'- IUT'??'Dashboard'}}</title>
 </head>
-<body class="bg-background overflow-x-hidden antialiased">
+<body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative min-h-screen">
 <!-- ========== HEADER ========== -->
 <x-preloader/>
 <header
-    class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-800 antialiased shadow-lg z-50 w-full text-sm py-2 sm:py-0">
+    class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg z-50 w-full text-sm py-2 sm:py-0">
     <!--===Navbar section===-->
-    <nav class="relative max-w-[85rem] w-full mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8"
+    <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
         <div class="flex items-center justify-between w-full">
             <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('student.home') }}"
@@ -27,8 +30,35 @@
                 <livewire:settings.language-switcher class="inline-flex m-1 relative"/>
 
                 <!--===Global dropdown menu for notification===-->
-                <div class="m-1 hs-dropdown relative inline-flex">
-                    <button id="hs-dropdown-hover-event" type="button"
+                <div
+                    x-data="{
+            open: false,
+            toggle() {
+                if (this.open) {
+                    return this.close()
+                }
+
+                this.$refs.button.focus()
+
+                this.open = true
+            },
+            close(focusAfter) {
+                if (! this.open) return
+
+                this.open = false
+
+                focusAfter && focusAfter.focus()
+            }
+        }"
+                    x-on:keydown.escape.prevent.stop="close($refs.button)"
+                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                    x-id="['dropdown-button']"
+                    class="m-1 hs-dropdown relative inline-flex">
+                    <button x-ref="button"
+                            x-on:click="toggle()"
+                            :aria-expanded="open"
+                            :aria-controls="$id('dropdown-button')"
+                            id="hs-dropdown-hover-event" type="button"
                             class="m-1 ms-0 relative py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium shadow-sm disabled:opacity-50">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor" class="size-6 text-foreground hover:text-green-600">
@@ -45,31 +75,32 @@
                             </span>
                     </button>
                     <div
-                        class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
-                        aria-labelledby="hs-dropdown-hover-event">
+                        x-ref="panel"
+                        x-show="open"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-90"
+                        x-on:click.outside="close($refs.button)"
+                        :id="$id('dropdown-button')"
+                        style="/*display: none;*/    position: fixed;
+                            inset: 0px 0px auto auto;
+                            margin: 0px;
+                            transform: translate3d(-68px, 70.4px, 0px); "
+                        class="right-0 z-[1] divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
+                    >
                         <div
-                            class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white">
+                            class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
                             Notifications
                         </div>
-                        <div class="divide-y divide-gray-100 dark:divide-gray-700">
-                            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <div class="flex-shrink-0">
-                                    <img class="rounded-full w-11 h-11"
-                                         src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-                                         alt="Jese image">
-                                    <div
-                                        class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-blue-600 border border-white rounded-full dark:border-gray-800">
-                                        <svg class="w-2 h-2 text-white" aria-hidden="true"
-                                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                                            <path
-                                                d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z"/>
-                                            <path
-                                                d="M4.439 9a2.99 2.99 0 0 1 2.742 1.8 1.977 1.977 0 0 0 3.638 0A2.99 2.99 0 0 1 13.561 9H17.8L15.977.783A1 1 0 0 0 15 0H3a1 1 0 0 0-.977.783L.2 9h4.239Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
+                        <div
+                            class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
+                            <a href="#"
+                               class="flex px-4 py-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
                                 <div class="w-full ps-3">
-                                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">New message from <span
+                                    <div class="text-foreground text-sm mb-1.5">New message from <span
                                             class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>: "Your
                                         request is here"
                                     </div>
@@ -91,46 +122,108 @@
                     </div>
                 </div>
                 <!--===Global dropdown menu for profile===-->
-                <div class="hs-dropdown relative inline-flex">
-                    <button id="hs-dropdown-with-header" type="button"
-                            class="hs-dropdown-toggle inline-flex items-center gap-x-2 text-sm font-medium shadow-sm disabled:opacity-50 disabled:pointer-events-none ">
-                            <span class="hs-tooltip-toggle relative inline-block">
+                <div
+                    x-data="{
+            open: false,
+            toggle() {
+                if (this.open) {
+                    return this.close()
+                }
+
+                this.$refs.button.focus()
+
+                this.open = true
+            },
+            close(focusAfter) {
+                if (! this.open) return
+
+                this.open = false
+
+                focusAfter && focusAfter.focus()
+            }
+        }"
+                    x-on:keydown.escape.prevent.stop="close($refs.button)"
+                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                    x-id="['dropdown-button']"
+                    class="relative inline-flex">
+                    <button x-ref="button"
+                            x-on:click="toggle()"
+                            :aria-expanded="open"
+                            :aria-controls="$id('dropdown-button')"
+                            type="button"
+                            class="inline-flex items-center gap-x-2 text-sm font-medium shadow-sm disabled:opacity-50 disabled:pointer-events-none ">
+                            <span class="relative inline-block">
                                 <img class="inline-block size-8 rounded-full"
                                      src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
                                      alt="Image Description">
-                                <div
-                                    class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-lg shadow-sm dark:bg-neutral-700"
-                                    role="tooltip">
-                                    dev@devjiordi.site
-                                </div>
                             </span>
                     </button>
 
-                    <div
-                        class="hs-dropdown-menu transition-[opacity,margin] z-[1] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700"
-                        aria-labelledby="hs-dropdown-with-header">
-                        <div class="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
+                    <div x-ref="panel"
+                         x-show="open"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 scale-90"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-300"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-90"
+                         x-on:click.outside="close($refs.button)"
+                         :id="$id('dropdown-button')"
+                         style="display: none;    position: fixed;
+                            inset: 0px 0px auto auto;
+                            margin: 0px;
+                            transform: translate3d(-68px, 70.4px, 0px); "
+                         class="right-0 z-[1] duration min-w-60 divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
+                    >
+                        <div class="py-3 px-5 rounded-t-lg">
                             <p class="text-sm text-gray-500 dark:text-neutral-400">{{__('Signed in as:')}}</p>
-                            <p class="text-sm font-medium text-gray-800 dark:text-neutral-300">
+                            <p class="text-sm font-medium text-gray-800 dark:text-neutral-300 capitalize">
                                 {{auth()->user()->username}}</p>
                         </div>
                         <div class="relative">
+                            <div
+                                x-data="{
+                                    open: false,
+                                    toggle() {
+                                        this.open = !this.open
+                                    },
+                                    close() {
+                                        this.open = false
+                                    }
+                                }"
+                                x-on:keydown.escape.prevent.stop="close()"
+                                x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                                x-id="['dropdown-button']"
+                                class="mt-2 relative"
+                                x-on:mouseenter="open = true"
+                                x-on:mouseleave="close()"
+                            >
+                                <button
+                                    x-ref="button"
+                                    x-on:click="toggle()"
+                                    :aria-expanded="open"
+                                    :aria-controls="$id('dropdown-button')"
+                                    type="button"
+                                    class="w-full flex justify-between items-center text-sm text-gray-800 rounded-lg py-2 px-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400"
+                                >
+                                    {!! __('Theme') !!}
+                                    <svg class="sm:-rotate-90 flex-shrink-0 ms-2 size-4"
+                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <path d="m6 9 6 6 6-6"/>
+                                    </svg>
+                                </button>
                                 <div
-                                    class="hs-dropdown mt-2 py-2 [--strategy:static] sm:[--strategy:absolute] [--adaptive:none] sm:[--trigger:hover] relative">
-                                    <button type="button"
-                                            class="w-full flex justify-between items-center text-sm text-gray-800 rounded-lg py-2 px-3 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300">
-                                        Theme
-                                        <svg class="sm:-rotate-90 flex-shrink-0 ms-2 size-4"
-                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round">
-                                            <path d="m6 9 6 6 6-6"/>
-                                        </svg>
-                                    </button>
-                                    <div
-                                        class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 hidden z-10 sm:mt-2 bg-white sm:shadow-md rounded-lg p-2 dark:bg-neutral-800 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute sm:border before:-end-5 before:top-0 before:h-full before:w-5 !mx-[10px] top-0 end-full">
-                                        <button data-hs-theme-click-value="default"
-                                                class="flex rounded-[10px] p-1 hover:bg-gray-100 dark:hover:bg-gray-700 w-full">
+                                    x-ref="panel"
+                                    x-show="open"
+                                    x-transition.origin.top.left
+                                    x-on:click.outside="close($refs.button)"
+                                    :id="$id('dropdown-button')"
+                                    class="text-gray-800 fixed dark:text-gray-400 transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] sm:w-48 z-10 sm:mt-2 bg-white sm:shadow-md rounded-lg p-2 dark:bg-gray-900 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute sm:border before:-end-5 before:top-0 before:h-full before:w-5 !mx-[10px] top-0 end-full"
+                                >
+                                    <button @click="setTheme('light')" data-value="default"
+                                            class="flex rounded-[10px] p-1 hover:bg-gray-100 dark:hover:bg-gray-700 w-full">
                                         <span
                                             class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
                                             <svg class="h-4 w-4 fill-slate-400">
@@ -139,35 +232,36 @@
                                                       fill="#38BDF8"></path>
                                             </svg>
                                         </span>
-                                            <span class="ml-3">Light</span>
-                                        </button>
-                                        <button data-hs-theme-click-value="dark"
-                                                class="flex rounded-[10px] p-1 hover:bg-gray-100 dark:hover:bg-gray-700 w-full">
-                                            <div
-                                                class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
-                                                <svg class="h-4 w-4 fill-slate-400">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                          d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path>
-                                                </svg>
-                                            </div>
-                                            <div class="ml-3">Dark</div>
-                                        </button>
-                                        <button data-hs-theme-click-value="system"
-                                                class="flex rounded-[10px] p-1 hover:bg-gray-100 dark:hover:bg-gray-700 w-full">
-                                            <div
-                                                class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
-                                                <svg class="h-4 w-4 fill-slate-400">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                          d="M1 4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1.5l.31 1.242c.084.333.36.573.63.808.091.08.182.158.264.24A1 1 0 0 1 11 15H5a1 1 0 0 1-.704-1.71c.082-.082.173-.16.264-.24.27-.235.546-.475.63-.808L5.5 11H4a3 3 0 0 1-3-3V4Zm3-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"></path>
-                                                </svg>
-                                            </div>
-                                            <div class="ml-3">System</div>
-                                        </button>
-                                    </div>
+                                        <span class="ml-3">{!! __('Light') !!}</span>
+                                    </button>
+                                    <button @click="setTheme('dark')" data-value="dark"
+                                            class="flex rounded-[10px] p-1 hover:bg-gray-100 dark:hover:bg-gray-700 w-full">
+                                        <div
+                                            class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
+                                            <svg class="h-4 w-4 fill-slate-400">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3">{!! __('Dark') !!}</div>
+                                    </button>
+                                    <button @click="setTheme('system')" data-value="system"
+                                            class="flex rounded-[10px] p-1 hover:bg-gray-100 dark:hover:bg-gray-700 w-full">
+                                        <div
+                                            class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
+                                            <svg class="h-4 w-4 fill-slate-400">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M1 4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1.5l.31 1.242c.084.333.36.573.63.808.091.08.182.158.264.24A1 1 0 0 1 11 15H5a1 1 0 0 1-.704-1.71c.082-.082.173-.16.264-.24.27-.235.546-.475.63-.808L5.5 11H4a3 3 0 0 1-3-3V4Zm3-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3">{!! __('System') !!}</div>
+                                    </button>
                                 </div>
+                            </div>
+
                         </div>
                         <div class="mt-2 py-2 first:pt-0 last:pb-0">
-                            <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                            <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400"
                                href="profile">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
@@ -180,7 +274,7 @@
                             </a>
 
                             <a href="{{ route('student.logout') }}" wire:navigate
-                               class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
+                               class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
                                      height="24">
@@ -200,103 +294,17 @@
 <!-- ========== END HEADER ========== -->
 
 {{$slot}}
+<!-- ========== FOOTER ========== -->
+<footer
+    class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
+    <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
+        &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500" target="_blank">IUT</a>. {{__('All rights reserved.')}}
+    </p>
+</footer>
+<!-- ========== END FOOTER ========== -->
 <!--====== END BODY =======-->
 @vite('resources/js/app.js')
-<script>
-    const html = document.querySelector('html');
-    const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
-    const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
-    else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
-    else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
-    else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('dark');
-</script>
-<script>
-    const fileInput = document.getElementById('file-upload');
-    const dropZone = document.getElementById('drop-zone');
-    const progressBar = document.getElementById('progress-bar');
-    const previewContainer = document.getElementById('preview-container');
-    const previewContent = document.getElementById('preview-content');
-    const statusMessage = document.getElementById('status-message');
-
-    // Gestionnaire d'événements pour la sélection de fichier
-    fileInput.addEventListener('change', handleFileSelect);
-
-    // Gestionnaires d'événements pour le glisser-déposer
-    dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('drop', handleDrop);
-
-    function handleFileSelect(event) {
-        const file = event.target.files[0];
-        uploadFile(file);
-    }
-
-    function handleDragOver(event) {
-        event.preventDefault();
-        dropZone.classList.add('bg-gray-200');
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        dropZone.classList.remove('bg-gray-200');
-        const file = event.dataTransfer.files[0];
-        uploadFile(file);
-    }
-
-    function uploadFile(file) {
-        if (file) {
-            statusMessage.textContent = 'Chargement en cours...';
-            const reader = new FileReader();
-
-            reader.onloadstart = () => {
-                progressBar.style.width = '0%';
-            };
-
-            reader.onprogress = (event) => {
-                if (event.lengthComputable) {
-                    const percentComplete = (event.loaded / event.total) * 100;
-                    progressBar.style.width = `${percentComplete}%`;
-                }
-            };
-
-            reader.onload = () => {
-                previewContainer.classList.remove('hidden');
-                previewContent.innerHTML = '';
-
-                if (file.type.includes('image')) {
-                    const img = document.createElement('img');
-                    img.src = reader.result;
-                    img.classList.add('object-cover', 'w-full', 'h-full');
-                    previewContent.appendChild(img);
-                } else if (file.type.includes('pdf')) {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = reader.result;
-                    iframe.classList.add('w-full', 'h-full');
-                    previewContent.appendChild(iframe);
-                } else {
-                    const link = document.createElement('a');
-                    link.href = reader.result;
-                    link.target = '_blank';
-                    link.textContent = 'Ouvrir le fichier';
-                    previewContent.appendChild(link);
-                }
-
-                statusMessage.textContent = 'Chargement réussi !';
-                setTimeout(() => {
-                    statusMessage.textContent = '';
-                }, 3000);
-            };
-
-            reader.onerror = () => {
-                statusMessage.textContent = 'Une erreur est survenue lors du chargement du fichier.';
-            };
-
-            reader.readAsDataURL(file);
-        } else {
-            statusMessage.textContent = 'Veuillez sélectionner un fichier.';
-        }
-    }
-</script>
+@stack('scripts')
+@livewireScripts
 </body>
 </html>

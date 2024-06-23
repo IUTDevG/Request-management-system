@@ -17,10 +17,14 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::prefix('student')->group(function () {
+        Route::get('/', \App\Livewire\StudentDashboard::class)
+            ->name('student.home');
+        Route::get('/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
+        Route::get('/new-request', \App\Livewire\Pages\NewRequest::class)->name('student.new-request');
+        Route::get('request/{id}',\App\Livewire\Pages\RequestDetails::class)->name('student.request.details');
+    });
 
-    Route::get('student', \App\Livewire\StudentDashboard::class)
-        ->name('student.home');
-    Route::get('student/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
     Route::get('/logout', function () {
         auth()->logout();
         return redirect(route('login'));

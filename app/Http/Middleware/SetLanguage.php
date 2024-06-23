@@ -19,8 +19,6 @@ class SetLanguage
     {
         $language = session('language', 'fr');
         App::setLocale($language);
-        Log::info('Middleware - Locale set to: ' . App::getLocale());
-        Log::info('Middleware - Session language: ' . session('language'));
         return $next($request);
     }
 }
