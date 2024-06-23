@@ -21,6 +21,16 @@ class SchoolRequest extends Model implements HasMedia
         'level_id', 'department_id', 'user_id'
     ];
 
+    public function levels()
+    {
+        return $this->belongsTo(Level::class, 'level_id');
+    }
+
+    public function departments()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -49,6 +59,6 @@ class SchoolRequest extends Model implements HasMedia
     {
         $this->addMediaCollection('school-request')
             ->useDisk('private')
-            ->acceptsMimeTypes(['application/pdf','image/jpeg','image/png','image/jpg','image/webp','image/heic','image/heic-sequence']);
+            ->acceptsMimeTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/heic', 'image/heic-sequence']);
     }
 }

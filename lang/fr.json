@@ -129,5 +129,9 @@
     "files": "fichiers",
     "department": "département",
     "status": "statut",
-    "created at": "crée le"
+    "created at": "crée le",
+    "Attached files": "Pièces jointes",
+    "Department": "Département",
+    "Branche": "Filière",
+    "New request": "Nouvelle requête"
 }

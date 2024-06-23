@@ -13,7 +13,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/utils/filepond.css',
-                'resources/js/utils/filepond.js'
+                'resources/js/utils/filepond.js',
+                'resources/js/alpine.js'
             ],
             refresh: true,
         }),

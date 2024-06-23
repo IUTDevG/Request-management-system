@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
             ->name('student.home');
         Route::get('/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
         Route::get('/new-request', \App\Livewire\Pages\NewRequest::class)->name('student.new-request');
+        Route::get('request/{id}',\App\Livewire\Pages\RequestDetails::class)->name('student.request.details');
     });
 
     Route::get('/logout', function () {

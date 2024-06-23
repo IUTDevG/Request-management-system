@@ -15,6 +15,15 @@ export default {
     theme: {
         extend: {
             colors: {
+                custom: {
+                    50: 'rgba(var(--c-50), var(--tw-text-opacity))',
+                    100: 'rgba(var(--c-100), var(--tw-text-opacity))',
+                    200: 'rgba(var(--c-200), var(--tw-text-opacity))',
+                    300: 'rgba(var(--c-300), var(--tw-text-opacity))',
+                    400: 'rgba(var(--c-400), var(--tw-text-opacity))',
+                    500: 'rgba(var(--c-500), var(--tw-text-opacity))',
+                    600: 'rgba(var(--c-600), var(--tw-text-opacity))',
+                },
                 danger: {
                     50: "rgba(var(--danger-50), var(--tw-text-opacity))",
                     100: "rgba(var(--danger-100), var(--tw-text-opacity))",

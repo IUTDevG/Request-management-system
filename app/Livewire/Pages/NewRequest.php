@@ -40,21 +40,55 @@ class NewRequest extends Component
     {
         return [
             'title' => __('title'),
-            'level_id'=>__('level'),
-            'files'=>__('files'),
-            'department_id'=>__('department'),
+            'level_id' => __('level'),
+            'files' => __('files'),
+            'department_id' => __('department'),
         ];
+    }
+
+    public function DraftRequest()
+    {
+        $this->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'string|required',
+            'level_id' => 'exists:levels,id|required',
+            'department_id' => 'exists:departments,id|required',
+            'files' => 'array|required',
+            'files.*' => 'file|mimes:png,jpg,jpeg,pdf|max:1024|nullable',
+        ]);
+        try {
+            DB::beginTransaction();
+//            Log::info('Transaction commencée');
+            $request = SchoolRequest::create([
+                'title' => $this->title,
+                'description' => $this->description,
+                'status' => SchoolRequestStatus::Draft,
+                'level_id' => $this->level_id,
+                'department_id' => $this->department_id,
+                'user_id' => auth()->user()->id,
+            ]);
+            foreach ($this->files as $file) {
+                $request->addMedia($file)
+                    ->preservingOriginal()
+                    ->toMediaCollection('school-request');
+            }
+            DB::commit();
+            return redirect()->route('student.home')->with('status', 'Demande mis en brouillon avec succès');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Une erreur est survenue lors de la soumission de la demande' . $e->getMessage());
+//            Log::error('Erreur lors de la soumission de la demande scolaire: ' . $e->getMessage());
+        }
     }
 
     public function submitRequest()
     {
 
         $this->validate();
-
-        Log::info('Validation passée avec succès');
+        /* Log::info('Validation passée avec succès');*/
         try {
             DB::beginTransaction();
-            Log::info('Transaction commencée');
+//            Log::info('Transaction commencée');
             $request = SchoolRequest::create([
                 'title' => $this->title,
                 'description' => $this->description,
@@ -63,34 +97,34 @@ class NewRequest extends Component
                 'department_id' => $this->department_id,
                 'user_id' => auth()->user()->id,
             ]);
-            Log::info('SchoolRequest créé', ['id' => $request->id]);
+//            Log::info('SchoolRequest créé', ['id' => $request->id]);
 
             foreach ($this->files as $file) {
                 $request->addMedia($file)
                     ->preservingOriginal()
                     ->toMediaCollection('school-request');
             }
-            Log::info('Tous les fichiers traités');
+//            Log::info('Tous les fichiers traités');
 
 
             DB::commit();
-            Log::info('Transaction validée');
-            $this->reset();
+//            Log::info('Transaction validée');
+//            $this->reset();
             return redirect()->route('student.home')->with('status', 'Demande soumise avec succès');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            if (method_exists($e, 'errors')) {
-                Log::error('Erreurs de validation:', $e->errors());
-            }
+            /* if (method_exists($e, 'errors')) {
+                 Log::error('Erreurs de validation:', $e->errors());
+             }
 
-            Log::error('Exception détaillée:', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
+             Log::error('Exception détaillée:', [
+                 'message' => $e->getMessage(),
+                 'trace' => $e->getTraceAsString()
+             ]);*/
 
             session()->flash('error', 'Une erreur est survenue lors de la soumission de la demande' . $e->getMessage());
-            Log::error('Erreur lors de la soumission de la demande scolaire: ' . $e->getMessage());
+//            Log::error('Erreur lors de la soumission de la demande scolaire: ' . $e->getMessage());
         }
     }
 

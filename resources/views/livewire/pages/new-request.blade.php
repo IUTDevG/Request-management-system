@@ -53,12 +53,12 @@
                         </x-slot:form>
 
                         <x-slot:actions>
-                            <div class="flex flex-col sm:flex-row items-center justify-between w-full">
-                                <x-flash-message class="mb-3 sm:mb-0 sm:mr-3" on="saved">
-                                    {{ __('Saved.') }}
-                                </x-flash-message>
+                            <div class="flex flex-col sm:flex-row items-center w-full">
                                 <x-button type="submit">
                                     {{ __('Submit') }}
+                                </x-button>
+                                <x-button type="button" wire:click="DraftRequest">
+                                    {!! __('Brouillon') !!}
                                 </x-button>
                             </div>
                             @if (session('status'))

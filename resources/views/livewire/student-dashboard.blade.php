@@ -1,3 +1,4 @@
+@use('App\Enums\SchoolRequestStatus')
 <div>
     @if (session('status'))
         <script>
@@ -73,16 +74,21 @@
                     <!-- End Col -->
 
                     <div class="text-center sm:text-start flex sm:justify-start sm:items-center gap-x-3 md:gap-x-4">
-
-
-                        <a href="{{ route('student.new-request') }}"
-                           class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300 hover:scale-100 transition duration-700 ease-in-out">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                        <a
+                            style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
+                            class="relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50"
+                            href="{{ route('student.new-request') }}">
+                            <svg
+                                class="transition duration-75 h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                             </svg>
 
-                            {{__('New request')}}
+                            <span class="text-nowrap">
+                               {!! __('New request') !!}
+                            </span>
+
                         </a>
 
                     </div>
@@ -219,7 +225,7 @@
                                             wire:key="{!! $request->id !!}.column.title">
                                             <div class="">
                                                 <a
-                                                    href="http://mtkits.evenafro.ca/admin/clients/2"
+                                                    href="{{ route('student.request.details',$request->id) }}"
                                                     class="flex w-full disabled:pointer-events-none justify-start text-start">
                                                     <div class="grid w-full gap-y-1 px-3 py-4">
 
@@ -249,20 +255,47 @@
 
                                         <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
                                             wire:key="{!! $request->id !!}.column.status">
-                                            <a href="" class="flex w-full disabled:pointer-events-none justify-start text-start">
+                                            <a href="{{ route('student.request.details',$request->id) }}"
+                                               class="flex w-full disabled:pointer-events-none justify-start text-start">
                                                 <div class="grid w-full gap-y-1 px-3 py-4">
 
                                                     <div class="flex gap-1.5 flex-wrap ">
-
+                                                        {{--@dd(SchoolRequestStatus::Submitted->value)--}}
                                                         <div class="flex w-max">
                                                             <div
-                                                                style="--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);"
-                                                                class="flex items-center justify-center gap-x-1 rounded-md text-xs font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-success-50 text-success-500 ring-success-600/10 dark:bg-success-400/10 dark:text-success-400 dark:ring-success-400/30">
+                                                                @php
+                                                                    $styleVariables = match($request->status) {
+                                                                        SchoolRequestStatus::Submitted->value => [
+                                                                            '--c-400' => 'var(--info-400)',
+                                                                            '--c-500' => 'var(--info-500)',
+                                                                            '--c-600' => 'var(--info-600)',
+                                                                            '--c-50'  => 'var(--info-50)',
+                                                                        ],
+                                                                        SchoolRequestStatus::Completed->value => [
+                                                                            '--c-400' => 'var(--success-400)',
+                                                                            '--c-500' => 'var(--success-500)',
+                                                                            '--c-600' => 'var(--success-600)',
+                                                                            '--c-50'  => 'var(--success-50)',
+                                                                        ],
+                                                                         SchoolRequestStatus::Draft->value => [
+                                                                            '--c-400' => 'var(--warning-400)',
+                                                                            '--c-500' => 'var(--warning-500)',
+                                                                            '--c-600' => 'var(--warning-600)',
+                                                                            '--c-50'  => 'var(--warning-50)',
+                                                                        ],
+                                                                        default => [],
+                                                                    };
+
+                                                                    $style = collect($styleVariables)->map(fn($value, $key) => "$key:$value")->implode(';');
+                                                                @endphp
+
+                                                                style="{{ $style }}"
+                                                                class="flex items-center justify-center gap-x-1 rounded-md text-xs font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-success-50 text-custom-500 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30">
 
 
                                                                 <span class="grid">
-                                                                    <span class="truncate">
-                                                                        Valide
+                                                                    <span class="truncate capitalize">
+                                                                        {!! $request->status !!}
                                                                     </span>
                                                                 </span>
 
@@ -278,7 +311,7 @@
                                             wire:key="{!! $request->id !!}.column.created_at">
                                             <div class="">
                                                 <a
-                                                    href="http://mtkits.evenafro.ca/admin/clients/2"
+                                                    href="{{ route('student.request.details',$request->id) }}"
                                                     class="flex w-full disabled:pointer-events-none justify-start text-start">
                                                     <div class="grid w-full gap-y-1 px-3 py-4">
 
@@ -292,8 +325,8 @@
                                                                     <span
                                                                         class="text-sm leading-6 text-gray-950 dark:text-white  "
                                                                         style="">
-                                  {!! $request->created_at !!}
-                                </span>
+                                                                    {!! $request->created_at !!}
+                                                                    </span>
 
 
                                                                 </div>
@@ -313,55 +346,45 @@
                                             <div class="whitespace-nowrap px-3 py-4">
                                                 <div class="flex shrink-0 items-center gap-3 justify-end">
 
-                                                    <div x-data="{
-                                                            open:false
-                                                        }" class="relative">
-                                                        <div x-on:click="open =! open"
-                                                             class="flex cursor-pointer">
-
+                                                    <div x-data="{ open: false }"
+                                                         class="relative inline-block text-left">
+                                                        <div @click="open = !open" class="flex cursor-pointer">
                                                             <button
-                                                                class="relative flex items-center justify-center rounded-lg outline-none transition duration-75 focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-70 -m-2 h-9 w-9 text-primary/50 hover:text-primary/80 focus-visible:ring-primary/600 dark:text-primary-400 dark:hover:text-primary/30 dark:focus-visible:ring-primary/50 "
+                                                                class="relative flex items-center justify-center rounded-lg outline-none transition duration-75 focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-70 -m-2 h-9 w-9 text-primary/50 hover:text-primary/80 focus-visible:ring-primary/600 dark:text-primary-400 dark:hover:text-primary/30 dark:focus-visible:ring-primary/50"
                                                                 type="button">
-
                                                                 <svg class="h-5 w-5"
                                                                      xmlns="http://www.w3.org/2000/svg"
-                                                                     viewBox="0 0 20 20"
-                                                                     fill="currentColor" aria-hidden="true"
-                                                                     data-slot="icon">
+                                                                     viewBox="0 0 20 20" fill="currentColor"
+                                                                     aria-hidden="true">
                                                                     <path
                                                                         d="M10 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM10 8.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM11.5 15.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"></path>
                                                                 </svg>
                                                             </button>
-
                                                         </div>
-
-                                                        <div x-show="open" role="menu" aria-labelledby="menu-button"
-                                                             x-on:click.away="open = false"
-                                                             x-float.placement.bottom-end.flip.shift.teleport.offset="{ offset: 2 }"
-                                                             x-ref="panel"
-                                                             x-transition:enter="transition ease-out duration-200"
-                                                             x-transition:enter-start="opacity-0 scale-95"
-                                                             x-transition:enter-end="opacity-100 scale-100"
-                                                             x-transition:leave="transition ease-in duration-75"
-                                                             x-transition:leave-start="opacity-100 scale-100"
-                                                             x-transition:leave-end="opacity-0 scale-95"
-                                                             @keydown.escape.window="open = false"
-                                                             @keydown.tab.prevent="$focus.wrap()"
-                                                             class="absolute z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
-                                                             style="position: fixed; display: none;">
+                                                        <div
+                                                            x-show="open"
+                                                            @click.away="open = false"
+                                                            x-transition:enter="transition ease-out duration-200"
+                                                            x-transition:enter-start="opacity-0 scale-95"
+                                                            x-transition:enter-end="opacity-100 scale-100"
+                                                            x-transition:leave="transition ease-in duration-75"
+                                                            x-transition:leave-start="opacity-100 scale-100"
+                                                            x-transition:leave-end="opacity-0 scale-95"
+                                                            @keydown.escape.window="open = false"
+                                                            @keydown.tab.prevent="$focus.wrap()"
+                                                            class="absolute right-[1rem] max-sm:translate-x-[1rem] z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
+                                                        >
 
                                                             <div class="p-1">
                                                                 <a
-                                                                    href="2"
+                                                                    href="{{ route('student.request.details',$request->id) }}"
                                                                     class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 text-info-500"
                                                                     type="button">
-
-                                                                    <svg
-                                                                        class="h-5 w-5"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor" aria-hidden="true"
-                                                                        data-slot="icon">
+                                                                    <svg class="h-5 w-5"
+                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                         fill="none" viewBox="0 0 24 24"
+                                                                         stroke-width="1.5" stroke="currentColor"
+                                                                         aria-hidden="true">
                                                                         <path stroke-linecap="round"
                                                                               stroke-linejoin="round"
                                                                               d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"></path>
@@ -369,38 +392,27 @@
                                                                               stroke-linejoin="round"
                                                                               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
                                                                     </svg>
-                                                                    <span
-                                                                        class="flex-1 truncate text-start">
-                                                                            {!! __('See') !!}
-                                                                 </span>
-
-
+                                                                    <span class="flex-1 truncate text-start">
+                        {!! __('See') !!}
+                    </span>
                                                                 </a>
                                                                 <a
                                                                     href="/edit"
-                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
-                                                                    >
-                                                                    <svg
-
-                                                                        class="h-5 w-5"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor" aria-hidden="true"
-                                                                        data-slot="icon">
+                                                                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
+                                                                    <svg class="h-5 w-5"
+                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                         fill="none" viewBox="0 0 24 24"
+                                                                         stroke-width="1.5" stroke="currentColor"
+                                                                         aria-hidden="true">
                                                                         <path stroke-linecap="round"
                                                                               stroke-linejoin="round"
                                                                               d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"></path>
                                                                     </svg>
-
-                                                                    <span
-                                                                        class="flex-1 truncate text-start"
-                                                                    >
-                                                                        {!! __('Delete') !!}
-                                                                    </span>
+                                                                    <span class="flex-1 truncate text-start">
+                        {!! __('Delete') !!}
+                    </span>
                                                                 </a>
-
                                                             </div>
-
                                                         </div>
                                                     </div>
 
