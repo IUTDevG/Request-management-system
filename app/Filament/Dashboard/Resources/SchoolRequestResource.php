@@ -43,7 +43,13 @@ class SchoolRequestResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->required()
                     ->relationship('user', 'name'),
-            ]);
+                Forms\Components\SpatieMediaLibraryFileUpload::make('files')
+                    ->collection('school-request')
+                    ->disk('private')
+                    ->multiple()
+                    ->previewable(true)
+                    ->openable(true)
+                ]);
     }
 
     public static function table(Table $table): Table
