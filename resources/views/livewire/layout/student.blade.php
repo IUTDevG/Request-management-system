@@ -18,7 +18,7 @@
 <!-- ========== HEADER ========== -->
 <x-preloader/>
 <header
-    class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg z-50 w-full text-sm py-2 sm:py-0">
+    class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
     <!--===Navbar section===-->
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
@@ -86,8 +86,8 @@
                         x-on:click.outside="close($refs.button)"
                         :id="$id('dropdown-button')"
                         style="/*display: none;*/    position: fixed;
-                            inset: 0px 0px auto auto;
-                            margin: 0px;
+                            inset: 0 0 auto auto;
+                            margin: 0;
                             transform: translate3d(-68px, 70.4px, 0px); "
                         class="right-0 z-[1] divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
                     >
@@ -170,8 +170,8 @@
                          x-on:click.outside="close($refs.button)"
                          :id="$id('dropdown-button')"
                          style="display: none;    position: fixed;
-                            inset: 0px 0px auto auto;
-                            margin: 0px;
+                            inset: 0 0 auto auto;
+                            margin: 0;
                             transform: translate3d(-68px, 70.4px, 0px); "
                          class="right-0 z-[1] duration min-w-60 divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
                     >
@@ -262,7 +262,7 @@
                         </div>
                         <div class="mt-2 py-2 first:pt-0 last:pb-0">
                             <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400"
-                               href="profile">
+                               href="{{ route('student.profile') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
                                      height="24">

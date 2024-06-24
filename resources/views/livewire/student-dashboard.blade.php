@@ -1,57 +1,13 @@
 @use('App\Enums\SchoolRequestStatus')
 <div>
-    @if (session('status'))
-        <style>
-            .toast-enter-active, .toast-leave-active {
-                transition: opacity 0.5s ease, transform 0.5s ease;
-            }
 
-            .toast-enter, .toast-leave-to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        </style>
-    @endif
 
     <!-- Toast -->
     @session('status')
-    <div x-data="{ show: false, timeout: null }" x-init="
 
-            show = true;
-            timeout = setTimeout(() => show = false, 3000);
+    <x-status> {!! session('status') !!} .</x-status>
 
-    " class="relative">
-        <!-- Toast Notification -->
-        <div x-show="show"
-             x-transition:enter="toast-enter"
-             x-transition:enter-start="toast-enter"
-             x-transition:leave="toast-leave"
-             x-transition:leave-end="toast-leave-to"
-             class="fixed z-[100] top-5 right-5 bg-success-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-4"
-             style="display: none;">
-            <div>
-                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                     color="#ffffff" fill="none">
-                    <path
-                        d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                        stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div>
-                {!! session('status') !!} .
-            </div>
-            <button @click="show = false; clearTimeout(timeout)" class="text-white">
-                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                     fill="none">
-                    <path d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999" stroke="currentColor"
-                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-    </div>
-    @endif
+    @endsession
     <!-- End Toast -->
     <!--====Start Body====-->
     <section>
@@ -120,7 +76,8 @@
                         <!-- Select -->
                         <div>
                             <!-- Dropdown de filtre -->
-                            <div x-data="{
+                            <div
+                                x-data="{
                                 isOpen: false,
                                 selectedOption: @entangle('selectedFilter'),
                                 options: {{ json_encode($filterOptions) }},
@@ -193,7 +150,7 @@
                                     <path d="m21 21-4.3-4.3"></path>
                                 </svg>
                                 <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                     class="w-5 h-5 text-gray-400 animate-spin fi-input-wrp-icon dark:text-gray-500"
+                                     class="w-5 h-5 text-gray-400 animate-spin dark:text-gray-500"
                                      wire:loading.delay.default="" wire:target="searchTerm">
                                     <path clip-rule="evenodd"
                                           d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
@@ -351,6 +308,12 @@
                                                                             '--c-600' => 'var(--warning-600)',
                                                                             '--c-50'  => 'var(--warning-50)',
                                                                         ],
+                                                                        SchoolRequestStatus::Cancelled->value => [
+                                                                             '--c-400' => 'var(--danger-400)',
+                                                                            '--c-500' => 'var(--danger-500)',
+                                                                            '--c-600' => 'var(--danger-600)',
+                                                                            '--c-50'  => 'var(--danger-50)',
+                                                                        ],
                                                                         default => [],
                                                                     };
 
@@ -435,7 +398,7 @@
                                                                     x-transition:enter="transition ease-out duration-200"
                                                                     x-transition:enter-start="opacity-0 scale-95"
                                                                     x-transition:enter-end="opacity-100 scale-100"
-                                                                    x-transition:leave="transition ease-in duration-75"
+                                                                    x-transition:leave="transition ease-in duration-150"
                                                                     x-transition:leave-start="opacity-100 scale-100"
                                                                     x-transition:leave-end="opacity-0 scale-95"
                                                                     @keydown.escape.window="open = false"
@@ -468,10 +431,10 @@
                                                                         @if($request->status !== SchoolRequestStatus::Cancelled->value)
 
                                                                             <button type="button"
-                                                                                    wire:click="cancelRequest({!! $request->id !!})"
+                                                                                    wire:click="openCancelModal({!! $request->id !!})"
                                                                                     wire:key="{!! $request->id !!}"
                                                                                     class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
-                                                                                <svg class="size-5"
+                                                                                <svg class="size-5" wire:loading.remove wire:target="openCancelModal"
                                                                                      xmlns="http://www.w3.org/2000/svg"
                                                                                      viewBox="0 0 24 24" width="24"
                                                                                      height="24" fill="none">
@@ -482,11 +445,124 @@
                                                                                         stroke-linecap="round"
                                                                                         stroke-linejoin="round"/>
                                                                                 </svg>
+                                                                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="w-5 h-5 text-primary-400 animate-spin dark:text-primary-500"
+                                                                                     wire:loading.delay.default="" wire:target="openCancelModal">
+                                                                                    <path clip-rule="evenodd"
+                                                                                          d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                                                                          fill-rule="evenodd" fill="currentColor" opacity="0.2"></path>
+                                                                                    <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+                                                                                          fill="currentColor">
+                                                                                    </path>
+                                                                                </svg>
                                                                                 <span
                                                                                     class="flex-1 truncate text-start">
                                                                                 {!! __('Cancel') !!}
                                                                             </span>
                                                                             </button>
+                                                                            @if($showCancelModal)
+                                                                                <div
+                                                                                    x-data="{ show: @entangle('showCancelModal'), loaded: false }"
+                                                                                    x-init="$watch('show', value => { if (value) loaded = true })"
+                                                                                    x-show="show"
+                                                                                    x-cloak
+                                                                                    :class="{ 'hidden': !show }"
+                                                                                    x-transition:enter="transition ease-out duration-300"
+                                                                                    x-transition:enter-start="opacity-0 scale-90"
+                                                                                    x-transition:enter-end="opacity-100 scale-100"
+                                                                                    x-transition:leave="transition ease-in duration-300"
+                                                                                    x-transition:leave-start="opacity-100 scale-100"
+                                                                                    x-transition:leave-end="opacity-0 scale-90"
+                                                                                    class="fixed z-50 inset-0 overflow-y-auto"
+                                                                                    aria-labelledby="modal-title"
+                                                                                    role="dialog"
+                                                                                    aria-modal="true">
+                                                                                    <div
+                                                                                        class="flex items-center justify-center overflow-hidden  h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                                                                        <div
+                                                                                            x-show="show"
+                                                                                            x-transition:enter="ease-out duration-300"
+                                                                                            x-transition:enter-start="opacity-0"
+                                                                                            x-transition:enter-end="opacity-100"
+                                                                                            x-transition:leave="ease-in duration-200"
+                                                                                            x-transition:leave-start="opacity-100"
+                                                                                            x-transition:leave-end="opacity-0"
+                                                                                            class="fixed h-screen inset-0 backdrop-blur-[2px] bg-white/10 bg-opacity-50 transition-opacity"
+                                                                                            aria-hidden="true">
+                                                                                        </div>
+
+                                                                                        <span
+                                                                                            class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                                                                            aria-hidden="true">&#8203;</span>
+
+                                                                                        <div
+                                                                                            x-show="show"
+                                                                                            x-transition:enter="ease-out duration-300"
+                                                                                            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                                                            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                                                                                            x-transition:leave="ease-in duration-200"
+                                                                                            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                                                                                            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                                                            @click.away="show = false"
+                                                                                            @click.stop
+                                                                                            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                                                                                        >
+                                                                                            <div
+                                                                                                class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                                                                <div
+                                                                                                    class="sm:flex sm:items-start">
+                                                                                                    <div
+                                                                                                        class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                                                                        <svg
+                                                                                                            class="h-6 w-6 text-red-600"
+                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                            fill="none"
+                                                                                                            viewBox="0 0 24 24"
+                                                                                                            stroke="currentColor"
+                                                                                                            aria-hidden="true">
+                                                                                                            <path
+                                                                                                                stroke-linecap="round"
+                                                                                                                stroke-linejoin="round"
+                                                                                                                stroke-width="2"
+                                                                                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                                                                                        </svg>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                                                                                        <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                                                                                            id="modal-title">
+                                                                                                            {!! __('Confirm Cancellation') !!}
+                                                                                                        </h3>
+                                                                                                        <div
+                                                                                                            class="mt-2">
+                                                                                                            <p class="text-sm text-gray-700">
+                                                                                                                {!! __('Are you sure you want to cancel the request:') !!}
+                                                                                                                <span
+                                                                                                                    class="font-semibold">{{ $request->titlex }}</span>?
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="bg-gray-50 bg-opacity-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                                                                                <button type="button"
+                                                                                                        wire:click="confirmCancelRequest"
+                                                                                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm
+                    transition ease-in-out duration-150 transform hover:scale-105">
+                                                                                                    {!! __('Confirm') !!}
+                                                                                                </button>
+                                                                                                <button type="button"
+                                                                                                        wire:click="$set('showCancelModal', false)"
+                                                                                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
+                    transition ease-in-out duration-150 transform hover:scale-105">
+                                                                                                    {!! __('Cancel') !!}
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endif
                                                                         @endif
                                                                     </div>
                                                                 </div>
@@ -516,7 +592,7 @@
                             <div
                                 class="px-6 py-4 gap-3 flex justify-between items-center border-t border-gray-200 dark:border-neutral-700">
 
-                                {{$requests->links('vendor.livewire.tailwind')}}
+                                {{$requests->links('livewire.settings.pagination')}}
                             </div>
                             <!-- End Footer -->
                         </div>

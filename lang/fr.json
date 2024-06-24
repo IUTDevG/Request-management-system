@@ -147,5 +147,12 @@
     "Rejected": "Rejeté",
     "Completed": "Terminé",
     "Filter": "Filtrer",
-    "Status successfully changed.": "Statut changé avec succès."
+    "Status successfully changed.": "Statut changé avec succès.",
+    "See": "Voir",
+    "Select your branch": "Sélectionnez votre filière",
+    "Select your department": "Sélectionnez votre département",
+    "Information about your request": "Informations sur votre requête",
+    "Describe your request": "Décrivez votre requête",
+    "Title your request": "Donnez un titre a votre requête",
+    "Confirm Cancellation": "Confirmer l'annulation"
 }

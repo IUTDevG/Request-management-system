@@ -26,6 +26,8 @@ class StudentDashboard extends Component
 
     #[Url(as: 'filter', history: true)]
     public $selectedFilter = '';
+    public $showCancelModal = false;
+    public $requestIdToCancel;
 
     public function updatingSearchTerm($value): void
     {
@@ -69,12 +71,20 @@ class StudentDashboard extends Component
         return $options;
     }
 
-    public function cancelRequest($id)
+    public function openCancelModal($id)
     {
-     $request = SchoolRequest::query()->findOrFail($id);
-     $request->status= SchoolRequestStatus::Cancelled;
-     $request->update();
-     return back()->with('status',__('Status successfully changed.'));
+        $this->requestIdToCancel = $id;
+        $this->showCancelModal = true;
+    }
+
+    public function confirmCancelRequest()
+    {
+        $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
+        $request->status = SchoolRequestStatus::Cancelled;
+        $request->update();
+        $this->showCancelModal = false;
+        $this->dispatch('requestCancelled');
+        return back()->with('status', __('Status successfully changed.'));
     }
 
     public function render()
