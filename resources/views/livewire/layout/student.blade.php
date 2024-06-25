@@ -8,17 +8,17 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css','resources/js/app.js'/*,'resources/js/alpine.js'*/])
+    @vite(['resources/css/app.css','resources/js/app.js'])
     @stack('styles')
     @livewireStyles
     <script src="{!! asset('js/darkMode.js') !!}"></script>
     <title>{{$title.'- IUT'??'Dashboard'}}</title>
 </head>
-<body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative min-h-screen">
+<body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative">
 <!-- ========== HEADER ========== -->
 <x-preloader/>
 <header
-    class="flex sticky flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
+    class="flex sticky z-10 flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
     <!--===Navbar section===-->
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
@@ -85,11 +85,12 @@
                         x-transition:leave-end="opacity-0 scale-90"
                         x-on:click.outside="close($refs.button)"
                         :id="$id('dropdown-button')"
-                        style="/*display: none;*/    position: fixed;
+                        style="position: absolute;
+                        width: max-content;
                             inset: 0 0 auto auto;
                             margin: 0;
                             transform: translate3d(-68px, 70.4px, 0px); "
-                        class="right-0 z-[1] divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
+                        class="right-0 z-50  divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
                     >
                         <div
                             class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
@@ -292,8 +293,9 @@
     <!-- ========== END NAVBAR ========== -->
 </header>
 <!-- ========== END HEADER ========== -->
-
+<div class="min-h-screen">
 {{$slot}}
+</div>
 <!-- ========== FOOTER ========== -->
 <footer
     class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">

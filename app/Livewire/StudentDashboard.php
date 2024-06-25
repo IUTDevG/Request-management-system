@@ -86,6 +86,10 @@ class StudentDashboard extends Component
         $this->dispatch('requestCancelled');
         return back()->with('status', __('Status successfully changed.'));
     }
+    public function updateStatus($id)
+    {
+        dd($id);
+    }
 
     public function render()
     {

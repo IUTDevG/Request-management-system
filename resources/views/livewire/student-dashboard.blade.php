@@ -12,7 +12,7 @@
     <!--====Start Body====-->
     <section>
         <!--Banner -->
-        <div class="bg-background backdrop-blur-lg">
+        <div>
             <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto">
                 <!-- Grid -->
                 <div class="flex justify-center max-[835px]:flex-col">
@@ -56,20 +56,12 @@
         <!-- End Banner -->
         <!--====== START BODY =======-->
         <!-- Announcement Banner -->
-        <div class="bg-white/60 backdrop-blur-lg dark:bg-neutral-900/60">
+        <div>
             <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto">
                 <!-- flex -->
                 <div class="flex justify-center max-[835px]:flex-col">
                     <div class="flex items-center w-full min-[835px]:w-full min-[835px]:mb-2">
 
-                        <!--  <div class="grow">
-                          <p class="md:text-xs text-gray-800 font-semibold dark:text-neutral-500">
-                              my requests in detail
-                          </p>
-                          <p class="text-sm md:text-base text-gray-800 dark:text-neutral-400">
-                              Review and manage your new requests
-                          </p>
-                      </div>-->
                     </div>
                     <!-- End Col -->
                     <div class="flex justify-end w-full mb-2">
@@ -210,27 +202,30 @@
                                         <tr class="bg-gray-50 dark:bg-white/5">
 
                                             <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
-    <span class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
-        <span class="text-sm font-semibold text-gray-950 dark:text-white">
-            {{__('title')}}
-        </span>
+                                                <span
+                                                    class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+                                                    <span class="text-sm font-semibold text-gray-950 dark:text-white">
+                                                        {{__('title')}}
+                                                    </span>
 
-    </span>
+                                                </span>
                                             </th>
                                             <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
-    <span class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
-        <span class="text-sm font-semibold text-gray-950 dark:text-white">
-           {{__('status')}}
-        </span>
+                                                <span
+                                                    class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+                                                    <span class="text-sm font-semibold text-gray-950 dark:text-white">
+                                                       {{__('status')}}
+                                                    </span>
 
-    </span>
+                                                </span>
                                             </th>
                                             <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
-    <span class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
-        <span class="text-sm font-semibold text-gray-950 dark:text-white">
-           {{__('created at')}}
-        </span>
-    </span>
+                                                <span
+                                                    class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+                                                    <span class="text-sm font-semibold text-gray-950 dark:text-white">
+                                                       {{__('created at')}}
+                                                    </span>
+                                                </span>
                                             </th>
 
                                             <th class="w-1"></th>
@@ -434,7 +429,8 @@
                                                                                     wire:click="openCancelModal({!! $request->id !!})"
                                                                                     wire:key="{!! $request->id !!}"
                                                                                     class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
-                                                                                <svg class="size-5" wire:loading.remove wire:target="openCancelModal"
+                                                                                <svg class="size-5" wire:loading.remove
+                                                                                     wire:target="openCancelModal"
                                                                                      xmlns="http://www.w3.org/2000/svg"
                                                                                      viewBox="0 0 24 24" width="24"
                                                                                      height="24" fill="none">
@@ -445,14 +441,19 @@
                                                                                         stroke-linecap="round"
                                                                                         stroke-linejoin="round"/>
                                                                                 </svg>
-                                                                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                                                                <svg fill="none" viewBox="0 0 24 24"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                                      class="w-5 h-5 text-primary-400 animate-spin dark:text-primary-500"
-                                                                                     wire:loading.delay.default="" wire:target="openCancelModal">
+                                                                                     wire:loading.delay.default=""
+                                                                                     wire:target="openCancelModal">
                                                                                     <path clip-rule="evenodd"
                                                                                           d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                                                          fill-rule="evenodd" fill="currentColor" opacity="0.2"></path>
-                                                                                    <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
-                                                                                          fill="currentColor">
+                                                                                          fill-rule="evenodd"
+                                                                                          fill="currentColor"
+                                                                                          opacity="0.2"></path>
+                                                                                    <path
+                                                                                        d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+                                                                                        fill="currentColor">
                                                                                     </path>
                                                                                 </svg>
                                                                                 <span
@@ -535,10 +536,11 @@
                                                                                                         </h3>
                                                                                                         <div
                                                                                                             class="mt-2">
-                                                                                                            <p class="text-sm text-gray-700">
-                                                                                                                {!! __('Are you sure you want to cancel the request:') !!}
+                                                                                                            <p class="text-sm text-gray-700 text-wrap">
+                                                                                                                {!! __('Are you sure you want to cancel this request?') !!}
+                                                                                                                :
                                                                                                                 <span
-                                                                                                                    class="font-semibold">{{ $request->titlex }}</span>?
+                                                                                                                    class="font-semibold">{{ $request->title }}</span>?
                                                                                                             </p>
                                                                                                         </div>
                                                                                                     </div>
@@ -549,13 +551,13 @@
                                                                                                 <button type="button"
                                                                                                         wire:click="confirmCancelRequest"
                                                                                                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm
-                    transition ease-in-out duration-150 transform hover:scale-105">
+                                                                                                    transition ease-in-out duration-150 transform hover:scale-105">
                                                                                                     {!! __('Confirm') !!}
                                                                                                 </button>
                                                                                                 <button type="button"
                                                                                                         wire:click="$set('showCancelModal', false)"
                                                                                                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
-                    transition ease-in-out duration-150 transform hover:scale-105">
+                                                                                                    transition ease-in-out duration-150 transform hover:scale-105">
                                                                                                     {!! __('Cancel') !!}
                                                                                                 </button>
                                                                                             </div>
@@ -563,6 +565,19 @@
                                                                                     </div>
                                                                                 </div>
                                                                             @endif
+                                                                        @endif
+                                                                        @if($request->status === SchoolRequestStatus::Draft->value)
+                                                                            <a href="{{ route('student.updated-request',$request->id) }}"
+                                                                               class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-gray-700 dark:text-gray-200 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
+                                                                                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">
+                                                                                    <path d="M16.2141 4.98239L17.6158 3.58063C18.39 2.80646 19.6452 2.80646 20.4194 3.58063C21.1935 4.3548 21.1935 5.60998 20.4194 6.38415L19.0176 7.78591M16.2141 4.98239L10.9802 10.2163C9.93493 11.2616 9.41226 11.7842 9.05637 12.4211C8.70047 13.058 8.3424 14.5619 8 16C9.43809 15.6576 10.942 15.2995 11.5789 14.9436C12.2158 14.5877 12.7384 14.0651 13.7837 13.0198L19.0176 7.78591M16.2141 4.98239L19.0176 7.78591" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                    <path d="M21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12C3 7.75736 3 5.63604 4.31802 4.31802C5.63604 3 7.75736 3 12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                                                                </svg>
+                                                                                <span
+                                                                                    class="flex-1 truncate text-start">
+                                                                                {!! __('Update') !!}
+                                                                            </span>
+                                                                            </a>
                                                                         @endif
                                                                     </div>
                                                                 </div>

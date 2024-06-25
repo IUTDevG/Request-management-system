@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
         Route::get('/new-request', \App\Livewire\Pages\NewRequest::class)->name('student.new-request');
         Route::get('request/{id}', \App\Livewire\Pages\RequestDetails::class)->name('student.request.details');
+        Route::get('updated-request/{id}', \App\Livewire\Pages\UpdateRequest::class)->name('student.updated-request');
         Route::get('/profile', \App\Livewire\Pages\Profile::class)->name('student.profile');
     });
 

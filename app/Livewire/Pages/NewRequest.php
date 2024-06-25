@@ -46,6 +46,7 @@ class NewRequest extends Component
         ];
     }
 
+//    Code pour Mettre la requête comme brouillon
     public function DraftRequest()
     {
         $this->validate([
@@ -81,6 +82,7 @@ class NewRequest extends Component
         }
     }
 
+//    Code pour sauvegarder la requête
     public function submitRequest()
     {
 
