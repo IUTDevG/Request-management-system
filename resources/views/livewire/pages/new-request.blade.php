@@ -47,7 +47,7 @@
                             <x-input-error for="department_id"/>
                             <div class="mb-3">
                                 <x-label for="files" value="{{ __('Attached files') }}"/>
-                                <x-file-upload-alpine wire:model="files" multiple/>
+                                <x-file-upload-alpine wire:model="files" :is-multiple="true" multiple/>
                                 <x-input-error for="files"/>
                             </div>
                         </x-slot:form>

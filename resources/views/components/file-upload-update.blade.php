@@ -5,7 +5,8 @@
     x-data
     x-init="
         FilePond.setOptions({
-            allowMultiple: {{ $multiple ? 'true' : 'false' }},
+            acceptedFileTypes: ['application/pdf','image/jpeg','image/png','image/jpg','image/webp','image/heic','image/heic-sequence'],
+            allowMultiple: {{ $isMultiple ? 'true' : 'false' }},
             server: {
                 process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
                     @this.upload('{{ $attributes->wire('model')->value() }}', file, load, error, progress)

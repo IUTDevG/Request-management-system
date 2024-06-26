@@ -12,7 +12,7 @@
                 <label for="password" class="block text-sm font-medium">{{__('Password')}}</label>
                 <input type="password" id="password" name="password" wire:model='password'
                        class="mt-1 p-2 w-full border rounded-md focus:border-green-600 focus:ring-green-600 bg-background focus:outline-none focus:ring-2 transition-colors duration-300">
-                       <x-input-error for='password'></x-input-error>
+                <x-input-error for='password'></x-input-error>
             </div>
             <div>
                 <label for="password_confirmation" class="block text-sm font-medium">{{__('Password confirmation')}}</label>

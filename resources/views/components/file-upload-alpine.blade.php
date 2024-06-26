@@ -1,4 +1,4 @@
-@props(['isMultiple', 'accept', 'existingFiles'])
+@props(['isMultiple'])
 
 <div class="mt-1 sm:mt-0">
     <div
@@ -9,7 +9,6 @@
             credits: false,
             acceptedFileTypes: ['application/pdf','image/jpeg','image/png','image/jpg','image/webp','image/heic','image/heic-sequence'],
             allowMultiple: {{ $isMultiple ? 'true' : 'false' }},
-            files: @js($existingFiles),
             server: {
                 process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
                     @this.upload('{{ $attributes['wire:model'] }}', file, load, error, progress)
@@ -65,7 +64,6 @@
             <input  x-ref="input"
                     type="file"
                     name="{{ $attributes['wire:model'] }}"
-                    accept="{{ $accept }}"
                     {{ $isMultiple ? 'multiple' : '' }}
                     data-allow-reorder="true" data-max-files="3" data-max-file-size="1MB"
             />
