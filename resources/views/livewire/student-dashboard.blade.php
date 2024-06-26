@@ -68,59 +68,59 @@
                         <!-- Select -->
                         <div>
                             <!-- Dropdown de filtre -->
-                            <div
-                                x-data="{
-                                isOpen: false,
-                                selectedOption: @entangle('selectedFilter'),
-                                options: {{ json_encode($filterOptions) }},
-                                toggleDropdown() {
-                                    this.isOpen = !this.isOpen;
-                                },
-                                selectOption(option) {
-                                    this.selectedOption = option.value;
-                                    $wire.setFilter(option.value);
-                                    this.isOpen = false;
-                                }
-                            }">
-                                <div x-on:click.outside="isOpen = false" class="relative">
-                                    <div x-on:click="toggleDropdown()"
-                                         x-bind:class="{ 'bg-white dark:bg-neutral-900': !isOpen }"
-                                         class="hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                        <span class="inline-flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
-                                                 height="24" class="mr-2">
-                                                <path
-                                                    d="M8.85746 12.5061C6.36901 10.6456 4.59564 8.59915 3.62734 7.44867C3.3276 7.09253 3.22938 6.8319 3.17033 6.3728C2.96811 4.8008 2.86701 4.0148 3.32795 3.5074C3.7889 3 4.60404 3 6.23433 3H17.7657C19.396 3 20.2111 3 20.672 3.5074C21.133 4.0148 21.0319 4.8008 20.8297 6.37281C20.7706 6.83191 20.6724 7.09254 20.3726 7.44867C19.403 8.60062 17.6261 10.6507 15.1326 12.5135C14.907 12.6821 14.7583 12.9567 14.7307 13.2614C14.4837 15.992 14.2559 17.4876 14.1141 18.2442C13.8853 19.4657 12.1532 20.2006 11.226 20.8563C10.6741 21.2466 10.0043 20.782 9.93278 20.1778C9.79643 19.0261 9.53961 16.6864 9.25927 13.2614C9.23409 12.9539 9.08486 12.6761 8.85746 12.5061Z"
-                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round"/>
+                        <div x-data="{
+                            isOpen: false,
+                            selectedOption: @entangle('selectedFilter'),
+                            options: {{ json_encode($filterOptions) }},
+                            toggleDropdown() {
+                                this.isOpen = !this.isOpen;
+                            },
+                            selectOption(option) {
+                                this.selectedOption = option.value;
+                                $wire.setFilter(option.value);
+                                this.isOpen = false;
+                            }
+                        }" class="relative inline-block text-left">
+                                <div>
+                                    <button type="button" @click="toggleDropdown" @keydown.escape.window="isOpen = false"
+                                            x-bind:class="{ 'bg-white dark:bg-neutral-900 text-gray-800 font-semibold dark:text-neutral-200': isOpen }"
+                                            class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 transition-colors duration-200"
+                                            aria-haspopup="true" :aria-expanded="isOpen">
+                                        <span class="flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" />
                                             </svg>
-                                            <span
-                                                x-text="selectedOption ? options.find(o => o.value === selectedOption).label : '{{ __('Filter') }}'"></span>
+                                            <span x-text="selectedOption ? options.find(o => o.value === selectedOption).label : '{{ __('Filter') }}'"></span>
                                         </span>
-                                        <button type="button"></button>
-                                    </div>
+                                        <svg class="-mr-1 ml-2 h-5 w-5 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
 
-                                    <div x-show="isOpen"
-                                         class="mt-2 absolute z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700">
+                                <div x-show="isOpen" @click.away="isOpen = false"
+                                     x-transition:enter="transition ease-out duration-100"
+                                     x-transition:enter-start="transform opacity-0 scale-95"
+                                     x-transition:enter-end="transform opacity-100 scale-100"
+                                     x-transition:leave="transition ease-in duration-75"
+                                     x-transition:leave-start="transform opacity-100 scale-100"
+                                     x-transition:leave-end="transform opacity-0 scale-95"
+                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+                                     role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                    <div class="py-1" role="none">
                                         <template x-for="option in options" :key="option.value">
-                                            <div x-on:click="selectOption(option)"
-                                                 class="py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800">
-                                                <div class="flex justify-between items-center w-full">
-                                                    <span x-text="option.label"></span>
-                                                    <span x-show="selectedOption === option.value"
-                                                          class="hidden hs-selected:block">
-                                                        <svg
-                                                            class="flex-shrink-0 size-3.5 text-green-600 dark:text-green-500"
-                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none" stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <polyline points="20 6 9 17 4 12"/>
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            <button @click="selectOption(option)"
+                                                    class="group flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-900 transition-colors duration-200"
+                                                    role="menuitem">
+                                                <span class="flex-grow" x-text="option.label"></span>
+                                                <svg x-show="selectedOption === option.value"
+                                                     class="h-5 w-5 text-indigo-600"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20"
+                                                     fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
                                         </template>
                                     </div>
                                 </div>
@@ -464,8 +464,15 @@
                                                                             @if($showCancelModal)
                                                                                 <div
                                                                                     x-data="{ show: @entangle('showCancelModal'), loaded: false }"
-                                                                                    x-init="$watch('show', value => { if (value) loaded = true })"
-                                                                                    x-show="show"
+                                                                                    x-init="
+                                                                                        $nextTick(() => { loaded = true; });
+                                                                                        Livewire.hook('message.processed', (message, component) => {
+                                                                                            if (component.id === $wire.__instance.id) {
+                                                                                                $nextTick(() => Alpine.initTree(document.body));
+                                                                                            }
+                                                                                        })
+                                                                                    "
+                                                                                    x-show="show && loaded"
                                                                                     x-cloak
                                                                                     :class="{ 'hidden': !show }"
                                                                                     x-transition:enter="transition ease-out duration-300"
@@ -555,10 +562,10 @@
                                                                                                     {!! __('Confirm') !!}
                                                                                                 </button>
                                                                                                 <button type="button"
-                                                                                                        wire:click="$set('showCancelModal', false)"
-                                                                                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
-                                                                                                    transition ease-in-out duration-150 transform hover:scale-105">
-                                                                                                    {!! __('Cancel') !!}
+                                                                                                        wire:click="closeModal"
+                                                                                                        x-on:click="$nextTick(() => $wire.$refresh())"
+                                                                                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition ease-in-out duration-150 transform hover:scale-105">
+                                                                                                    {{ __('Cancel') }}
                                                                                                 </button>
                                                                                             </div>
                                                                                         </div>
@@ -620,3 +627,10 @@
     <!--====End Body====-->
 
 </div>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        @this.on('modalClosed', () => {
+            setTimeout(() => window.location.reload(), 100);
+        });
+    });
+</script>

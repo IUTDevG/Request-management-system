@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Enums\SchoolRequestStatus;
 use App\Models\SchoolRequest;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -32,6 +33,20 @@ class StudentDashboard extends Component
     public function updatingSearchTerm($value): void
     {
         $this->resetPage();
+    }
+
+    public function closeModal()
+    {
+        $this->showCancelModal = false;
+        $this->requestIdToCancel = null;
+        $this->dispatch('modalClosed');
+        $this->js('window.location.reload()');
+    }
+
+    #[On('modalClosed')]
+    public function onModalClosed()
+    {
+        $this->js("setTimeout(()=>window.location.reload(),100)");
     }
 
     public function getDelayedSearchTermProperty()
@@ -86,6 +101,7 @@ class StudentDashboard extends Component
         $this->dispatch('requestCancelled');
         return back()->with('status', __('Status successfully changed.'));
     }
+
     public function updateStatus($id)
     {
         dd($id);

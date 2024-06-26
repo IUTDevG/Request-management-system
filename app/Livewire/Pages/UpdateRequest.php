@@ -7,7 +7,6 @@ use App\Models\Department;
 use App\Models\Level;
 use App\Models\SchoolRequest;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -26,172 +25,96 @@ class UpdateRequest extends Component
     public $files = [];
     public $existingFiles = [];
     public $collection = 'school-request';
+    public $filesToRemove = [];
+    public ?int $filesTotal = 3;
 
-    public function mount($collection = 'school-request',$id=null)
+    public function mount($id = null)
     {
         $this->id = $id;
-        $this->collection= $collection;
-        if ($id){
-
-        $request = SchoolRequest::findOrFail($this->id);
-        $this->id = $request->id;
-        $this->title = $request->title;
-        $this->description = $request->description;
-        $this->level_id = $request->level_id;
-        $this->department_id = $request->department_id;
+        if ($id) {
+            $request = SchoolRequest::findOrFail($this->id);
+            $this->id = $request->id;
+            $this->title = $request->title;
+            $this->description = $request->description;
+            $this->level_id = $request->level_id;
+            $this->department_id = $request->department_id;
             $this->existingFiles = $request->getMedia('school-request')->map(function ($media) {
                 return [
-                    'source' => $media->id,
-                    'options' => [
-                        'type' => 'local',
-                        'file' => [
-                            'name' => $media->file_name,
-                            'size' => $media->size,
-                            'type' => $media->mime_type,
-                        ],
-                        'metadata' => [
-                            'poster' => $media->getUrl(),
-                        ],
-                    ],
+                    'id' => $media->id,
+                    'name' => $media->file_name,
+                    'url' => $media->getUrl(),
+                    'size' => $media->size,
+                    'type' => $media->mime_type,
                 ];
             })->toArray();
         }
-        Log::info('Existing files initialized', ['existingFiles' => $this->existingFiles]);
-    }
-    public function getMediaUrl($mediaId)
-    {
-        $media = $this->getMedia($this->collection)->firstWhere('id', $mediaId);
-        return $media ? $media->getUrl() : null;
     }
 
-    public function removeExistingFile($fileId)
+    public function markFileForRemoval($fileId)
     {
-        $schoolRequest = SchoolRequest::findOrFail($this->id);
-        $media = $schoolRequest->getMedia($this->collection)->where('id', $fileId)->first();
-        if ($media) {
-            $media->delete();
-            $this->existingFiles = array_filter($this->existingFiles, function ($file) use ($fileId) {
-                return $file['source'] !== $fileId;
-            });
-            $this->dispatch('fileRemoved', $fileId);
-        }
-    }
-
-//    public function refreshExistingFiles()
-//    {
-//        $schoolRequest = SchoolRequest::findOrFail($this->id);
-//        $this->existingFiles = $schoolRequest->getMedia('school-request')->map(function ($file) {
-//            return [
-//                'source' => $file->id,
-//                'options' => [
-//                    'type' => 'local',
-//                    'file' => [
-//                        'name' => $file->file_name,
-//                        'size' => $file->size,
-//                        'type' => $file->mime_type,
-//                    ],
-//                    'metadata' => [
-//                        'id' => $file->id,
-//                        'url' => $file->getFullUrl(),
-//                    ],
-//                ],
-//            ];
-//        })->toArray();
-//
-//        Log::info('Existing files refreshed', ['existingFiles' => $this->existingFiles]);
-//    }
-
-
-
-    public function rules()
-    {
-        return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'level_id' => 'required|exists:levels,id',
-            'department_id' => 'required|exists:departments,id',
-            'files' => 'array',
-            'files.*' => 'file|mimes:png,jpg,jpeg,pdf|max:1024',
-        ];
-    }
-
-    public function validationAttributes()
-    {
-        return [
-            'title' => __('title'),
-            'level_id' => __('level'),
-            'files' => __('files'),
-            'department_id' => __('department'),
-        ];
+        $this->filesToRemove[] = $fileId;
+        $this->existingFiles = array_filter($this->existingFiles, function ($file) use ($fileId) {
+            return $file['id'] !== $fileId;
+        });
     }
 
     public function updateRequest()
     {
-        $this->validate();
+        $this->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'level_id' => 'required|exists:levels,id',
+            'department_id' => 'required|exists:departments,id',
+            'files' => 'array|max:3',
+            'files.*' => 'file|mimes:png,jpg,jpeg,pdf|max:1024',
+        ]);
+
+        $totalFiles = count($this->files) + count($this->existingFiles);
+        if ($totalFiles === 0 || $totalFiles > $this->filesTotal) {
+            $this->addError('files', 'Le nombre total de fichiers doit être entre 1 et 3.');
+            return;
+        }
 
         try {
             DB::beginTransaction();
             $request = SchoolRequest::findOrFail($this->id);
-            $request->title = $this->title;
-            $request->description = $this->description;
-            $request->status = SchoolRequestStatus::Draft;
-            $request->level_id = $this->level_id;
-            $request->department_id = $this->department_id;
-            $request->save();
+            $request->update([
+                'title' => $this->title,
+                'description' => $this->description,
+                'status' => SchoolRequestStatus::Submitted,
+                'level_id' => $this->level_id,
+                'department_id' => $this->department_id,
+            ]);
 
-            // Récupérer les fichiers actuels associés à la demande
-            $currentFiles = $request->getMedia('school-request')->pluck('id')->toArray();
-            Log::info('Current files', ['currentFiles' => $currentFiles]);
-
-            // Identifier les fichiers à supprimer
-            $filesToDelete = [];
-            foreach ($currentFiles as $fileId) {
-                if (!in_array($fileId, $this->getExistingFileIds())) {
-                    $filesToDelete[] = $fileId;
-                }
-            }
-            Log::info('Files to delete', ['filesToDelete' => $filesToDelete]);
-
-            // Supprimer les fichiers à supprimer
-            foreach ($filesToDelete as $fileToDelete) {
-                $mediaItem = $request->getMedia('school-request')->firstWhere('id', $fileToDelete);
-                if ($mediaItem) {
-                    $mediaItem->delete();
+            // Remove files marked for deletion
+            foreach ($this->filesToRemove as $fileId) {
+                $media = $request->getMedia('school-request')->where('id', $fileId)->first();
+                if ($media) {
+                    $media->delete();
                 }
             }
 
-            // Ajouter les nouveaux fichiers
+            // Add new files
             foreach ($this->files as $file) {
-                $request->addMedia($file)
-                    ->preservingOriginal()
+                $request->addMedia($file->getRealPath())
+                    ->usingName($file->getClientOriginalName())
+                    ->usingFileName($file->getClientOriginalName())
                     ->toMediaCollection('school-request');
             }
 
             DB::commit();
-            return redirect()->route('student.home')->with('status', 'Demande soumise avec succès');
+            return redirect()->route('student.home')->with('status', 'Demande mise à jour avec succès');
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', 'Une erreur est survenue lors de la soumission de la demande: ' . $e->getMessage());
+            session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande: ' . $e->getMessage());
         }
     }
 
-    protected function getExistingFileIds()
-    {
-        return collect($this->existingFiles)->pluck('id')->toArray();
-    }
-
-
-
-
-
-
     public function render()
     {
-        $schoolRequest = SchoolRequest::query()->findOrFail($this->id);
         return view('livewire.pages.update-request', [
             'levels' => Level::all(),
             'departments' => Department::all(),
-            'existingFiles' => $this->existingFiles,
         ]);
     }
 }
