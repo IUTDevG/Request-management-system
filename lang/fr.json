@@ -182,5 +182,12 @@
     "Abort processing": "Annuler",
     "Undo processing": "Annuler",
     "Retry processing": "Réessayer",
-    "Process": "Charger"
+    "Process": "Charger",
+    "Previous": "Précédent",
+    "Next": "Suivant",
+    "Updated at": "Modifié le",
+    "You can't change this request.": "Vous ne pouvez pas modifier cette demande.",
+    "The total number of files must be between :min and :max.": "Le nombre total de fichiers doit être entre :min et :max.",
+    "Existing Files": "Fichiers existants",
+    "Upload New Files": "Charger de nouveaux fichiers"
 }

@@ -6,11 +6,13 @@ use App\Enums\SchoolRequestStatus;
 use App\Models\Department;
 use App\Models\Level;
 use App\Models\SchoolRequest;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use RuntimeException;
 
 #[Title('Update request'), Layout('livewire.layout.student')]
 class UpdateRequest extends Component
@@ -32,7 +34,12 @@ class UpdateRequest extends Component
     {
         $this->id = $id;
         if ($id) {
-            $request = SchoolRequest::findOrFail($this->id);
+            $request = SchoolRequest::query()->findOrFail($this->id);
+//Section pour empêcher la modification des status en Submitted
+            if ($request->status !== SchoolRequestStatus::Draft->value) {
+                return redirect()->route('student.home')->with('error', __('Vous ne pouvez pas modifier cette demande.'));
+            }
+
             $this->id = $request->id;
             $this->title = $request->title;
             $this->description = $request->description;
@@ -50,10 +57,10 @@ class UpdateRequest extends Component
         }
     }
 
-    public function markFileForRemoval($fileId)
+    public function markFileForRemoval($fileId):void
     {
         $this->filesToRemove[] = $fileId;
-        $this->existingFiles = array_filter($this->existingFiles, function ($file) use ($fileId) {
+        $this->existingFiles = array_filter($this->existingFiles, static function ($file) use ($fileId) {
             return $file['id'] !== $fileId;
         });
     }
@@ -71,13 +78,18 @@ class UpdateRequest extends Component
 
         $totalFiles = count($this->files) + count($this->existingFiles);
         if ($totalFiles === 0 || $totalFiles > $this->filesTotal) {
-            $this->addError('files', 'Le nombre total de fichiers doit être entre 1 et 3.');
+            $this->addError('files', __('The total number of files must be between :min and :max.', ['min' => 1, 'max' => $this->filesTotal]));
             return;
         }
 
         try {
             DB::beginTransaction();
-            $request = SchoolRequest::findOrFail($this->id);
+            $request = SchoolRequest::query()->findOrFail($this->id);
+
+            if ($request->status !== SchoolRequestStatus::Draft->value) {
+                throw new RuntimeException('Cette demande ne peut plus être modifiée.');
+            }
+
             $request->update([
                 'title' => $this->title,
                 'description' => $this->description,
@@ -104,7 +116,7 @@ class UpdateRequest extends Component
 
             DB::commit();
             return redirect()->route('student.home')->with('status', 'Demande mise à jour avec succès');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande: ' . $e->getMessage());
         }

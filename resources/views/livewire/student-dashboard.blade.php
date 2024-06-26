@@ -8,6 +8,11 @@
     <x-status> {!! session('status') !!} .</x-status>
 
     @endsession
+    @session('error')
+
+    <x-error> {!! session('error') !!} .</x-error>
+
+    @endsession
     <!-- End Toast -->
     <!--====Start Body====-->
     <section>
@@ -57,14 +62,12 @@
         <!--====== START BODY =======-->
         <!-- Announcement Banner -->
         <div>
-            <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto">
+            <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto min-[835px]:flex min-[835px]:justify-end">
                 <!-- flex -->
-                <div class="flex justify-center max-[835px]:flex-col">
-                    <div class="flex items-center w-full min-[835px]:w-full min-[835px]:mb-2">
+                <div class="flex justify-center items-center max-[835px]:flex-col">
 
-                    </div>
                     <!-- End Col -->
-                    <div class="flex justify-end w-full mb-2">
+                    <div class="flex justify-end w-full max-[835px]:mb-2">
                         <!-- Select -->
                         <div>
                             <!-- Dropdown de filtre -->
@@ -83,8 +86,8 @@
                         }" class="relative inline-block text-left">
                                 <div>
                                     <button type="button" @click="toggleDropdown" @keydown.escape.window="isOpen = false"
-                                            x-bind:class="{ 'bg-white dark:bg-neutral-900 text-gray-800 font-semibold dark:text-neutral-200': isOpen }"
-                                            class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 transition-colors duration-200"
+                                            x-bind:class="{ 'bg-white/95 dark:bg-neutral-900/95 text-gray-800 font-semibold dark:text-neutral-200': isOpen }"
+                                            class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-success-500 transition-colors duration-200"
                                             aria-haspopup="true" :aria-expanded="isOpen">
                                         <span class="flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
@@ -105,16 +108,16 @@
                                      x-transition:leave="transition ease-in duration-75"
                                      x-transition:leave-start="transform opacity-100 scale-100"
                                      x-transition:leave-end="transform opacity-0 scale-95"
-                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white/95 dark:bg-neutral-900/95 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
                                      role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                     <div class="py-1" role="none">
                                         <template x-for="option in options" :key="option.value">
                                             <button @click="selectOption(option)"
-                                                    class="group flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-900 transition-colors duration-200"
+                                                    class="group flex items-center w-full px-4 py-2 text-sm dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 hover:bg-gray-50 hover:dark:bg-gray-600 transition-colors duration-200"
                                                     role="menuitem">
                                                 <span class="flex-grow" x-text="option.label"></span>
                                                 <svg x-show="selectedOption === option.value"
-                                                     class="h-5 w-5 text-indigo-600"
+                                                     class="h-5 w-5 text-success-600"
                                                      xmlns="http://www.w3.org/2000/svg"
                                                      viewBox="0 0 20 20"
                                                      fill="currentColor">
@@ -130,9 +133,9 @@
                         </div>
                         <!-- End Select -->
                     </div>
-                    <div class="w-full ml-2">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+                    <div class="w-full max-[835px]:justify-start ml-2 flex">
+                        <div class="relative w-[25rem] max-[835px]:w-[15rem]">
+                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5 ">
                                 <svg wire:loading.remove.delay.default="1" wire:target="searchTerm"
                                      class="flex-shrink-0 size-4 text-gray-400 dark:text-white/60"
                                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -153,7 +156,7 @@
                                 </svg>
                             </div>
                             <input wire:model.live.debounce="searchTerm"
-                                   class="py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                   class="py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-success-500"
                                    type="search" placeholder="{!! __('Search') !!}">
                         </div>
                     </div>
@@ -224,6 +227,14 @@
                                                     class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
                                                     <span class="text-sm font-semibold text-gray-950 dark:text-white">
                                                        {{__('created at')}}
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6">
+                                                <span
+                                                    class="group flex w-full items-center gap-x-1 whitespace-nowrap justify-start">
+                                                    <span class="text-sm font-semibold text-gray-950 dark:text-white">
+                                                       {{__('Updated at')}}
                                                     </span>
                                                 </span>
                                             </th>
@@ -352,6 +363,40 @@
                                                                         class="text-sm leading-6 text-gray-950 dark:text-white  "
                                                                         style="">
                                                                     {!! $request->created_at !!}
+                                                                    </span>
+
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </a>
+
+                                                    </div>
+                                                </td>
+                                                <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
+                                                    wire:key="{!! $request->id !!}.column.updated_at">
+                                                    <div class="">
+                                                        <a
+                                                            href="{{ route('student.request.details',$request->id) }}"
+                                                            class="flex w-full disabled:pointer-events-none justify-start text-start">
+                                                            <div class="grid w-full gap-y-1 px-3 py-4">
+
+                                                                <div class="flex ">
+
+                                                                    <div class="flex max-w-max">
+
+                                                                        <div
+                                                                            class="inline-flex items-center gap-1.5 ">
+
+                                                                    <span
+                                                                        class="text-sm leading-6 text-gray-950 dark:text-white  "
+                                                                        style="">
+                                                                    {!! $request->updated_at !!}
                                                                     </span>
 
 
@@ -564,7 +609,7 @@
                                                                                                 <button type="button"
                                                                                                         wire:click="closeModal"
                                                                                                         x-on:click="$nextTick(() => $wire.$refresh())"
-                                                                                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition ease-in-out duration-150 transform hover:scale-105">
+                                                                                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-success-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition ease-in-out duration-150 transform hover:scale-105">
                                                                                                     {{ __('Cancel') }}
                                                                                                 </button>
                                                                                             </div>
