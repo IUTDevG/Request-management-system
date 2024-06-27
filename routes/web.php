@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('home');
 
 // Route::get('login', \App\Livewire\LoginForm::class)->name('login');
 // Route::get('register', \App\Livewire\RegisterForm::class)->name('register');

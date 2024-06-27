@@ -70,7 +70,7 @@
                                 </div>
                                 <div>
                                     <h4>{{ __('Upload New Files') }}</h4>
-                                    <x-file-upload-update wire:model="files" multiple/>
+                                    <x-file-upload-update wire:model="files" :is-multiple="true"/>
                                 </div>
                                 <x-input-error for="files"/>
                             </div>

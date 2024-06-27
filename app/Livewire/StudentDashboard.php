@@ -109,7 +109,7 @@ class StudentDashboard extends Component
 
     public function render()
     {
-        $requests = SchoolRequest::query()
+        $requests = SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
             ->when($this->selectedFilter, function ($query) {
                 return $query->where('status', $this->selectedFilter);
             })

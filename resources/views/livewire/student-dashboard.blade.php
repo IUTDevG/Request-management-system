@@ -1,7 +1,7 @@
 @use('App\Enums\SchoolRequestStatus')
 <div>
 
-
+    {{--@dd(auth()->user()->id)--}}
     <!-- Toast -->
     @session('status')
 
@@ -64,78 +64,11 @@
         <div>
             <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto min-[835px]:flex min-[835px]:justify-end">
                 <!-- flex -->
-                <div class="flex justify-center items-center max-[835px]:flex-col">
-
-                    <!-- End Col -->
-                    <div class="flex justify-end w-full max-[835px]:mb-2">
-                        <!-- Select -->
-                        <div>
-                            <!-- Dropdown de filtre -->
-                        <div x-data="{
-                            isOpen: false,
-                            selectedOption: @entangle('selectedFilter'),
-                            options: {{ json_encode($filterOptions) }},
-                            toggleDropdown() {
-                                this.isOpen = !this.isOpen;
-                            },
-                            selectOption(option) {
-                                this.selectedOption = option.value;
-                                $wire.setFilter(option.value);
-                                this.isOpen = false;
-                            }
-                        }" class="relative inline-block text-left">
-                                <div>
-                                    <button type="button" @click="toggleDropdown" @keydown.escape.window="isOpen = false"
-                                            x-bind:class="{ 'bg-white/95 dark:bg-neutral-900/95 text-gray-800 font-semibold dark:text-neutral-200': isOpen }"
-                                            class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-success-500 transition-colors duration-200"
-                                            aria-haspopup="true" :aria-expanded="isOpen">
-                                        <span class="flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" />
-                                            </svg>
-                                            <span x-text="selectedOption ? options.find(o => o.value === selectedOption).label : '{{ __('Filter') }}'"></span>
-                                        </span>
-                                        <svg class="-mr-1 ml-2 h-5 w-5 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div x-show="isOpen" @click.away="isOpen = false"
-                                     x-transition:enter="transition ease-out duration-100"
-                                     x-transition:enter-start="transform opacity-0 scale-95"
-                                     x-transition:enter-end="transform opacity-100 scale-100"
-                                     x-transition:leave="transition ease-in duration-75"
-                                     x-transition:leave-start="transform opacity-100 scale-100"
-                                     x-transition:leave-end="transform opacity-0 scale-95"
-                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white/95 dark:bg-neutral-900/95 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
-                                     role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                    <div class="py-1" role="none">
-                                        <template x-for="option in options" :key="option.value">
-                                            <button @click="selectOption(option)"
-                                                    class="group flex items-center w-full px-4 py-2 text-sm dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 hover:bg-gray-50 hover:dark:bg-gray-600 transition-colors duration-200"
-                                                    role="menuitem">
-                                                <span class="flex-grow" x-text="option.label"></span>
-                                                <svg x-show="selectedOption === option.value"
-                                                     class="h-5 w-5 text-success-600"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     viewBox="0 0 20 20"
-                                                     fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- ... le reste de votre vue ... -->
-                        </div>
-                        <!-- End Select -->
-                    </div>
-                    <div class="w-full max-[835px]:justify-start ml-2 flex">
-                        <div class="relative w-[25rem] max-[835px]:w-[15rem]">
-                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5 ">
+                <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <!-- Search Input -->
+                    <div class="w-full sm:w-auto">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                                 <svg wire:loading.remove.delay.default="1" wire:target="searchTerm"
                                      class="flex-shrink-0 size-4 text-gray-400 dark:text-white/60"
                                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -144,9 +77,9 @@
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <path d="m21 21-4.3-4.3"></path>
                                 </svg>
-                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                     class="w-5 h-5 text-gray-400 animate-spin dark:text-gray-500"
-                                     wire:loading.delay.default="" wire:target="searchTerm">
+                                <svg wire:loading.delay.default="" wire:target="searchTerm"
+                                     class="flex-shrink-0 size-4 text-gray-400 animate-spin dark:text-gray-500"
+                                     fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path clip-rule="evenodd"
                                           d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
                                           fill-rule="evenodd" fill="currentColor" opacity="0.2"></path>
@@ -156,11 +89,77 @@
                                 </svg>
                             </div>
                             <input wire:model.live.debounce="searchTerm"
-                                   class="py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-success-500"
+                                   class="py-3 ps-10 pe-4 block w-full border-gray-200 ring-green-500 rounded-lg text-sm focus:border-success-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-success-500 focus:outline-none focus:ring-offset-2 focus:ring-offset-green-500 transition-all duration-300"
                                    type="search" placeholder="{!! __('Search') !!}">
                         </div>
                     </div>
-                    <!-- End Col -->
+
+                    <!-- Filter Dropdown -->
+                    <div x-data="{
+        isOpen: false,
+        selectedOption: @entangle('selectedFilter'),
+        options: {{ json_encode($filterOptions) }},
+        toggleDropdown() {
+            this.isOpen = !this.isOpen;
+        },
+        selectOption(option) {
+            this.selectedOption = option.value;
+            $wire.setFilter(option.value);
+            this.isOpen = false;
+        }
+    }" class="relative inline-block text-left w-full sm:w-auto">
+                        <button type="button" @click="toggleDropdown" @keydown.escape.window="isOpen = false"
+                                :class="{ 'ring-2 ring-green-500 bg-white dark:bg-neutral-800': isOpen }"
+                                class="inline-flex justify-between w-full rounded-lg border border-gray-300 shadow-sm px-4 py-3 bg-white text-sm font-medium dark:bg-neutral-900 dark:border-gray-700 dark:text-neutral-400 hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-success-500 focus:ring-green-500 transition-all duration-300"
+                                aria-haspopup="true" :aria-expanded="isOpen">
+                            <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" viewBox="0 0 20 20"
+                     fill="currentColor">
+                    <path
+                        d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"/>
+                </svg>
+                <span
+                    x-text="selectedOption ? options.find(o => o.value === selectedOption).label : '{{ __('Filter') }}'"></span>
+            </span>
+                            <svg class="h-5 w-5 text-gray-400 transition-transform duration-300"
+                                 :class="{ 'transform rotate-180': isOpen }"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                 aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+
+                        <div x-show="isOpen" @click.away="isOpen = false"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-neutral-800 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-10"
+                             role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <div class="py-1" role="none">
+                                <template x-for="option in options" :key="option.value">
+                                    <button @click="selectOption(option)"
+                                            class="group flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200"
+                                            role="menuitem">
+                                        <span class="flex-grow" x-text="option.label"></span>
+                                        <svg x-show="selectedOption === option.value"
+                                             class="h-5 w-5 text-green-600 dark:text-green-400"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20"
+                                             fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- End Grid -->
             </div>
@@ -526,7 +525,7 @@
                                                                                     x-transition:leave="transition ease-in duration-300"
                                                                                     x-transition:leave-start="opacity-100 scale-100"
                                                                                     x-transition:leave-end="opacity-0 scale-90"
-                                                                                    class="fixed z-50 inset-0 overflow-y-auto"
+                                                                                    class="fixed inset-0 overflow-y-auto"
                                                                                     aria-labelledby="modal-title"
                                                                                     role="dialog"
                                                                                     aria-modal="true">
@@ -621,9 +620,22 @@
                                                                         @if($request->status === SchoolRequestStatus::Draft->value)
                                                                             <a href="{{ route('student.updated-request',$request->id) }}"
                                                                                class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-gray-700 dark:text-gray-200 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
-                                                                                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">
-                                                                                    <path d="M16.2141 4.98239L17.6158 3.58063C18.39 2.80646 19.6452 2.80646 20.4194 3.58063C21.1935 4.3548 21.1935 5.60998 20.4194 6.38415L19.0176 7.78591M16.2141 4.98239L10.9802 10.2163C9.93493 11.2616 9.41226 11.7842 9.05637 12.4211C8.70047 13.058 8.3424 14.5619 8 16C9.43809 15.6576 10.942 15.2995 11.5789 14.9436C12.2158 14.5877 12.7384 14.0651 13.7837 13.0198L19.0176 7.78591M16.2141 4.98239L19.0176 7.78591" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                    <path d="M21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12C3 7.75736 3 5.63604 4.31802 4.31802C5.63604 3 7.75736 3 12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                                                                <svg class="size-5"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     viewBox="0 0 24 24" width="24"
+                                                                                     height="24" color="#ffffff"
+                                                                                     fill="none">
+                                                                                    <path
+                                                                                        d="M16.2141 4.98239L17.6158 3.58063C18.39 2.80646 19.6452 2.80646 20.4194 3.58063C21.1935 4.3548 21.1935 5.60998 20.4194 6.38415L19.0176 7.78591M16.2141 4.98239L10.9802 10.2163C9.93493 11.2616 9.41226 11.7842 9.05637 12.4211C8.70047 13.058 8.3424 14.5619 8 16C9.43809 15.6576 10.942 15.2995 11.5789 14.9436C12.2158 14.5877 12.7384 14.0651 13.7837 13.0198L19.0176 7.78591M16.2141 4.98239L19.0176 7.78591"
+                                                                                        stroke="currentColor"
+                                                                                        stroke-width="1.5"
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"/>
+                                                                                    <path
+                                                                                        d="M21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12C3 7.75736 3 5.63604 4.31802 4.31802C5.63604 3 7.75736 3 12 3"
+                                                                                        stroke="currentColor"
+                                                                                        stroke-width="1.5"
+                                                                                        stroke-linecap="round"/>
                                                                                 </svg>
                                                                                 <span
                                                                                     class="flex-1 truncate text-start">
@@ -674,7 +686,8 @@
 </div>
 <script>
     document.addEventListener('livewire:initialized', () => {
-        @this.on('modalClosed', () => {
+        @this.
+        on('modalClosed', () => {
             setTimeout(() => window.location.reload(), 100);
         });
     });

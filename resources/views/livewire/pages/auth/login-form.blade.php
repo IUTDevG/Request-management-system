@@ -1,5 +1,4 @@
 {{-- The Master doesn't talk, he acts. --}}
-<div class="w-full lg:w-1/2 flex items-center justify-center">
     <div class="max-w-md w-full space-y-4">
         <h1 class="text-4xl font-extrabold text-green-500 mb-6 text-center font-heading">{{__('Welcome Back')}}</h1>
         <h3 class="text-sm font-semibold mb-6 text-center font-heading">{{__('Welcome to the IUT Douala requests portal. Log in to access your services.')}}</h3>
@@ -120,4 +119,3 @@
             </div>
         </div>
     </div>
-</div>

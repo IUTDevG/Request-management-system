@@ -1,5 +1,4 @@
-<div class="w-full bg-background lg:w-1/2 flex items-center justify-center">
-    <div class="max-w-md w-full p-6">
+<div class="max-w-md w-full p-6">
         <!--<div class="flex justify-center">
             <img src="assets/images/logo.png" class="size-12" alt="logo">
         </div>-->
@@ -28,4 +27,3 @@
             </p>
         </div>
     </div>
-</div>
