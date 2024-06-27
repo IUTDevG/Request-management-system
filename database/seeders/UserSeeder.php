@@ -14,18 +14,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create()->each(function ($user){
-            $user->assignRole(RoleType::DIRECTOR);
-        });
+        $user = User::factory()->create();
+        $user->assignRole(RoleType::DIRECTOR);
+
+        $user = User::factory()->create();
+        $user->assignRole(RoleType::SECRETARY_DIRECTOR);
 
 
-        User::factory()->create()->each(function ($user){
-            $user->assignRole(RoleType::SECRETARY_DIRECTOR);
-        });
+        $user = User::factory()->create();
+        $user->assignRole(RoleType::DEPUTY_DIRECTOR);
 
-        User::factory()->create()->each(function ($user){
-            $user->assignRole(RoleType::DEPUTY_DIRECTOR);
-        });
+        $user = User::factory()->create();
+        $user->assignRoleWithDepartment(RoleType::HEAD_OF_DEPARTMENT->value, 1);
 
 
         $user= User::factory()->create([
