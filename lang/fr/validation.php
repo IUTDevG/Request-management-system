@@ -151,6 +151,9 @@ return [
     'url'                  => 'Le format de l\'URL de :attribute n\'est pas valide.',
     'uuid'                 => 'Le champ :attribute doit être un UUID valide',
     'attributes' => [
+        'name'=>'nom',
+        'firstName'=>'prénom',
+        'username'=>'nom d\'utilisateur',
         'email' => 'adresse email',
         'password' => 'mot de passe',
         'password_confirmation' => 'confirmation du mot de passe'
