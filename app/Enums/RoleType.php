@@ -10,7 +10,7 @@ enum RoleType: string{
     case DEPUTY_DIRECTOR = 'deputy_director';
     case SCHOOLING = 'schooling';
     case COMPUTER_CELL = 'computer_cell';
-
+    case HEAD_OF_DEPARTMENT = 'head_of_department';
     case ACADEMIC_MANAGER = 'academic_manager';
 
     case STUDENT = 'student';

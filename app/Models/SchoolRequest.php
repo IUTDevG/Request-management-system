@@ -10,10 +10,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SchoolRequest extends Model implements HasMedia
 {
-    use HasFactory, LogsActivity, InteractsWithMedia;
+    use HasFactory, LogsActivity, InteractsWithMedia, SoftDeletes;
 
 
     protected $fillable = [
@@ -21,9 +22,14 @@ class SchoolRequest extends Model implements HasMedia
         'level_id', 'department_id', 'user_id'
     ];
 
-    public function levels()
+    public function level()
     {
         return $this->belongsTo(Level::class, 'level_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function departments()
@@ -51,7 +57,10 @@ class SchoolRequest extends Model implements HasMedia
 
     protected static function generateUniqueRequestCode(): string
     {
-        return Str::random(15);
+        do {
+            $request_code = Str::random(15);
+        } while (SchoolRequest::where('request_code', $request_code)->exists());
+        return $request_code;
     }
 
 //    defining media collections for SchoolRequest

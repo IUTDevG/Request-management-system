@@ -20,7 +20,10 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $navigationGroup='Ecole';
+
 
     public static function form(Form $form): Form
     {
@@ -34,13 +37,6 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('username')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Hidden::make('password')
-                    ->default('password'),
-
                 PhoneInput::make('phone_number')
                     ->label('Numéro de téléphone')
                     ->countryStatePath('phone_country')
@@ -59,37 +55,46 @@ class UserResource extends Resource
                     ->validateFor("CM", PhoneNumberType::MOBILE, true)
                     ->onlyCountries(['CM'])
                     ->initialCountry('CM'),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Hidden::make('password')
+                    ->default('password'),
+
+
 
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        // dd(auth()->user()->department);
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('firstName')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('username')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->getStateUsing(function($record){
+                        return $record->getRoleNames();
+                    }),
+                Tables\Columns\TextColumn::make('department')
+                    ->getStateUsing(function($record){
+                        return($record->getDepartment()->abbreviation ?? null);
+                    }),
 
-                PhoneColumn::make('phone_number'),
-                Tables\Columns\TextColumn::make('last_login_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_activated')
-                    ->boolean(),
 
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -109,9 +114,9 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'create' => Pages\CreateUser::route('/create'),
+            // 'view' => Pages\ViewUser::route('/{record}'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

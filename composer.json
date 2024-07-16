@@ -1,11 +1,13 @@
 {
-    "name": "laravel/laravel",
+    "name": "iutdevg/request-management-system",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": ["request-management-system", "iut"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "filament/filament": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/pail": "*",
         "laravel/tinker": "^2.9",

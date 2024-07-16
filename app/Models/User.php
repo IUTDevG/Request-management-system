@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use PhpOption\None;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -87,13 +88,35 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         if($panel->getId() === 'dashboard'){
-            return $this->hasRole(RoleType::ACADEMIC_MANAGER) || $this->hasRole(RoleType::DEPUTY_DIRECTOR) || $this->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $this->hasRole(RoleType::DIRECTOR) || $this->hasRole(RoleType::COMPUTER_CELL);
+            return $this->hasRole(RoleType::ACADEMIC_MANAGER) || $this->hasRole(RoleType::DEPUTY_DIRECTOR) || $this->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $this->hasRole(RoleType::DIRECTOR);
         }
         elseif($panel->getId() === 'admin'){
             return $this->hasRole(RoleType::COMPUTER_CELL);
         }
     }
 
+    public function hasDepartment():bool{
+        return DB::table('model_has_roles')
+        ->where('model_id', $this->id)
+        ->where('model_type', get_class($this))
+        ->whereNotNull('department_id')
+        ->exists();
+    }
+    // public function getRol
+
+    public function getDepartment()
+    {
+        if($this->hasDepartment()){
+            // dd('test');
+            $result = DB::select('SELECT department_id from model_has_roles WHERE model_id = ? ',[$this->id]);
+            $result  = DB::table('model_has_roles')
+            ->where('model_id', $this->id)
+            ->where('model_type', get_class($this))
+            ->value('department_id');
+                return (Department::where('id', $result)->first());
+        }
+        return null;
+    }
 
     public function assignRoleWithDepartment(string $roleName, int $departmentId = null)
     {

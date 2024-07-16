@@ -7,6 +7,22 @@
 
         <form wire:submit.prevent='resetPassword' method="POST" class="space-y-4">
 
+            @session('success')
+        <div class="bg-green-400 text-center text-sm text-white rounded-lg p-4 mt-4" role="alert">
+            {{session('success')}}
+        </div>
+        @endsession
+        @session('status')
+        <div class="bg-red-500 text-center text-sm text-white rounded-lg p-4 my-4" role="alert">
+            {{session('status')}}
+        </div>
+        @endsession
+        @session('email')
+        <div class="bg-red-500 text-center text-sm text-white rounded-lg p-4 my-4" role="alert">
+            {{session('email')}}
+        </div>
+        @endsession
+
             <div>
                 <label for="password" class="block text-sm font-medium">{{__('Password')}}</label>
                 <input type="password" id="password" name="password" wire:model='password'
@@ -26,4 +42,9 @@
                 </button>
             </div>
         </form>
+        <div>
+            <a href="{{route('student.forgot-password')}}" class="font-semibold text-sm hover:underline text-nowrap">
+                {{__('Forgot your password?')}}
+            </a>
+        </div>
     </div>
