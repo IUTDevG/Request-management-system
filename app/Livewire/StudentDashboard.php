@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Enums\SchoolRequestStatus;
 use App\Models\SchoolRequest;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -24,12 +25,28 @@ class StudentDashboard extends Component
     #[Url(as: 'direction', history: true)]
     public $sortDirection = 'desc';
 
-    #[Url(as: 'filter', history: true,keep: false)]
+    #[Url(as: 'filter', history: true)]
     public $selectedFilter = '';
+    public $showCancelModal = false;
+    public $requestIdToCancel;
 
     public function updatingSearchTerm($value): void
     {
         $this->resetPage();
+    }
+
+    public function closeModal()
+    {
+        $this->showCancelModal = false;
+        $this->requestIdToCancel = null;
+        $this->dispatch('modalClosed');
+        $this->js('window.location.reload()');
+    }
+
+    #[On('modalClosed')]
+    public function onModalClosed()
+    {
+        $this->js("setTimeout(()=>window.location.reload(),100)");
     }
 
     public function getDelayedSearchTermProperty()
@@ -49,18 +66,8 @@ class StudentDashboard extends Component
 
     public function setFilter($filter)
     {
-        if ($filter === '') {
-            $this->selectedFilter = null; // Utilisez null au lieu d'une chaîne vide
-        } else {
-            $this->selectedFilter = $filter;
-        }
+        $this->selectedFilter = $filter;
         $this->resetPage();
-    }
-    public function updatedSelectedFilter($value)
-    {
-        if ($value === '') {
-            $this->selectedFilter = null;
-        }
     }
 
     public function getFilterOptions()
@@ -79,9 +86,30 @@ class StudentDashboard extends Component
         return $options;
     }
 
+    public function openCancelModal($id)
+    {
+        $this->requestIdToCancel = $id;
+        $this->showCancelModal = true;
+    }
+
+    public function confirmCancelRequest()
+    {
+        $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
+        $request->status = SchoolRequestStatus::Cancelled;
+        $request->update();
+        $this->showCancelModal = false;
+        $this->dispatch('requestCancelled');
+        return back()->with('status', __('Status successfully changed.'));
+    }
+
+    public function updateStatus($id)
+    {
+        dd($id);
+    }
+
     public function render()
     {
-        $requests = SchoolRequest::query()
+        $requests = SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
             ->when($this->selectedFilter, function ($query) {
                 return $query->where('status', $this->selectedFilter);
             })

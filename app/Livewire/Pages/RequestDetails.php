@@ -15,7 +15,7 @@ class RequestDetails extends Component
     }
     public function render()
     {
-        $request=SchoolRequest::with('media')->findOrFail($this->id);
+        $request=SchoolRequest::query()->with('media')->findOrFail($this->id);
         return view('livewire.pages.request-details',[
             'requests'=>$request,
             'medias'=>$request->getMedia('school-request')

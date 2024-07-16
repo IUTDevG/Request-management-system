@@ -21,7 +21,7 @@
 <header
     class="flex fixed top-0 flex-wrap sm:justify-start sm:flex-col z-50 w-full bg-background border-b border-border text-sm pb-2 sm:pb-0">
     <!-- Topbar -->
-    <div class="max-w-[85rem] mx-auto w-full px-4 sm:px-6 lg:px-8 mt-2">
+    <div class="max-w-[85rem] mx-auto w-full px-4 sm:px-6 lg:px-8 mt-2 flex items-center justify-end">
         <div class="flex items-center justify-end gap-x-5 w-full py-2 sm:pt-2 sm:pb-0">
 
             <div

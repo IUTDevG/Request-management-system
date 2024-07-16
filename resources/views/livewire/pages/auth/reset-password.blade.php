@@ -1,5 +1,4 @@
-<div class="w-full bg-background lg:w-1/2 flex items-center justify-center">
-    <div class="max-w-md w-full p-6">
+<div class="max-w-md w-full p-6">
         <!--<div class="flex justify-center">
             <img src="assets/images/logo.png" class="size-12" alt="logo">
         </div>-->
@@ -28,7 +27,7 @@
                 <label for="password" class="block text-sm font-medium">{{__('Password')}}</label>
                 <input type="password" id="password" name="password" wire:model='password'
                        class="mt-1 p-2 w-full border rounded-md focus:border-green-600 focus:ring-green-600 bg-background focus:outline-none focus:ring-2 transition-colors duration-300">
-                       <x-input-error for='password'></x-input-error>
+                <x-input-error for='password'></x-input-error>
             </div>
             <div>
                 <label for="password_confirmation" class="block text-sm font-medium">{{__('Password confirmation')}}</label>
@@ -49,4 +48,3 @@
             </a>
         </div>
     </div>
-</div>
