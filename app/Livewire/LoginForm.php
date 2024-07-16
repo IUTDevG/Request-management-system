@@ -28,8 +28,8 @@ class LoginForm extends Component
             'password' => ['required', Password::min(6)]
         ]);
         $user = User::where('email', $this->email)->orWhere('matricule', $this->email)->first();
-//        dd($user->collectRoles);
-        if (($user && $user->matricule == null ) || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember) ) {
+        // dd($user->collectRoles);
+        if (($user && $user->matricule == null && $user->hasRole(RoleType::STUDENT) ) || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember) ) {
             if(Auth::attempt(['matricule'=>$this->email, 'password'=>$this->password, 'is_activated' => true], $this->remember)){
                 session()->flash('success', 'Connexion reussie');
                 redirect()->route('student.home');
