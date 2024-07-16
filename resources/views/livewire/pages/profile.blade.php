@@ -1,8 +1,16 @@
 <div>
+    {{--    @dd($name)--}}
     <div class="transition-all duration-200 lg:ml-64 ml-0 mt-20 min-h-[calc(100vh-80px)]">
         <section class="">
             <div class="container mx-auto">
                 <div class="p-6 rounded-lg shadow-front-2">
+                    <x-profile-avatar
+                        size="md"
+                        class="mb-5"
+                        :alt="$name"
+                        :src="$avatarUrl"
+                        wire:model="avatar"
+                    />
                     <x-form-section class="lg:grid gap-7" submit="updateProfile">
                         <x-slot name="title">
                             {{ __('Your informations') }}
@@ -21,27 +29,31 @@
                                 <x-input-error for="name"/>
                             </div>
                             <div class="mb-3">
-                                <x-label for="title" value="{{ __('firstName') }}"/>
+                                <x-label for="title" value="{{ __('Firstname') }}"/>
                                 <x-input id="firstName" wire="firstName"
                                          type="text"/>
                                 <x-input-error for="firstName"/>
                             </div>
                             <div class="mb-3">
-                                <x-label for="username" value="{{ __('Username') }}"/>
+                                <x-label for="username" value="{!! __('Username') !!}"/>
                                 <x-input id="username" wire="username"
                                          type="text"/>
                                 <x-input-error for="username"/>
                             </div>
-
-
+                            <div class="mb-3">
+                                <x-label for="email" value="{{ __('Email address') }}"/>
+                                <x-input id="email" wire="email"
+                                         type="email"/>
+                                <x-input-error for="email"/>
+                            </div>
                         </x-slot:form>
 
                         <x-slot:actions>
                             <div class="flex flex-col sm:flex-row items-center w-full">
                                 <x-flash-message class="mr-3" on="submit">
-                                    @if (session('status'))
+                                    @if (session('success'))
                                         <div class="text-green-500">
-                                            {{ session('status') }}
+                                            {{ session('success') }}
                                         </div>
                                     @endif
 

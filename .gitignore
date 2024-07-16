@@ -3,7 +3,6 @@
 /public/build
 /public/hot
 /public/storage
-/public/private
 /storage/*.key
 /storage/app/private
 
@@ -21,3 +20,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+!/public/private/

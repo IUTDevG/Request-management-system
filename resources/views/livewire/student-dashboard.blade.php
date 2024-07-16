@@ -442,7 +442,7 @@
                                                                     x-transition:leave-end="opacity-0 scale-95"
                                                                     @keydown.escape.window="open = false"
                                                                     @keydown.tab.prevent="$focus.wrap()"
-                                                                    class="absolute right-[1rem] max-sm:translate-x-[1rem] z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
+                                                                    class="absolute right-[1rem] top-[-1rem] max-sm:translate-x-[1rem] z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
                                                                 >
 
                                                                     <div class="p-1">
