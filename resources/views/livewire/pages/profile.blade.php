@@ -4,13 +4,23 @@
         <section class="">
             <div class="container mx-auto">
                 <div class="p-6 rounded-lg shadow-front-2">
+{{--                    @dd($user)--}}
+
+
                     <x-profile-avatar
                         size="md"
                         class="mb-5"
                         :alt="$name"
                         :src="$avatarUrl"
-                        wire:model="avatar"
-                    />
+                        wire="newAvatar"
+                        default="{{$avatarUrl ??'https://ui-avatars.com/api/?name='.$name.'+'.$firstName .'&background=random&bold=true'}}"
+                    >
+                        <x-slot name="title">
+                            {!! __('Profile Photo') !!}
+                        </x-slot>
+
+                        <x-input-error for="newAvatar"/>
+                    </x-profile-avatar>
                     <x-form-section class="lg:grid gap-7" submit="updateProfile">
                         <x-slot name="title">
                             {{ __('Your informations') }}
@@ -68,6 +78,7 @@
                                 </x-button>
                             </div>
                         </x-slot:actions>
+                {{session('error')}}
                     </x-form-section>
                 </div>
             </div>

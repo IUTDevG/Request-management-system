@@ -18,7 +18,7 @@
 <!-- ========== HEADER ========== -->
 <x-preloader/>
 <header
-    class="flex sticky z-10 flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
+        class="flex sticky z-10 flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
     <!--===Navbar section===-->
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
@@ -31,7 +31,7 @@
 
                 <!--===Global dropdown menu for notification===-->
                 <div
-                    x-data="{
+                        x-data="{
             open: false,
             toggle() {
                 if (this.open) {
@@ -50,10 +50,10 @@
                 focusAfter && focusAfter.focus()
             }
         }"
-                    x-on:keydown.escape.prevent.stop="close($refs.button)"
-                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                    x-id="['dropdown-button']"
-                    class="m-1 relative inline-flex">
+                        x-on:keydown.escape.prevent.stop="close($refs.button)"
+                        x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                        x-id="['dropdown-button']"
+                        class="m-1 relative inline-flex">
                     <button x-ref="button"
                             x-on:click="toggle()"
                             :aria-expanded="open"
@@ -67,42 +67,43 @@
                         </svg>
                         <span class="flex absolute top-0 end-0 -mt-2 -me-2">
                             <span
-                                class="animate-ping absolute inline-flex size-full rounded-full bg-green-400 opacity-75 dark:bg-green-600"></span>
+                                    class="animate-ping absolute inline-flex size-full rounded-full bg-green-400 opacity-75 dark:bg-green-600"></span>
                             <span
-                                class="relative inline-flex text-xs bg-green-500 text-white rounded-full py-0.5 px-1.5">
+                                    class="relative inline-flex text-xs bg-green-500 text-white rounded-full py-0.5 px-1.5">
                               9+
                             </span>
                             </span>
                     </button>
                     <div
-                        x-ref="panel"
-                        x-show="open"
-                        x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 scale-90"
-                        x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-300"
-                        x-transition:leave-start="opacity-100 scale-100"
-                        x-transition:leave-end="opacity-0 scale-90"
-                        x-on:click.outside="close($refs.button)"
-                        :id="$id('dropdown-button')"
-                        style="position: absolute;
+                            x-ref="panel"
+                            x-show="open"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-300"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90"
+                            x-on:click.outside="close($refs.button)"
+                            :id="$id('dropdown-button')"
+                            style="position: absolute;
                         width: max-content;
                             inset: 0 0 auto auto;
                             margin: 0;
                             transform: translate3d(-68px, 70.4px, 0px); "
-                        class="right-0 z-50  divide-y divide-gray-100 bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
+                            class="right-0 z-50  divide-y divide-gray-100 bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
                     >
                         <div
-                            class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
+                                class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
                             Notifications
                         </div>
                         <div
-                            class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
+                                class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
                             <a href="#"
                                class="flex px-4 py-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
                                 <div class="w-full ps-3">
                                     <div class="text-foreground text-sm mb-1.5">New message from <span
-                                            class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>: "Your
+                                                class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>:
+                                        "Your
                                         request is here"
                                     </div>
                                     <div class="text-xs text-green-600 dark:text-green-500">a few moments ago</div>
@@ -115,7 +116,7 @@
                                 <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
                                     <path
-                                        d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                                            d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
                                 </svg>
                                 View all
                             </div>
@@ -124,7 +125,7 @@
                 </div>
                 <!--===Global dropdown menu for profile===-->
                 <div
-                    x-data="{
+                        x-data="{
             open: false,
             toggle() {
                 if (this.open) {
@@ -143,10 +144,10 @@
                 focusAfter && focusAfter.focus()
             }
         }"
-                    x-on:keydown.escape.prevent.stop="close($refs.button)"
-                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                    x-id="['dropdown-button']"
-                    class="relative inline-flex">
+                        x-on:keydown.escape.prevent.stop="close($refs.button)"
+                        x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                        x-id="['dropdown-button']"
+                        class="relative inline-flex">
                     <button x-ref="button"
                             x-on:click="toggle()"
                             :aria-expanded="open"
@@ -154,9 +155,14 @@
                             type="button"
                             class="inline-flex items-center gap-x-2 text-sm font-medium shadow-sm disabled:opacity-50 disabled:pointer-events-none ">
                             <span class="relative inline-block">
-                                <img class="inline-block size-8 rounded-full"
-                                     src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-                                     alt="Image Description">
+                                @php
+                                    $user = \App\Models\User::query()->find(auth()->user()->id);
+                                        $src=\Illuminate\Support\Facades\Storage::url($user->avatar)
+                                @endphp
+                                <img wire:poll class="inline-block size-8 rounded-full"
+                                     src="{{$src}}"
+                                     alt="{{$user->full_name}}"
+                                title="{{$user->full_name}}">
                             </span>
                     </button>
 
@@ -182,7 +188,7 @@
                         </div>
                         <div class="relative">
                             <div
-                                x-data="{
+                                    x-data="{
         open: false,
         toggle() {
             this.open = !this.open
@@ -191,44 +197,45 @@
             this.open = false
         }
     }"
-                                x-on:keydown.escape.prevent.stop="close()"
-                                x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                                x-id="['dropdown-button']"
-                                class="relative mt-2"
-                                x-on:mouseenter="open = true"
-                                x-on:mouseleave="close()"
+                                    x-on:keydown.escape.prevent.stop="close()"
+                                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                                    x-id="['dropdown-button']"
+                                    class="relative mt-2"
+                                    x-on:mouseenter="open = true"
+                                    x-on:mouseleave="close()"
                             >
                                 <button
-                                    x-ref="button"
-                                    x-on:click="toggle()"
-                                    :aria-expanded="open"
-                                    :aria-controls="$id('dropdown-button')"
-                                    type="button"
-                                    class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-800 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:focus:ring-blue-400"
+                                        x-ref="button"
+                                        x-on:click="toggle()"
+                                        :aria-expanded="open"
+                                        :aria-controls="$id('dropdown-button')"
+                                        type="button"
+                                        class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-800 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:focus:ring-blue-400"
                                 >
                                     <span>{!! __('Theme') !!}</span>
                                     <svg
-                                        class="ms-2 size-4 flex-shrink-0 transition-transform duration-200 ease-in-out sm:rotate-0"
-                                        :class="{ '-rotate-180': open }"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                            class="ms-2 size-4 flex-shrink-0 transition-transform duration-200 ease-in-out sm:rotate-0"
+                                            :class="{ '-rotate-180': open }"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
                                     >
                                         <path d="m6 9 6 6 6-6"/>
                                     </svg>
                                 </button>
                                 <div
-                                    x-ref="panel"
-                                    x-show="open"
-                                    x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 transform scale-95"
-                                    x-transition:enter-end="opacity-100 transform scale-100"
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100 transform scale-100"
-                                    x-transition:leave-end="opacity-0 transform scale-95"
-                                    x-on:click.outside="close($refs.button)"
-                                    :id="$id('dropdown-button')"
-                                    class="absolute right-0 text-gray-800 dark:text-neutral-300 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-900 dark:ring-neutral-700 sm:w-56"
+                                        x-ref="panel"
+                                        x-show="open"
+                                        x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 transform scale-95"
+                                        x-transition:enter-end="opacity-100 transform scale-100"
+                                        x-transition:leave="transition ease-in duration-150"
+                                        x-transition:leave-start="opacity-100 transform scale-100"
+                                        x-transition:leave-end="opacity-0 transform scale-95"
+                                        x-on:click.outside="close($refs.button)"
+                                        :id="$id('dropdown-button')"
+                                        class="absolute right-0 text-gray-800 dark:text-neutral-300 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-900 dark:ring-neutral-700 sm:w-56"
                                 >
                                     <button @click="setTheme('light')" data-value="default"
                                             class="flex w-full items-center rounded-md p-2 transition-colors duration-150 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -297,13 +304,14 @@
 </header>
 <!-- ========== END HEADER ========== -->
 <div class="min-h-screen">
-{{$slot}}
+    {{$slot}}
 </div>
 <!-- ========== FOOTER ========== -->
 <footer
-    class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
+        class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
     <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-        &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500" target="_blank">IUT</a>. {{__('All rights reserved.')}}
+        &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500"
+                            target="_blank">IUT</a>. {{__('All rights reserved.')}}
     </p>
 </footer>
 <!-- ========== END FOOTER ========== -->

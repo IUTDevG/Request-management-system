@@ -4,13 +4,17 @@ namespace App\Livewire\Pages;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('livewire.layout.student'), Title('Profile')]
 class Profile extends Component
 {
+    use WithFileUploads;
+public $user;
     public $avatar;
     public $avatarUrl;
     public $id;
@@ -18,6 +22,7 @@ class Profile extends Component
     public $firstName;
     public $username;
     public $email;
+    public $newAvatar;
 
     public function mount(): void
     {
@@ -27,6 +32,8 @@ class Profile extends Component
         $this->firstName = $user->firstName;
         $this->username = $user->username;
         $this->email = $user->email;
+        $this->avatarUrl = $user->avatar ? Storage::url($user->avatar) : null;
+        $this->user=$user;
     }
 
     public function updateProfile(): void
@@ -36,21 +43,35 @@ class Profile extends Component
             'firstName' => 'nullable|string|not_regex:/[0-9]/',
             'username' => 'string|required',
             'email' => 'required|email|unique:users,email,' . $this->id,
+            'newAvatar' => 'nullable|image|max:1024', // max 1MB
         ]);
         DB::beginTransaction();
         try {
 
-        User::query()->where('id', $this->id)->update([
-            'name' => $this->name,
-            'firstName' => $this->firstName,
-            'username' => $this->username,
-            'email' => $this->email,
-            'updated_at' => now(),
-        ]);
-        DB::commit();
-        session()->flash('success', 'Profile updated successfully.');
-        }
-        catch (\Exception $e) {
+            $user = User::query()->find($this->id);
+
+            $user->name = $this->name;
+            $user->firstName = $this->firstName;
+            $user->username = $this->username;
+            $user->email = $this->email;
+
+            if ($this->newAvatar) {
+                // Supprimer l'ancienne image si elle existe
+                if ($user->avatar) {
+                    Storage::delete($user->avatar);
+                }
+
+                // Enregistrer la nouvelle image
+                $avatarPath = $this->newAvatar->store('avatars', 'public');
+                $user->avatar = $avatarPath;
+                $this->avatarUrl = Storage::url($avatarPath);
+            }
+
+            $user->save();
+            DB::commit();
+            session()->flash('success', 'Profile updated successfully.');
+            $this->newAvatar = null;
+        } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'An error occurred while updating your profile.');
         }

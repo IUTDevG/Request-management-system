@@ -10,6 +10,7 @@
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/pail": "*",
+        "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",

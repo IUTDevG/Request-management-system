@@ -1,6 +1,6 @@
 @use('App\Enums\SchoolRequestStatus')
 <div>
-    {{--    @dd($requests->title)--}}
+{{--        @dd($requests)--}}
     <div class="transition-all duration-200 lg:ml-64 ml-0 mt-20 min-h-[calc(100vh-80px)]">
         <section class="px-4">
             @if($requests->status === SchoolRequestStatus::Draft->value)
@@ -51,7 +51,7 @@
                             <div class="mb-3">
                                 <x-label for="description" value="{{ __('Branche') }}"/>
                                 <x-input disabled
-                                         label="{{ __('Filière') }}" :value="$requests->levels->name"
+                                         label="{{ __('Filière') }}" :value="$requests->level->name"
                                 />
                             </div>
                             <div class="mb-3">

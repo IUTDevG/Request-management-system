@@ -14,6 +14,13 @@ Route::middleware('guest')->group(function () {
 
     Route::get('reset-password/{token}', ResetPassword::class)
         ->name('password.reset');
+    Route::get('auth/{provider}/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'loginSocial'])
+        ->name('socialite.auth');
+
+    Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'callbackSocial'])
+        ->name('socialite.callback');
+    Route::get('/auth/social/username', [\App\Http\Controllers\Auth\SocialiteController::class, 'showUsernameForm'])->name('social.username');
+    Route::post('/auth/social/complete', [\App\Http\Controllers\Auth\SocialiteController::class, 'completeRegistration'])->name('social.complete');
 });
 
 Route::middleware('auth')->group(function () {
