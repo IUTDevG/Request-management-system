@@ -7,9 +7,8 @@
     <title>{{str_replace('-',' ',env('APP_NAME'))}}</title>
     <link rel="preload" href="{{asset('videos/video.mp4')}}" as="video">
     <link rel="preload" href="{{asset('css/video-overlay.css')}}" as="style">
-    <link rel="stylesheet" href="{{asset('build/assets/app.css')}}">
-    <script src="{{asset('build/assets/app.js')}}"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{asset('assets/app.css')}}">
+{{--    <script src="{{asset('assets/app.js')}}"></script>--}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{asset('css/video-overlay.css')}}">
     <script src="{{asset('js/darkMode.js')}}"></script>
