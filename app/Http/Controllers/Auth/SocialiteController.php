@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Filament\Events\Auth\Registered;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Image;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -22,13 +23,13 @@ class SocialiteController extends Controller
         return Socialite::driver($provider)->redirect();
     }
 
-    public function callbackSocial(Request $request, string $provider)
+    public function callbackSocial(Request $request, string $provider): RedirectResponse
     {
         $this->validateProvider($request);
 
-        $response = Socialite::driver($provider)->user();
+        $socialUser = Socialite::driver($provider)->user();
 
-        $email = $response->getEmail();
+        $email = $socialUser->getEmail();
         if (!$email) {
             return redirect()->route('login')->withErrors(['email' => "L'email n'a pas pu être récupéré depuis $provider."]);
         }
@@ -36,38 +37,37 @@ class SocialiteController extends Controller
         $user = User::where('email', $email)->first();
 
         if ($user) {
-            $user->update([$provider . '_id' => $response->getId()]);
+            // Mise à jour des informations existantes
+            $this->updateUserAvatar($user, $socialUser->getAvatar());
+            $user->update([
+                $provider . '_id' => $socialUser->getId(),
+                'username' => $user->username ?? $socialUser->getNickname(),
+            ]);
             Auth::login($user, remember: true);
             return redirect()->route('student.home');
         }
 
         // Stocker les informations de l'utilisateur en session
+        $avatarPath = $this->storeAvatar($socialUser->getAvatar());
         session([
             'social_user' => [
-                'name' => $response->getName() ?? $response->getNickname() ?? $email,
+                'name' => $socialUser->getName(),
                 'email' => $email,
                 'provider' => $provider,
-                'provider_id' => $response->getId(),
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $avatarPath,
+                'username' => $socialUser->getNickname(),
             ]
         ]);
 
-        // Rediriger vers un formulaire pour entrer le nom d'utilisateur
+        // Rediriger vers un formulaire pour confirmer ou modifier le nom d'utilisateur
         return redirect()->route('social.username');
     }
 
-    public function showUsernameForm()
-    {
-        if (!session('social_user')) {
-            return redirect()->route('login');
-        }
-
-        return view('auth.social-username');
-    }
-
-    public function completeRegistration(Request $request)
+    public function completeRegistration(Request $request): RedirectResponse
     {
         $request->validate([
-            'username' => 'required|string|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users,username',
         ]);
 
         $socialUser = session('social_user');
@@ -82,6 +82,7 @@ class SocialiteController extends Controller
             'username' => $request->username,
             'password' => Str::password(),
             $socialUser['provider'] . '_id' => $socialUser['provider_id'],
+            'avatar' => $socialUser['avatar'],
         ]);
 
         event(new Registered($user));
@@ -92,6 +93,39 @@ class SocialiteController extends Controller
         session()->forget('social_user');
 
         return redirect()->route('student.home');
+    }
+
+    protected function storeAvatar($avatarUrl): string
+    {
+        $avatarContent = file_get_contents($avatarUrl);
+        $filename = 'avatars/' . Str::random(40) . '.jpg';
+
+        Storage::put('public/' . $filename, $avatarContent);
+        return $filename;
+    }
+
+    protected function updateUserAvatar(User $user, $newAvatarUrl): void
+    {
+        // Supprimer l'ancien avatar s'il existe
+        if ($user->avatar) {
+            Storage::delete('public/' . $user->avatar);
+        }
+
+        // Stocker le nouvel avatar
+        $avatarPath = $this->storeAvatar($newAvatarUrl);
+        $user->avatar = $avatarPath;
+        $user->save();
+    }
+
+    public function showUsernameForm()
+    {
+        if (!session('social_user')) {
+            return redirect()->route('login');
+        }
+//dd(session('social_user'));
+        $suggestedUsername = session('social_user')['username'];
+
+        return view('auth.social-username', compact('suggestedUsername'));
     }
 
     protected function validateProvider(Request $request): array
