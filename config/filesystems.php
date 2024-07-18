@@ -43,6 +43,12 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private'),
+            'url' => env('APP_URL').'/private',
+            'visibility' => 'private',
+        ],
 
         's3' => [
             'driver' => 's3',
@@ -71,6 +77,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('private') => storage_path('app/private')
     ],
 
 ];
