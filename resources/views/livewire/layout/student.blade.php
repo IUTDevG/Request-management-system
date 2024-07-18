@@ -11,8 +11,8 @@
 
 {{--    @vite(['resources/css/app.css','resources/js/app.js'])--}}
 
-    <link rel="stylesheet" href="{{asset('assets/app.css')}}">
-    <script src="{{asset('assets/app.js')}}"></script>
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <script src="{{asset('js/app.js')}}"></script>
     @stack('styles')
     @livewireStyles
     <script src="{!! asset('js/darkMode.js') !!}"></script>

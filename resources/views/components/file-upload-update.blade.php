@@ -46,12 +46,12 @@
 </div>
 
 @push('styles')
-    @vite('resources/css/utils/filepond.css')
-    <link rel="stylesheet" href="{{asset('build/assets/filepond-B2.css')}}">
-    <link rel="stylesheet" href="{{asset('build/assets/filepond.css')}}"
+{{--    @vite('resources/css/utils/filepond.css')--}}
+    <link rel="stylesheet" href="{{asset('css/filepond-B2.css')}}">
+    <link rel="stylesheet" href="{{asset('css/filepond.css')}}"
 @endpush
 
 @push('scripts')
-    @vite('resources/js/utils/filepond.js')
-    <script src="{{asset('build/assets/filepond-D.js')}}"></script>
+{{--    @vite('resources/js/utils/filepond.js')--}}
+    <script src="{{asset('js/filepond-D.js')}}"></script>
 @endpush
