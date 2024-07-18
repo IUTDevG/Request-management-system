@@ -47,8 +47,11 @@
 
 @push('styles')
     @vite('resources/css/utils/filepond.css')
+    <link rel="stylesheet" href="{{asset('build/assets/filepond-B2wwZKw1.css')}}">
+    <link rel="stylesheet" href="{{asset('build/assets/filepond-BNaxTkL-.css')}}"
 @endpush
 
 @push('scripts')
     @vite('resources/js/utils/filepond.js')
+    <script src="{{asset('build/assets/filepond-D_0C9SWZ.js')}}"></script>
 @endpush

@@ -9,6 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css','resources/js/app.js'])
+
+    <link rel="stylesheet" href="{{asset('build/assets/app-CeKkj8Yc.css')}}">
+    <script src="{{asset('build/assets/app-BUclEolJ.js')}}"></script>
     @stack('styles')
     @livewireStyles
     <script src="{!! asset('js/darkMode.js') !!}"></script>
