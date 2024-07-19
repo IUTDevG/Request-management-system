@@ -21,6 +21,7 @@ Route::middleware(['guest'])->group(function () {
         ->name('socialite.callback');
     Route::get('/auth/social/username', [\App\Http\Controllers\Auth\SocialiteController::class, 'showUsernameForm'])->name('social.username');
     Route::post('/auth/social/complete', [\App\Http\Controllers\Auth\SocialiteController::class, 'completeRegistration'])->name('social.complete');
+    Route::redirect('/auth/social/complete', '/');
 });
 
 Route::middleware('auth')->group(function () {
