@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{{--    @vite(['resources/css/app.css','resources/js/app.js'])--}}
-    <link rel="stylesheet" href="{{asset('assets/app.css')}}">
-    <script src="{{asset('assets/app.js')}}"></script>
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    @livewireStyles
     <title>Sign-up page</title>
 </head>
-<body class="font-montserrat">
+<body :class="themeClass" class="font-montserrat">
 
 <!-- ========== HEADER ========== -->
 <header
@@ -54,6 +53,7 @@
 </header>
 <!-- ========== END HEADER ========== -->
 <main class="max-lg:ml-0 max-lg:mt-20 flex">
+    <x-preloader/>
     <!-- Left Pane -->
     <div class="hidden lg:flex items-center justify-center flex-1">
         <div class="w-full text-center">
@@ -76,5 +76,7 @@
     </div>
 </footer>
 <!-- ========== END FOOTER ========== -->
+@stack('scripts')
+@livewireScripts
 </body>
 </html>

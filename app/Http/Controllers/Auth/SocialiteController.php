@@ -10,71 +10,57 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Image;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
 class SocialiteController extends Controller
 {
+    protected const ALLOWED_PROVIDERS = ['google', 'github'];
+
     public function loginSocial(Request $request, string $provider): RedirectResponse
     {
-        $this->validateProvider($request);
-
+        $this->validateProvider($provider);
         return Socialite::driver($provider)->redirect();
     }
 
     public function callbackSocial(Request $request, string $provider): RedirectResponse
     {
-        $this->validateProvider($request);
+        $this->validateProvider($provider);
 
-        $socialUser = Socialite::driver($provider)->user();
+        try {
+            $socialUser = Socialite::driver($provider)->user();
+        } catch (\Exception $e) {
+            return redirect()->route('login')->withErrors(['error' => __("An error occurred while connecting with :provider.", ['provider' => $provider])]);
+        }
 
         $email = $socialUser->getEmail();
         if (!$email) {
-            return redirect()->route('login')->withErrors(['email' => "L'email n'a pas pu être récupéré depuis $provider."]);
+            return redirect()->route('login')->withErrors(['email' => __("The email could not be retrieved from :provider.", ['provider' => $provider])]);
         }
 
-        $user = User::where('email', $email)->first();
+        $user = User::firstOrNew(['email' => $email]);
 
-        if ($user) {
-            // Mise à jour des informations existantes
-            $this->updateUserAvatar($user, $socialUser->getAvatar());
-            $user->update([
-                $provider . '_id' => $socialUser->getId(),
-                'username' => $user->username ?? $socialUser->getNickname(),
-            ]);
-            Auth::login($user, remember: true);
-            return redirect()->route('student.home');
+        if ($user->exists) {
+            $this->updateExistingUser($user, $socialUser, $provider);
+        } else {
+            return $this->handleNewUser($socialUser, $provider);
         }
 
-        // Stocker les informations de l'utilisateur en session
-        $avatarPath = $this->storeAvatar($socialUser->getAvatar());
-        session([
-            'social_user' => [
-                'name' => $socialUser->getName(),
-                'email' => $email,
-                'provider' => $provider,
-                'provider_id' => $socialUser->getId(),
-                'avatar' => $avatarPath,
-                'username' => $socialUser->getNickname(),
-            ]
-        ]);
-
-        // Rediriger vers un formulaire pour confirmer ou modifier le nom d'utilisateur
-        return redirect()->route('social.username');
+        Auth::login($user, remember: true);
+        return redirect()->route('student.home');
     }
 
     public function completeRegistration(Request $request): RedirectResponse
     {
-        $request->validate([
-            'username' => 'required|string|max:255|unique:users,username',
-        ]);
-
         $socialUser = session('social_user');
 
         if (!$socialUser) {
-            return redirect()->route('login');
+            return $this->redirectWithError('login', __('Missing session information.'));
         }
+
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users,username',
+        ]);
 
         $user = User::create([
             'name' => $socialUser['name'],
@@ -86,13 +72,27 @@ class SocialiteController extends Controller
         ]);
 
         event(new Registered($user));
-
         Auth::login($user, remember: true);
-
-        // Nettoyer la session
         session()->forget('social_user');
 
         return redirect()->route('student.home');
+    }
+
+    public function showUsernameForm()
+    {
+        if (!session('social_user')) {
+            return redirect()->route('login');
+        }
+
+        $suggestedUsername = session('social_user')['username'];
+        return view('auth.social-username', compact('suggestedUsername'));
+    }
+
+    protected function validateProvider(string $provider): void
+    {
+        if (!in_array($provider, self::ALLOWED_PROVIDERS)) {
+            abort(404, __('Invalid provider.'));
+        }
     }
 
     protected function storeAvatar($avatarUrl): string
@@ -106,33 +106,43 @@ class SocialiteController extends Controller
 
     protected function updateUserAvatar(User $user, $newAvatarUrl): void
     {
-        // Supprimer l'ancien avatar s'il existe
         if ($user->avatar) {
             Storage::delete('public/' . $user->avatar);
         }
 
-        // Stocker le nouvel avatar
         $avatarPath = $this->storeAvatar($newAvatarUrl);
         $user->avatar = $avatarPath;
         $user->save();
     }
 
-    public function showUsernameForm()
+    private function updateExistingUser(User $user, $socialUser, string $provider): void
     {
-        if (!session('social_user')) {
-            return redirect()->route('login');
-        }
-//dd(session('social_user'));
-        $suggestedUsername = session('social_user')['username'];
-
-        return view('auth.social-username', compact('suggestedUsername'));
+        $this->updateUserAvatar($user, $socialUser->getAvatar());
+        $user->update([
+            $provider . '_id' => $socialUser->getId(),
+            'username' => $user->username ?? $socialUser->getNickname(),
+        ]);
     }
 
-    protected function validateProvider(Request $request): array
+    private function handleNewUser($socialUser, string $provider): RedirectResponse
     {
-        return Validator::make(
-            $request->route()->parameters(),
-            ['provider' => 'in:google,github']
-        )->validate();
+        $avatarPath = $this->storeAvatar($socialUser->getAvatar());
+        session([
+            'social_user' => [
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $avatarPath,
+                'username' => $socialUser->getNickname(),
+            ]
+        ]);
+
+        return redirect()->route('social.username');
+    }
+
+    private function redirectWithError(string $route, string $message): RedirectResponse
+    {
+        return redirect()->route($route)->withErrors(['error' => $message]);
     }
 }

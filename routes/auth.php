@@ -5,7 +5,7 @@ use App\Livewire\ResetPassword;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::get('login', \App\Livewire\LoginForm::class)->name('login');
     Route::get('register', \App\Livewire\RegisterForm::class)->name('register');
 
