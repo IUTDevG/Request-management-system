@@ -6,6 +6,7 @@ use App\Enums\SchoolRequestStatus;
 use App\Filament\Admin\Resources\SchoolRequestResource\Pages;
 use App\Filament\Admin\Resources\SchoolRequestResource\RelationManagers;
 use App\Models\SchoolRequest;
+use Carbon\Carbon;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,6 +22,7 @@ class SchoolRequestResource extends Resource
 
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
     public static function getNavigationGroup(): string
     {
         return (__('School'));
@@ -122,25 +124,15 @@ class SchoolRequestResource extends Resource
                     ->label(__('User'))
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Created at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('Updated at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
-            ->filtersTriggerAction(
-                fn (Action $action) => $action
-                    ->button()
-                    ->label('Filter'),
-            )
+                Tables\Filters\SelectFilter::make('status')
+                    ->options(function (){
+                        return collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
+                            return [$status->value => $status->label()];
+                        })->toArray();
+                    })
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -177,7 +169,7 @@ class SchoolRequestResource extends Resource
         return [
             'index' => Pages\ListSchoolRequests::route('/'),
 //            'edit' => Pages\EditSchoolRequest::route('/{record}/edit'),
-        'view' => Pages\ViewSchoolRequest::route('/{record}/view'),
+            'view' => Pages\ViewSchoolRequest::route('/{record}/view'),
         ];
     }
 }
