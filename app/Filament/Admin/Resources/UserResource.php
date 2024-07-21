@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Enums\RoleType;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
@@ -22,7 +23,16 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup='Ecole';
+//    protected static ?string $navigationGroup='École';
+    public static function getNavigationGroup(): string
+    {
+        return (__('School'));
+    }
+
+    public static function getModelLabel(): string
+    {
+        return (__('Users'));
+    }
 
 
     public static function form(Form $form): Form
@@ -30,15 +40,18 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label(__('Name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('firstName')
+                    ->label(__('Firstname'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('username')
+                    ->label(__('Username'))
                     ->required()
                     ->maxLength(255),
                 PhoneInput::make('phone_number')
-                    ->label('Numéro de téléphone')
+                    ->label(__('Phone number'))
                     ->countryStatePath('phone_country')
                     ->required()
                     ->startsWith(
@@ -56,12 +69,13 @@ class UserResource extends Resource
                     ->onlyCountries(['CM'])
                     ->initialCountry('CM'),
                 Forms\Components\TextInput::make('email')
+                    ->label(__('Email address'))
                     ->email()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Hidden::make('password')
+                    ->label(__('Password'))
                     ->default('password'),
-
 
 
             ]);
@@ -73,16 +87,24 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('firstName')
+                    ->label(__('Firstname'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
-                    ->getStateUsing(function($record){
-                        return $record->getRoleNames();
+                    ->label(__('Role'))
+                    ->getStateUsing(function ($record) {
+                        return $record->getRoleNames()
+                            ->map(function ($roleName) {
+                                return RoleType::tryFrom($roleName)?->label() ?? $roleName;
+                            })
+                            ->implode(', ');
                     }),
                 Tables\Columns\TextColumn::make('department')
-                    ->getStateUsing(function($record){
-                        return($record->getDepartment()->abbreviation ?? null);
+                    ->label(__('Department'))
+                    ->getStateUsing(function ($record) {
+                        return ($record->getDepartment()->abbreviation ?? null);
                     }),
 
 
@@ -92,13 +114,18 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make()
+                        ->label(__('View user'))
+                    ->color('primary'),
+                    Tables\Actions\EditAction::make()
+                        ->label(__('Edit user'))
+                    ->color('secondary'),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->label(__('Delete selected users')),
                 ]),
             ]);
     }

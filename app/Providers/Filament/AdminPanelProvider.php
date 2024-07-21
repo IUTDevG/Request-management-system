@@ -2,9 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Livewire\Settings\LanguageSwitcher;
+use Filament\Forms\Components\View;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -17,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,8 +32,14 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#008751'),
+                'secondary' => Color::hex('#fcd116'),
+                'success' => Color::hex('#004737'),
+                'info' => Color::hex('#00271F'),
+                'warning' => Color::hex('#00170F'),
+                'danger' => Color::hex('#e8001e'),
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([

@@ -23,19 +23,24 @@ class ListUsers extends ListRecords
     {
         return [
             Actions\Action::make('create')
+                ->label(__('Add a user'))
                 ->slideOver(true)
+                ->icon('heroicon-o-plus')
                 ->modalIcon('heroicon-o-user')
                 ->form([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('Name'))
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('firstName')
+                        ->label(__('Firstname'))
                         ->maxLength(255),
                     Forms\Components\TextInput::make('username')
+                        ->label(__('Username'))
                         ->required()
                         ->maxLength(255),
                         PhoneInput::make('phone_number')
-                            ->label('Numéro de téléphone')
+                            ->label(__('Phone number'))
                             ->countryStatePath('phone_country')
                             ->required()
                             ->startsWith(
@@ -53,16 +58,20 @@ class ListUsers extends ListRecords
                             ->onlyCountries(['CM'])
                             ->initialCountry('CM'),
                     Forms\Components\TextInput::make('email')
+                        ->label(__('Email address'))
                         ->email()
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Hidden::make('password')
+                        ->label(__('Password'))
                         ->default('password'),
 
                     Forms\Components\Select::make('role')
+                        ->label(__('Role'))
                         ->required()
                         ->options(Role::all()->pluck('name', 'name')),
                     Forms\Components\Select::make('department_id')
+                        ->label(__('Department'))
                         ->options(Department::all()->pluck('slug', 'id')),
                 ])
                 ->action(function (array $data) {
