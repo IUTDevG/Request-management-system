@@ -123,17 +123,27 @@ class User extends Authenticatable implements FilamentUser,HasMedia
         return null;
     }
 
-    public function assignRoleWithDepartment(string $roleName, int $departmentId = null)
+    public function assignRoleWithDepartment(array $roleName, int $departmentId = null): void
     {
         // Assigner le rôle à l'utilisateur
-        $role = Role::findByName($roleName);
-        $this->assignRole($role);
+        $roles = Role::query()->whereIn('name', $roleName)->get();
+        $this->syncRoles($roles);
+
+        // Vérifier si le département existe, si un departmentId est fourni
+        if ($departmentId !== null) {
+            $departmentExists = Department::where('id', $departmentId)->exists();
+            if (!$departmentExists) {
+                throw new \RuntimeException("Department with ID {$departmentId} does not exist.");
+            }
+        }
 
         // Mettre à jour la table model_has_roles avec le department_id
-        $modelHasRole = DB::table('model_has_roles')
-            ->where('model_id', $this->id)
-            ->where('role_id', $role->id)
-            ->update(['department_id' => $departmentId]);
+        foreach ($roles as $role) {
+            DB::table('model_has_roles')
+                ->where('model_id', $this->id)
+                ->where('role_id', $role->id)
+                ->update(['department_id' => $departmentId]);
+        }
     }
     public function registerMediaCollections(): void
     {
