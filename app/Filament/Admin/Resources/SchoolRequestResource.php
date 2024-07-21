@@ -6,6 +6,7 @@ use App\Enums\SchoolRequestStatus;
 use App\Filament\Admin\Resources\SchoolRequestResource\Pages;
 use App\Filament\Admin\Resources\SchoolRequestResource\RelationManagers;
 use App\Models\SchoolRequest;
+use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -135,6 +136,11 @@ class SchoolRequestResource extends Resource
             ->filters([
                 //
             ])
+            ->filtersTriggerAction(
+                fn (Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
