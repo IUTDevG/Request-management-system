@@ -3,7 +3,9 @@
 namespace App\Livewire\Pages;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -23,6 +25,10 @@ public $user;
     public $username;
     public $email;
     public $newAvatar;
+
+    public $current_password;
+    public $new_password;
+    public $new_password_confirmation;
 
     public function mount(): void
     {
@@ -69,12 +75,35 @@ public $user;
 
             $user->save();
             DB::commit();
-            session()->flash('success', 'Profile updated successfully.');
+            session()->flash('saved-success', 'Profile updated successfully.');
             $this->newAvatar = null;
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'An error occurred while updating your profile.');
         }
+    }
+
+    public function changePassword(): void
+    {
+        $this->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+            'new_password_confirmation' => 'required|min:6',
+        ]);
+        // Vérifier si le mot de paq                                                                                                                                                         asse actuel est correct
+        if (!Hash::check($this->current_password, Auth::user()->password)) {
+            session()->flash('password-error', 'Le mot de passe actuel est incorrect.');
+            return;
+        }
+        // Mettre à jour le mot de passe
+        User::query()->find(Auth::user()->id)->update([
+            'password' => Hash::make($this->new_password),
+        ]);
+
+        session()->flash('password-success', 'Mot de passe mis à jour avec succès.');
+
+        // Réinitialiser les champs du formulaire
+        $this->reset(['current_password', 'new_password', 'new_password_confirmation']);
     }
 
     public function render()

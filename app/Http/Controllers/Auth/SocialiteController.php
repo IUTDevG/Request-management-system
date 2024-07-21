@@ -8,6 +8,7 @@ use Filament\Events\Auth\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
@@ -50,7 +51,7 @@ class SocialiteController extends Controller
         return redirect()->route('student.home');
     }
 
-    public function completeRegistration(Request $request): RedirectResponse
+   /* public function completeRegistration(Request $request): RedirectResponse
     {
         $socialUser = session('social_user');
 
@@ -60,17 +61,23 @@ class SocialiteController extends Controller
 
         $request->validate([
             'username' => 'required|string|max:255|unique:users,username',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $user = User::create([
+        $userData = [
             'name' => $socialUser['name'],
             'email' => $socialUser['email'],
             'username' => $request->username,
-            'password' => Str::password(),
             $socialUser['provider'] . '_id' => $socialUser['provider_id'],
             'avatar' => $socialUser['avatar'],
-        ]);
-
+        ];
+        // If a password is provided, hash it. Otherwise, generate a random password.
+        if ($request->filled('password')) {
+            $userData['password'] = Hash::make($request->password);
+        } else {
+            $userData['password'] = Hash::make(Str::random(16));
+        }
+        $user = User::create($userData);
         event(new Registered($user));
         Auth::login($user, remember: true);
         session()->forget('social_user');
@@ -86,7 +93,7 @@ class SocialiteController extends Controller
 
         $suggestedUsername = session('social_user')['username'];
         return view('auth.social-username', compact('suggestedUsername'));
-    }
+    }*/
 
     protected function validateProvider(string $provider): void
     {
@@ -138,7 +145,7 @@ class SocialiteController extends Controller
             ]
         ]);
 
-        return redirect()->route('social.username');
+        return redirect()->route('social.complete');
     }
 
     private function redirectWithError(string $route, string $message): RedirectResponse

@@ -13,6 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{asset('css/video-overlay.css')}}">
     <script src="{{asset('js/darkMode.js')}}"></script>
+    @stack('styles')
 </head>
 <body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative">
 <!-- ========== HEADER ========== -->
@@ -286,7 +287,7 @@
                                 {{__('Profile')}}
                             </a>
 
-                            <a href="{{ route('student.logout') }}" wire:navigate
+                            <a href="{{ route('student.logout') }}"
                                class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"

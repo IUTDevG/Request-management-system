@@ -70,7 +70,7 @@
     </div>
 </div>
 
-{{--@push('styles')--}}
+@push('styles')
 {{--    @vite('resources/css/utils/filepond.css')--}}
     <link rel="stylesheet" href="{{asset('css/filepond-B2.css')}}">
     <link rel="stylesheet" href="{{asset('css/filepond.css')}}"

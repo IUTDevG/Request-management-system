@@ -35,7 +35,7 @@ class StudentDashboard extends Component
         $this->resetPage();
     }
 
-    public function closeModal()
+    public function closeModal(): void
     {
         $this->showCancelModal = false;
         $this->requestIdToCancel = null;
@@ -44,7 +44,7 @@ class StudentDashboard extends Component
     }
 
     #[On('modalClosed')]
-    public function onModalClosed()
+    public function onModalClosed(): void
     {
         $this->js("setTimeout(()=>window.location.reload(),100)");
     }
@@ -54,7 +54,7 @@ class StudentDashboard extends Component
         return $this->searchTerm;
     }
 
-    public function sortBy($column)
+    public function sortBy($column): void
     {
         if ($this->sortColumn === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
@@ -64,13 +64,13 @@ class StudentDashboard extends Component
         }
     }
 
-    public function setFilter($filter)
+    public function setFilter($filter): void
     {
         $this->selectedFilter = $filter;
         $this->resetPage();
     }
 
-    public function getFilterOptions()
+    public function getFilterOptions(): array
     {
         $options = [
             ['value' => '', 'label' => __('View all')]
@@ -86,13 +86,13 @@ class StudentDashboard extends Component
         return $options;
     }
 
-    public function openCancelModal($id)
+    public function openCancelModal($id): void
     {
         $this->requestIdToCancel = $id;
         $this->showCancelModal = true;
     }
 
-    public function confirmCancelRequest()
+    public function confirmCancelRequest(): \Illuminate\Http\RedirectResponse
     {
         $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
         $request->status = SchoolRequestStatus::Cancelled;

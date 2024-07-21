@@ -19,12 +19,12 @@ Route::middleware(['guest'])->group(function () {
 
     Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'callbackSocial'])
         ->name('socialite.callback');
-    Route::get('/auth/social/username', [\App\Http\Controllers\Auth\SocialiteController::class, 'showUsernameForm'])->name('social.username');
-    Route::post('/auth/social/complete', [\App\Http\Controllers\Auth\SocialiteController::class, 'completeRegistration'])->name('social.complete');
-    Route::redirect('/auth/social/complete', '/');
+//    Route::get('/auth/social/username', [\App\Http\Controllers\Auth\SocialiteController::class, 'showUsernameForm'])->name('social.username');
+    Route::get('/auth/social/complete', \App\Livewire\Auth\CompleteRegistration::class)->name('social.complete');
+//    Route::redirect('/auth/social/complete', '/');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','student.role'])->group(function () {
     Route::prefix('student')->group(function () {
         Route::get('/', \App\Livewire\StudentDashboard::class)
             ->name('student.home');
@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', \App\Livewire\Pages\Profile::class)->name('student.profile');
     });
 
-    Route::get('/logout', function () {
+    Route::get('/logout', static function () {
         auth()->logout();
         return redirect(route('login'));
     })->name('student.logout');
