@@ -1,7 +1,6 @@
 @use('App\Enums\SchoolRequestStatus')
 <div>
 
-    {{--@dd(auth()->user()->id)--}}
     <!-- Toast -->
     @if (session('status'))
         <x-status type="success" position="top-right">

@@ -15,7 +15,6 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use PhpOption\None;
 
 class User extends Authenticatable implements FilamentUser,HasMedia
 {

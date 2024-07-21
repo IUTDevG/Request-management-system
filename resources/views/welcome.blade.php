@@ -16,6 +16,8 @@
 </head>
 
 <body :class="themeClass" class="overflow-x-hidden bg-background/95">
+
+{{--@dd(auth()->user()->roles())--}}
 @session('error')
 
 <x-error> {!! session('error') !!} .</x-error>

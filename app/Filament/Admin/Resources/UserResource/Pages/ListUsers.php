@@ -88,7 +88,7 @@ class ListUsers extends ListRecords
                     $user = User::create($data);
                     $user->assignRoleWithDepartment($data['role'], $data['department_id']);
                     Notification::make('user_created_successfuly')
-                        ->title('Cree avec succes')
+                        ->title(__('User created successfully'))
                         ->body('Un utilisateur avec le role ' . implode(', ', $data['role']) . ' a ete cree avec succes')
                         ->success()
                         ->send();

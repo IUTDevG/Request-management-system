@@ -94,6 +94,7 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
                     ->label(__('Role'))
+                    ->limit(25)
                     ->getStateUsing(function ($record) {
                         return $record->getRoleNames()
                             ->map(function ($roleName) {
@@ -103,6 +104,7 @@ class UserResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('department')
                     ->label(__('Department'))
+                    ->badge()
                     ->getStateUsing(function ($record) {
                         return ($record->getDepartment()->abbreviation ?? null);
                     }),
