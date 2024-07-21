@@ -4,13 +4,23 @@
         <section class="">
             <div class="container mx-auto">
                 <div class="p-6 rounded-lg shadow-front-2">
+                    {{--                    @dd($user)--}}
+
+
                     <x-profile-avatar
                         size="md"
                         class="mb-5"
                         :alt="$name"
                         :src="$avatarUrl"
-                        wire:model="avatar"
-                    />
+                        wire="newAvatar"
+                        default="{{$avatarUrl ??'https://ui-avatars.com/api/?name='.$name.'+'.$firstName .'&background=random&bold=true'}}"
+                    >
+                        <x-slot name="title">
+                            {!! __('Profile Photo') !!}
+                        </x-slot>
+
+                        <x-input-error for="newAvatar"/>
+                    </x-profile-avatar>
                     <x-form-section class="lg:grid gap-7" submit="updateProfile">
                         <x-slot name="title">
                             {{ __('Your informations') }}
@@ -50,24 +60,52 @@
 
                         <x-slot:actions>
                             <div class="flex flex-col sm:flex-row items-center w-full">
-                                <x-flash-message class="mr-3" on="submit">
-                                    @if (session('success'))
-                                        <div class="text-green-500">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-
-                                    @if (session('error'))
-                                        <div class="text-red-500">
-                                            {{ session('error') }}
-                                        </div>
-                                    @endif
-                                </x-flash-message>
+                                <x-flash-message class="mr-3" on="saved"/>
                                 <x-button type="submit">
                                     {{ __('Update Profile') }}
                                 </x-button>
                             </div>
                         </x-slot:actions>
+                        {{session('error')}}
+                    </x-form-section>
+                    <x-form-section class="lg:grid gap-7 mt-5" submit="changePassword">
+                        <x-slot name="title">
+                            {{ __('Réinitialisation du mot de passe') }}
+                        </x-slot>
+
+                        <x-slot name="description">
+                            {{ __('Veillez à ce que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé.') }}
+                        </x-slot>
+                        <x-slot:form>
+                            <div class="mb-3">
+                                <x-label value="{{__('Mot de passe actuel')}}"/>
+                                <x-input type="password" wire:model="current_password"/>
+                                <x-input-error for="current_password"/>
+                            </div>
+                            <div class="mb-3">
+                                <x-label value="{{__('Nouveau mot de passe')}}"/>
+                                <x-input type="password" wire:model="new_password"/>
+                                <x-input-error for="new_password"/>
+                            </div>
+                            <div class="mb-3">
+                                <x-label value="{{__('Confirmation du nouveau mot de passe')}}"/>
+                                <x-input type="password" wire:model="new_password_confirmation"/>
+                                <x-input-error for="new_password_confirmation"/>
+                            </div>
+                        </x-slot:form>
+
+
+                        <x-slot:actions>
+                            <div class="flex flex-col sm:flex-row items-center w-full">
+                                <x-flash-message on="password" class="mr-3"/>
+                                <x-button type="submit">
+                                    {{ __('Update Password') }}
+                                </x-button>
+                            </div>
+                        </x-slot:actions>
+                        @session('password-error')
+                        {{session('password-success')}}
+                        @endsession
                     </x-form-section>
                 </div>
             </div>

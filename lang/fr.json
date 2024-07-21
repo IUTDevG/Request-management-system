@@ -99,6 +99,7 @@
     "Update Profile": "Modifier le profil",
     "Your informations": "Vos informations",
     "Information about your": "Informations sur vous.",
+    "Profile Photo": "Photo de profil",
     "Email address": "Adresse email",
     "Verify Email Address": "Vérifier l'adresse e-mail",
     "We check your information...": "Nous vérifions vos informations...",
@@ -125,7 +126,7 @@
     "About": "À propos",
     "My requests": "Mes requêtes",
     "Signed in as:": "Connecté en tant que:",
-    "Title":"Titre",
+    "Title": "Titre",
     "Description": "Description",
     "Submit": "Envoyer",
     "Drag & Drop your file or": "Glisser & Déposer votre fichier ou",
@@ -194,5 +195,9 @@
     "You can't change this request.": "Vous ne pouvez pas modifier cette demande.",
     "The total number of files must be between :min and :max.": "Le nombre total de fichiers doit être entre :min et :max.",
     "Existing Files": "Fichiers existants",
-    "Upload New Files": "Charger de nouveaux fichiers"
+    "Upload New Files": "Charger de nouveaux fichiers",
+    "An error occurred while connecting with :provider.": "Une erreur s'est produite lors de la connexion avec :provider.",
+    "The email could not be retrieved from :provider.": "L'email n'a pas pu être récupéré depuis :provider.",
+    "Missing session information.": "Informations de session manquantes.",
+    "Invalid provider.": "Fournisseur non valide."
 }

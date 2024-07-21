@@ -156,6 +156,9 @@ return [
         'username'=>'nom d\'utilisateur',
         'email' => 'adresse email',
         'password' => 'mot de passe',
+        'current_password' => 'mot de passe actuel',
+        'new_password'=>'nouveau mot de passe',
+        'new_password_confirmation'=>'confirmation du nouveau mot de passe',
         'password_confirmation' => 'confirmation du mot de passe'
     ],
 ];

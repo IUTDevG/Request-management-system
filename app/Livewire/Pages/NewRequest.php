@@ -24,7 +24,7 @@ class NewRequest extends Component
     public $department_id;
     public $files = [];
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
@@ -36,7 +36,7 @@ class NewRequest extends Component
         ];
     }
 
-    public function validationAttributes()
+    public function validationAttributes(): array
     {
         return [
             'title' => __('title'),

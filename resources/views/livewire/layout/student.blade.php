@@ -1,18 +1,19 @@
-<!doctype html>
-<html lang="{{str_replace('_','-',app()->getLocale())}}" x-data="themeSwitcher()">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="themeSwitcher()" x-init="init()">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="application-name" content="{{ config('app.name') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css','resources/js/app.js'])
-    @stack('styles')
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{str_replace('-',' ',env('APP_NAME'))}}</title>
+    <link rel="preload" href="{{asset('videos/video.mp4')}}" as="video">
+    <link rel="preload" href="{{asset('css/video-overlay.css')}}" as="style">
     @livewireStyles
-    <script src="{!! asset('js/darkMode.js') !!}"></script>
-    <title>{{$title.'- IUT'??'Dashboard'}}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{asset('css/video-overlay.css')}}">
+    <script src="{{asset('js/darkMode.js')}}"></script>
+    @stack('styles')
 </head>
 <body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative">
 <!-- ========== HEADER ========== -->
@@ -102,7 +103,8 @@
                                class="flex px-4 py-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
                                 <div class="w-full ps-3">
                                     <div class="text-foreground text-sm mb-1.5">New message from <span
-                                            class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>: "Your
+                                            class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>:
+                                        "Your
                                         request is here"
                                     </div>
                                     <div class="text-xs text-green-600 dark:text-green-500">a few moments ago</div>
@@ -154,9 +156,14 @@
                             type="button"
                             class="inline-flex items-center gap-x-2 text-sm font-medium shadow-sm disabled:opacity-50 disabled:pointer-events-none ">
                             <span class="relative inline-block">
-                                <img class="inline-block size-8 rounded-full"
-                                     src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-                                     alt="Image Description">
+                                @php
+                                    $user = \App\Models\User::query()->find(auth()->user()->id);
+                                        $src=\Illuminate\Support\Facades\Storage::url($user->avatar)
+                                @endphp
+                                <img wire:poll class="inline-block size-8 rounded-full"
+                                     src="{{$src}}"
+                                     alt="{{$user->full_name}}"
+                                     title="{{$user->full_name}}">
                             </span>
                     </button>
 
@@ -210,7 +217,8 @@
                                     <svg
                                         class="ms-2 size-4 flex-shrink-0 transition-transform duration-200 ease-in-out sm:rotate-0"
                                         :class="{ '-rotate-180': open }"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round"
                                     >
@@ -243,7 +251,8 @@
                                     </button>
                                     <button @click="setTheme('dark')" data-value="dark"
                                             class="flex w-full items-center rounded-md p-2 transition-colors duration-150 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        <div class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
+                                        <div
+                                            class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
                                             <svg class="h-4 w-4 fill-slate-400">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                       d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path>
@@ -253,7 +262,8 @@
                                     </button>
                                     <button @click="setTheme('system')" data-value="system"
                                             class="flex w-full items-center rounded-md p-2 transition-colors duration-150 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        <div class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
+                                        <div
+                                            class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
                                             <svg class="h-4 w-4 fill-slate-400">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                       d="M1 4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1.5l.31 1.242c.084.333.36.573.63.808.091.08.182.158.264.24A1 1 0 0 1 11 15H5a1 1 0 0 1-.704-1.71c.082-.082.173-.16.264-.24.27-.235.546-.475.63-.808L5.5 11H4a3 3 0 0 1-3-3V4Zm3-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"></path>
@@ -277,7 +287,7 @@
                                 {{__('Profile')}}
                             </a>
 
-                            <a href="{{ route('student.logout') }}" wire:navigate
+                            <a href="{{ route('student.logout') }}"
                                class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
@@ -295,15 +305,17 @@
     </nav>
     <!-- ========== END NAVBAR ========== -->
 </header>
+{{--@dd(request()->method())--}}
 <!-- ========== END HEADER ========== -->
 <div class="min-h-screen">
-{{$slot}}
+    {{$slot}}
 </div>
 <!-- ========== FOOTER ========== -->
 <footer
     class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
     <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-        &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500" target="_blank">IUT</a>. {{__('All rights reserved.')}}
+        &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500"
+                            target="_blank">IUT</a>. {{__('All rights reserved.')}}
     </p>
 </footer>
 <!-- ========== END FOOTER ========== -->

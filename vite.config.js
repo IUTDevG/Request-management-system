@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 
-dotenv.config()
+// dotenv.config()
 export default defineConfig({
     process:{
         env:true
@@ -19,7 +19,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
+   /* server: {
         host: process.env.VITE_URL
-    },
+    },*/
 });

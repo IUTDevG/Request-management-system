@@ -3,11 +3,12 @@
 
     {{--@dd(auth()->user()->id)--}}
     <!-- Toast -->
-    @session('status')
+    @if (session('status'))
+        <x-status type="success" position="top-right">
+            {!! session('status') !!}
+        </x-status>
+    @endif
 
-    <x-status> {!! session('status') !!} .</x-status>
-
-    @endsession
     @session('error')
 
     <x-error> {!! session('error') !!} .</x-error>
@@ -69,7 +70,7 @@
                     <div class="w-full sm:w-auto">
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                <svg wire:loading.remove.delay.default="1" wire:target="searchTerm"
+                                <svg wire:loading.remove.delay.default="" wire:target="searchTerm"
                                      class="flex-shrink-0 size-4 text-gray-400 dark:text-white/60"
                                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -77,7 +78,7 @@
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <path d="m21 21-4.3-4.3"></path>
                                 </svg>
-                                <svg wire:loading.delay.default="" wire:target="searchTerm"
+                                <svg wire:loading.delay.default wire:target="searchTerm"
                                      class="flex-shrink-0 size-4 text-gray-400 animate-spin dark:text-gray-500"
                                      fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path clip-rule="evenodd"
@@ -247,11 +248,11 @@
                                         @foreach($requests as $request)
                                             <tr
                                                 class="[@media(hover:hover)]:transition [@media(hover:hover)]:duration-75 hover:bg-gray-50 dark:hover:bg-white/5"
-                                                wire:key="">
+                                                wire:key="{{ $request->id }}">
 
 
                                                 <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
-                                                    wire:key="{!! $request->id !!}.column.title">
+                                                >
                                                     <div class="">
                                                         <a
                                                             href="{{ route('student.request.details',$request->id) }}"
@@ -283,7 +284,7 @@
                                                 </td>
 
                                                 <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
-                                                    wire:key="{!! $request->id !!}.column.status">
+                                                >
                                                     <a href="{{ route('student.request.details',$request->id) }}"
                                                        class="flex w-full disabled:pointer-events-none justify-start text-start">
                                                         <div class="grid w-full gap-y-1 px-3 py-4">
@@ -344,7 +345,7 @@
                                                 </td>
 
                                                 <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
-                                                    wire:key="{!! $request->id !!}.column.created_at">
+                                                >
                                                     <div class="">
                                                         <a
                                                             href="{{ route('student.request.details',$request->id) }}"
@@ -378,7 +379,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3"
-                                                    wire:key="{!! $request->id !!}.column.updated_at">
+                                                >
                                                     <div class="">
                                                         <a
                                                             href="{{ route('student.request.details',$request->id) }}"
@@ -470,7 +471,7 @@
                                                                         @if($request->status !== SchoolRequestStatus::Cancelled->value)
 
                                                                             <button type="button"
-                                                                                    wire:click="openCancelModal({!! $request->id !!})"
+                                                                                    wire:click="openCancelModal({{ $request->id }})"
                                                                                     wire:key="{!! $request->id !!}"
                                                                                     class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-primary-500 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
                                                                                 <svg class="size-5" wire:loading.remove
@@ -684,11 +685,13 @@
     <!--====End Body====-->
 
 </div>
-<script>
-    document.addEventListener('livewire:initialized', () => {
-        @this.
-        on('modalClosed', () => {
-            setTimeout(() => window.location.reload(), 100);
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            @this.
+            on('modalClosed', () => {
+                setTimeout(() => window.location.reload(), 100);
+            });
         });
-    });
-</script>
+    </script>
+@endpush

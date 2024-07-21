@@ -42,9 +42,4 @@
                 </button>
             </div>
         </form>
-        <div>
-            <a href="{{route('student.forgot-password')}}" class="font-semibold text-sm hover:underline text-nowrap">
-                {{__('Forgot your password?')}}
-            </a>
-        </div>
     </div>
