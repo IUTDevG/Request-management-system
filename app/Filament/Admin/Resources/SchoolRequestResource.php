@@ -127,7 +127,7 @@ class SchoolRequestResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options(function (){
+                    ->options(function () {
                         return collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
                             return [$status->value => $status->label()];
                         })->toArray();
@@ -140,12 +140,17 @@ class SchoolRequestResource extends Resource
                         ->label(__('Cancel Request'))
                         ->icon('heroicon-o-arrow-right-on-rectangle')
                         ->color('success')
-                        ->visible(fn(SchoolRequest $record) => $record->status !== SchoolRequestStatus::Cancelled)
+                        ->hidden(function ($record) {
+                            $state = $record->status;
+                            if ($state === SchoolRequestStatus::Rejected->value) {
+                                return true;
+                            }
+                        })
                         ->requiresConfirmation()
                         ->action(function (SchoolRequest $record) {
 //                            Faire un modal de confirmation pour changer le status
 
-                            $record->status = SchoolRequestStatus::Cancelled;
+                            $record->status = SchoolRequestStatus::Rejected;
                             $record->update();
                         })
                 ]),

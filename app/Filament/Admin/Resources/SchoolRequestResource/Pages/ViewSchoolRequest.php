@@ -24,12 +24,12 @@ class ViewSchoolRequest extends ViewRecord
                     ->modalHeading(__('Reject status'))
                     ->modalDescription(__('Are you sure you want to reject :request ?', ['request' => $this->record->title]))
                     ->action(function ($record) {
-                        $record->status = SchoolRequestStatus::Cancelled;
+                        $record->status = SchoolRequestStatus::Rejected;
                         $record->update();
                     })
                     ->hidden(function ($record) {
                       $state=  $record->status;
-                      if ($state === SchoolRequestStatus::Cancelled->value) {
+                      if ($state === SchoolRequestStatus::Rejected->value) {
                           return true;
                       }
                     })

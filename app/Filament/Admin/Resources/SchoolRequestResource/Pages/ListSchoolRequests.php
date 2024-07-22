@@ -16,4 +16,10 @@ class ListSchoolRequests extends ListRecords
 //            Actions\CreateAction::make(),
         ];
     }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            SchoolRequestResource\Widgets\SchoolRequestOverview::class
+        ];
+    }
 }
