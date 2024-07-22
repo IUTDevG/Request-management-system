@@ -17,7 +17,9 @@ class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->unique()->word,
+            'slug' => $this->faker->unique()->slug,
+            'abbreviation' => strtoupper($this->faker->unique()->lexify('???')),
         ];
     }
 }
