@@ -7,7 +7,9 @@
 /storage/app/private
 
 /vendor
+import pino from 'pino';
 .env
+.rnd
 .env.backup
 .env.production
 .phpactor.json
