@@ -1,24 +1,25 @@
-<!doctype html>
-<html lang="{{str_replace('_','-',app()->getLocale())}}" x-data="themeSwitcher()">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="themeSwitcher()" x-init="init()">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="application-name" content="{{ config('app.name') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css','resources/js/app.js'])
-    @stack('styles')
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{str_replace('-',' ',env('APP_NAME'))}}</title>
+    <link rel="preload" href="{{asset('videos/video.mp4')}}" as="video">
+    <link rel="preload" href="{{asset('css/video-overlay.css')}}" as="style">
     @livewireStyles
-    <script src="{!! asset('js/darkMode.js') !!}"></script>
-    <title>{{$title.'- IUT'??'Dashboard'}}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{asset('css/video-overlay.css')}}">
+    <script src="{{asset('js/darkMode.js')}}"></script>
+    @stack('styles')
 </head>
 <body :class="themeClass" class="bg-gray-50 dark:bg-gray-950 overflow-x-hidden antialiased relative">
 <!-- ========== HEADER ========== -->
 <x-preloader/>
 <header
-        class="flex sticky z-10 flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
+    class="flex sticky z-10 flex-wrap sm:justify-start sm:flex-nowrap bg-white dark:bg-gray-900 antialiased shadow-lg w-full text-sm py-2 sm:py-0">
     <!--===Navbar section===-->
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
@@ -31,7 +32,7 @@
 
                 <!--===Global dropdown menu for notification===-->
                 <div
-                        x-data="{
+                    x-data="{
             open: false,
             toggle() {
                 if (this.open) {
@@ -50,10 +51,10 @@
                 focusAfter && focusAfter.focus()
             }
         }"
-                        x-on:keydown.escape.prevent.stop="close($refs.button)"
-                        x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                        x-id="['dropdown-button']"
-                        class="m-1 relative inline-flex">
+                    x-on:keydown.escape.prevent.stop="close($refs.button)"
+                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                    x-id="['dropdown-button']"
+                    class="m-1 relative inline-flex">
                     <button x-ref="button"
                             x-on:click="toggle()"
                             :aria-expanded="open"
@@ -67,42 +68,42 @@
                         </svg>
                         <span class="flex absolute top-0 end-0 -mt-2 -me-2">
                             <span
-                                    class="animate-ping absolute inline-flex size-full rounded-full bg-green-400 opacity-75 dark:bg-green-600"></span>
+                                class="animate-ping absolute inline-flex size-full rounded-full bg-green-400 opacity-75 dark:bg-green-600"></span>
                             <span
-                                    class="relative inline-flex text-xs bg-green-500 text-white rounded-full py-0.5 px-1.5">
+                                class="relative inline-flex text-xs bg-green-500 text-white rounded-full py-0.5 px-1.5">
                               9+
                             </span>
                             </span>
                     </button>
                     <div
-                            x-ref="panel"
-                            x-show="open"
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90"
-                            x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 scale-100"
-                            x-transition:leave-end="opacity-0 scale-90"
-                            x-on:click.outside="close($refs.button)"
-                            :id="$id('dropdown-button')"
-                            style="position: absolute;
+                        x-ref="panel"
+                        x-show="open"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-90"
+                        x-on:click.outside="close($refs.button)"
+                        :id="$id('dropdown-button')"
+                        style="position: absolute;
                         width: max-content;
                             inset: 0 0 auto auto;
                             margin: 0;
                             transform: translate3d(-68px, 70.4px, 0px); "
-                            class="right-0 z-50  divide-y divide-gray-100 bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
+                        class="right-0 z-50  divide-y divide-gray-100 bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
                     >
                         <div
-                                class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
+                            class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
                             Notifications
                         </div>
                         <div
-                                class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
+                            class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
                             <a href="#"
                                class="flex px-4 py-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
                                 <div class="w-full ps-3">
                                     <div class="text-foreground text-sm mb-1.5">New message from <span
-                                                class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>:
+                                            class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>:
                                         "Your
                                         request is here"
                                     </div>
@@ -116,7 +117,7 @@
                                 <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
                                     <path
-                                            d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                                        d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
                                 </svg>
                                 View all
                             </div>
@@ -125,7 +126,7 @@
                 </div>
                 <!--===Global dropdown menu for profile===-->
                 <div
-                        x-data="{
+                    x-data="{
             open: false,
             toggle() {
                 if (this.open) {
@@ -144,10 +145,10 @@
                 focusAfter && focusAfter.focus()
             }
         }"
-                        x-on:keydown.escape.prevent.stop="close($refs.button)"
-                        x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                        x-id="['dropdown-button']"
-                        class="relative inline-flex">
+                    x-on:keydown.escape.prevent.stop="close($refs.button)"
+                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                    x-id="['dropdown-button']"
+                    class="relative inline-flex">
                     <button x-ref="button"
                             x-on:click="toggle()"
                             :aria-expanded="open"
@@ -162,7 +163,7 @@
                                 <img wire:poll class="inline-block size-8 rounded-full"
                                      src="{{$src}}"
                                      alt="{{$user->full_name}}"
-                                title="{{$user->full_name}}">
+                                     title="{{$user->full_name}}">
                             </span>
                     </button>
 
@@ -188,7 +189,7 @@
                         </div>
                         <div class="relative">
                             <div
-                                    x-data="{
+                                x-data="{
         open: false,
         toggle() {
             this.open = !this.open
@@ -197,45 +198,45 @@
             this.open = false
         }
     }"
-                                    x-on:keydown.escape.prevent.stop="close()"
-                                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                                    x-id="['dropdown-button']"
-                                    class="relative mt-2"
-                                    x-on:mouseenter="open = true"
-                                    x-on:mouseleave="close()"
+                                x-on:keydown.escape.prevent.stop="close()"
+                                x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                                x-id="['dropdown-button']"
+                                class="relative mt-2"
+                                x-on:mouseenter="open = true"
+                                x-on:mouseleave="close()"
                             >
                                 <button
-                                        x-ref="button"
-                                        x-on:click="toggle()"
-                                        :aria-expanded="open"
-                                        :aria-controls="$id('dropdown-button')"
-                                        type="button"
-                                        class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-800 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:focus:ring-blue-400"
+                                    x-ref="button"
+                                    x-on:click="toggle()"
+                                    :aria-expanded="open"
+                                    :aria-controls="$id('dropdown-button')"
+                                    type="button"
+                                    class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-800 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:focus:ring-blue-400"
                                 >
                                     <span>{!! __('Theme') !!}</span>
                                     <svg
-                                            class="ms-2 size-4 flex-shrink-0 transition-transform duration-200 ease-in-out sm:rotate-0"
-                                            :class="{ '-rotate-180': open }"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round"
+                                        class="ms-2 size-4 flex-shrink-0 transition-transform duration-200 ease-in-out sm:rotate-0"
+                                        :class="{ '-rotate-180': open }"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                     >
                                         <path d="m6 9 6 6 6-6"/>
                                     </svg>
                                 </button>
                                 <div
-                                        x-ref="panel"
-                                        x-show="open"
-                                        x-transition:enter="transition ease-out duration-200"
-                                        x-transition:enter-start="opacity-0 transform scale-95"
-                                        x-transition:enter-end="opacity-100 transform scale-100"
-                                        x-transition:leave="transition ease-in duration-150"
-                                        x-transition:leave-start="opacity-100 transform scale-100"
-                                        x-transition:leave-end="opacity-0 transform scale-95"
-                                        x-on:click.outside="close($refs.button)"
-                                        :id="$id('dropdown-button')"
-                                        class="absolute right-0 text-gray-800 dark:text-neutral-300 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-900 dark:ring-neutral-700 sm:w-56"
+                                    x-ref="panel"
+                                    x-show="open"
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 transform scale-95"
+                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                    x-transition:leave-end="opacity-0 transform scale-95"
+                                    x-on:click.outside="close($refs.button)"
+                                    :id="$id('dropdown-button')"
+                                    class="absolute right-0 text-gray-800 dark:text-neutral-300 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-900 dark:ring-neutral-700 sm:w-56"
                                 >
                                     <button @click="setTheme('light')" data-value="default"
                                             class="flex w-full items-center rounded-md p-2 transition-colors duration-150 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -250,7 +251,8 @@
                                     </button>
                                     <button @click="setTheme('dark')" data-value="dark"
                                             class="flex w-full items-center rounded-md p-2 transition-colors duration-150 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        <div class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
+                                        <div
+                                            class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
                                             <svg class="h-4 w-4 fill-slate-400">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                       d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path>
@@ -260,7 +262,8 @@
                                     </button>
                                     <button @click="setTheme('system')" data-value="system"
                                             class="flex w-full items-center rounded-md p-2 transition-colors duration-150 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        <div class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
+                                        <div
+                                            class="flex h-6 w-6 flex-none items-center justify-center rounded-md shadow ring-1 ring-slate-900/10">
                                             <svg class="h-4 w-4 fill-slate-400">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                       d="M1 4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1.5l.31 1.242c.084.333.36.573.63.808.091.08.182.158.264.24A1 1 0 0 1 11 15H5a1 1 0 0 1-.704-1.71c.082-.082.173-.16.264-.24.27-.235.546-.475.63-.808L5.5 11H4a3 3 0 0 1-3-3V4Zm3-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"></path>
@@ -284,7 +287,7 @@
                                 {{__('Profile')}}
                             </a>
 
-                            <a href="{{ route('student.logout') }}" wire:navigate
+                            <a href="{{ route('student.logout') }}"
                                class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
@@ -302,13 +305,14 @@
     </nav>
     <!-- ========== END NAVBAR ========== -->
 </header>
+{{--@dd(request()->method())--}}
 <!-- ========== END HEADER ========== -->
 <div class="min-h-screen">
     {{$slot}}
 </div>
 <!-- ========== FOOTER ========== -->
 <footer
-        class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
+    class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
     <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
         &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500"
                             target="_blank">IUT</a>. {{__('All rights reserved.')}}

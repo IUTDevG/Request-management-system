@@ -62,11 +62,6 @@
                                 </x-button>
                             </div>
 
-                            @if (session('error'))
-                                <div class="text-red-500">
-                                    {{ session('error') }}
-                                </div>
-                            @endif
 
                         </x-slot:actions>
                     </x-form-section>

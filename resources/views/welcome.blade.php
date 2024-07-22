@@ -2,18 +2,27 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="themeSwitcher()" x-init="init()" >
 <head>
     <meta charset="utf-8">
+    <meta name="application-name" content="{{ config('app.name') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{str_replace('-',' ',env('APP_NAME'))}}</title>
     <link rel="preload" href="{{asset('videos/video.mp4')}}" as="video">
     <link rel="preload" href="{{asset('css/video-overlay.css')}}" as="style">
-    <!-- Styles -->
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{asset('css/video-overlay.css')}}">
     <script src="{{asset('js/darkMode.js')}}"></script>
 </head>
 
 <body :class="themeClass" class="overflow-x-hidden bg-background/95">
+
+{{--@dd(auth()->user()->roles())--}}
+@session('error')
+
+<x-error> {!! session('error') !!} .</x-error>
+
+@endsession
 <!--===Loader===-->
 <x-preloader/>
 <!--===End loader===-->
@@ -386,5 +395,7 @@
         }
     });
 </script>
+@stack('scripts')
+@livewireScripts
 </body>
 </html>

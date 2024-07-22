@@ -11,7 +11,6 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Title('Accueil'), Layout('livewire.layout.student')]
 class StudentDashboard extends Component
 {
     use WithPagination;
@@ -35,7 +34,7 @@ class StudentDashboard extends Component
         $this->resetPage();
     }
 
-    public function closeModal()
+    public function closeModal(): void
     {
         $this->showCancelModal = false;
         $this->requestIdToCancel = null;
@@ -44,7 +43,7 @@ class StudentDashboard extends Component
     }
 
     #[On('modalClosed')]
-    public function onModalClosed()
+    public function onModalClosed(): void
     {
         $this->js("setTimeout(()=>window.location.reload(),100)");
     }
@@ -54,7 +53,7 @@ class StudentDashboard extends Component
         return $this->searchTerm;
     }
 
-    public function sortBy($column)
+    public function sortBy($column): void
     {
         if ($this->sortColumn === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
@@ -64,13 +63,13 @@ class StudentDashboard extends Component
         }
     }
 
-    public function setFilter($filter)
+    public function setFilter($filter): void
     {
         $this->selectedFilter = $filter;
         $this->resetPage();
     }
 
-    public function getFilterOptions()
+    public function getFilterOptions(): array
     {
         $options = [
             ['value' => '', 'label' => __('View all')]
@@ -86,13 +85,13 @@ class StudentDashboard extends Component
         return $options;
     }
 
-    public function openCancelModal($id)
+    public function openCancelModal($id): void
     {
         $this->requestIdToCancel = $id;
         $this->showCancelModal = true;
     }
 
-    public function confirmCancelRequest()
+    public function confirmCancelRequest(): \Illuminate\Http\RedirectResponse
     {
         $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
         $request->status = SchoolRequestStatus::Cancelled;
@@ -107,9 +106,9 @@ class StudentDashboard extends Component
         dd($id);
     }
 
-    public function render()
+    public function getRequestsProperty()
     {
-        $requests = SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
+        return SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
             ->when($this->selectedFilter, function ($query) {
                 return $query->where('status', $this->selectedFilter);
             })
@@ -121,9 +120,19 @@ class StudentDashboard extends Component
                 });
             })
             ->orderBy($this->sortColumn, $this->sortDirection);
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.skeleton.placeholder');
+    }
+
+    public function render()
+    {
+        sleep(2);
 
         return view('livewire.student-dashboard', [
-            'requests' => $requests->paginate(4),
+            'requests' => $this->getRequestsProperty()->paginate(4),
             'filterOptions' => $this->getFilterOptions(),
         ]);
     }

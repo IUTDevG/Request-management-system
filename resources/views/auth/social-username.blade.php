@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{str_replace('_','-',app()->getLocale())}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -16,7 +16,7 @@
             Finalisez votre inscription
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
-            Choisissez un nom d'utilisateur unique
+            Choisissez un nom d'utilisateur unique et optionnellement un mot de passe
         </p>
     </div>
 
@@ -34,8 +34,31 @@
                                value="{{ $suggestedUsername }}">
                     </div>
                     @error('username')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    <x-input-error for="username">{{ $message }}</x-input-error>
                     @enderror
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">
+                        Mot de passe (optionnel)
+                    </label>
+                    <div class="mt-1">
+                        <input id="password" name="password" type="password"
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    @error('password')
+                    <x-input-error for="password">{{ $message }}</x-input-error>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
+                        Confirmer le mot de passe
+                    </label>
+                    <div class="mt-1">
+                        <input id="password_confirmation" name="password_confirmation" type="password"
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
                 </div>
 
                 <div>

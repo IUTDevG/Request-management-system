@@ -61,19 +61,22 @@
         "
         class="w-full max-w-lg dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
     >
-            <input  x-ref="input"
-                    type="file"
-                    name="{{ $attributes['wire:model'] }}"
-                    {{ $isMultiple ? 'multiple' : '' }}
-                    data-allow-reorder="true" data-max-files="3" data-max-file-size="1MB"
-            />
-        </div>
+        <input x-ref="input"
+               type="file"
+               name="{{ $attributes['wire:model'] }}"
+               {{ $isMultiple ? 'multiple' : '' }}
+               data-allow-reorder="true" data-max-files="3" data-max-file-size="1MB"
+        />
     </div>
+</div>
 
 @push('styles')
-    @vite('resources/css/utils/filepond.css')
+{{--    @vite('resources/css/utils/filepond.css')--}}
+    <link rel="stylesheet" href="{{asset('css/filepond-B2.css')}}">
+    <link rel="stylesheet" href="{{asset('css/filepond.css')}}"
 @endpush
 
 @push('scripts')
     @vite('resources/js/utils/filepond.js')
+    <script src="{{asset('js/filepond-D.js')}}"></script>
 @endpush
