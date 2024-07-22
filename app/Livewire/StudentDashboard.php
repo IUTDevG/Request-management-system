@@ -11,7 +11,6 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Title('Accueil'), Layout('livewire.layout.student')]
 class StudentDashboard extends Component
 {
     use WithPagination;
@@ -107,9 +106,9 @@ class StudentDashboard extends Component
         dd($id);
     }
 
-    public function render()
+    public function getRequestsProperty()
     {
-        $requests = SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
+        return SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
             ->when($this->selectedFilter, function ($query) {
                 return $query->where('status', $this->selectedFilter);
             })
@@ -121,9 +120,19 @@ class StudentDashboard extends Component
                 });
             })
             ->orderBy($this->sortColumn, $this->sortDirection);
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.skeleton.placeholder');
+    }
+
+    public function render()
+    {
+        sleep(2);
 
         return view('livewire.student-dashboard', [
-            'requests' => $requests->paginate(4),
+            'requests' => $this->getRequestsProperty()->paginate(4),
             'filterOptions' => $this->getFilterOptions(),
         ]);
     }

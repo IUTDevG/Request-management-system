@@ -26,7 +26,7 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth','student.role'])->group(function () {
     Route::prefix('student')->group(function () {
-        Route::get('/', \App\Livewire\StudentDashboard::class)
+        Route::get('/', \App\Livewire\Layout\Dashboard::class)
             ->name('student.home');
         Route::get('/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
         Route::get('/new-request', \App\Livewire\Pages\NewRequest::class)->name('student.new-request');

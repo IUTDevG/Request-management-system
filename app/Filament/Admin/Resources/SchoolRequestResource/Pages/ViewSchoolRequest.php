@@ -18,16 +18,22 @@ class ViewSchoolRequest extends ViewRecord
         return [
             ActionGroup::make([
                 Action::make('Reject_status')
-                    ->icon('heroicon-o-eye-slash')
-                    ->label(__('Review'))
+                    ->icon('heroicon-o-x-circle')
+                    ->label(__('Cancel Request'))
                     ->requiresConfirmation()
                     ->modalHeading(__('Reject status'))
                     ->modalDescription(__('Are you sure you want to reject :request ?', ['request' => $this->record->title]))
                     ->action(function ($record) {
-                        $record->status = SchoolRequestStatus::InReview;
+                        $record->status = SchoolRequestStatus::Rejected;
                         $record->update();
                     })
-                    ->color(Color::Yellow)
+                    ->hidden(function ($record) {
+                      $state=  $record->status;
+                      if ($state === SchoolRequestStatus::Rejected->value) {
+                          return true;
+                      }
+                    })
+                    ->color(Color::Red)
             ])
         ];
     }
