@@ -21,23 +21,23 @@ class LoginForm extends Component
     public string $password;
     public bool $remember = false;
 
-    public function submitForm()
+    public function submitForm(): void
     {
         $this->validate([
             'email' => 'required|max:255',
             'password' => ['required', Password::min(6)]
         ]);
         $user = User::where('email', $this->email)->orWhere('matricule', $this->email)->first();
-        // dd($user->collectRoles);
-        if (($user && $user->matricule == null && $user->hasRole(RoleType::STUDENT) ) || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember) ) {
+        if (($user && $user->matricule === null && $user->hasRole(RoleType::STUDENT) ) || !Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_activated' => true], $this->remember) ) {
+
             if(Auth::attempt(['matricule'=>$this->email, 'password'=>$this->password, 'is_activated' => true], $this->remember)){
-                session()->flash('success', 'Connexion reussie');
+                session()->flash('success', __('Connexion réussie'));
                 redirect()->route('student.home');
             }
             // dd($user);
             session()->flash('error', 'Données d\'authentification incorrect');
         } else {
-            session()->flash('success', 'Connexion reussie');
+            session()->flash('success', 'Connexion réussie');
             redirect()->route('student.home');
         }
 

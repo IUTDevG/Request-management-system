@@ -150,4 +150,15 @@ return [
     'uppercase'            => 'The :attribute field must be uppercase.',
     'url'                  => 'The :attribute must be a valid URL.',
     'uuid'                 => 'The :attribute must be a valid UUID.',
+    'attributes' => [
+        'name'=>'name',
+        'firstName'=>'first name',
+        'username'=>'username',
+        'email' => 'email address',
+        'password' => 'password',
+        'current_password' => 'current password',
+        'new_password'=>'new password',
+        'new_password_confirmation'=>'new password confirmation',
+        'password_confirmation' => 'password confirmation'
+    ],
 ];

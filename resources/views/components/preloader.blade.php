@@ -23,5 +23,6 @@
         <span class="text-4xl font-medium text-gray-500">{{__('Loading...')}}</span>
     </div>
 </div>
-
-<script src="{{asset('js/preloader.js')}}"></script>
+@push('scripts')
+    <script src="{{asset('js/preloader.js')}}"></script>
+@endpush

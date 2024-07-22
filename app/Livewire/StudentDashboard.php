@@ -5,12 +5,12 @@ namespace App\Livewire;
 use App\Enums\SchoolRequestStatus;
 use App\Models\SchoolRequest;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Title('Accueil'), Layout('livewire.layout.student')]
 class StudentDashboard extends Component
 {
     use WithPagination;
@@ -24,12 +24,28 @@ class StudentDashboard extends Component
     #[Url(as: 'direction', history: true)]
     public $sortDirection = 'desc';
 
-    #[Url(as: 'filter', history: true,keep: false)]
+    #[Url(as: 'filter', history: true)]
     public $selectedFilter = '';
+    public $showCancelModal = false;
+    public $requestIdToCancel;
 
     public function updatingSearchTerm($value): void
     {
         $this->resetPage();
+    }
+
+    public function closeModal(): void
+    {
+        $this->showCancelModal = false;
+        $this->requestIdToCancel = null;
+        $this->dispatch('modalClosed');
+        $this->js('window.location.reload()');
+    }
+
+    #[On('modalClosed')]
+    public function onModalClosed(): void
+    {
+        $this->js("setTimeout(()=>window.location.reload(),100)");
     }
 
     public function getDelayedSearchTermProperty()
@@ -37,7 +53,7 @@ class StudentDashboard extends Component
         return $this->searchTerm;
     }
 
-    public function sortBy($column)
+    public function sortBy($column): void
     {
         if ($this->sortColumn === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
@@ -47,23 +63,13 @@ class StudentDashboard extends Component
         }
     }
 
-    public function setFilter($filter)
+    public function setFilter($filter): void
     {
-        if ($filter === '') {
-            $this->selectedFilter = null; // Utilisez null au lieu d'une chaîne vide
-        } else {
-            $this->selectedFilter = $filter;
-        }
+        $this->selectedFilter = $filter;
         $this->resetPage();
     }
-    public function updatedSelectedFilter($value)
-    {
-        if ($value === '') {
-            $this->selectedFilter = null;
-        }
-    }
 
-    public function getFilterOptions()
+    public function getFilterOptions(): array
     {
         $options = [
             ['value' => '', 'label' => __('View all')]
@@ -79,9 +85,30 @@ class StudentDashboard extends Component
         return $options;
     }
 
-    public function render()
+    public function openCancelModal($id): void
     {
-        $requests = SchoolRequest::query()
+        $this->requestIdToCancel = $id;
+        $this->showCancelModal = true;
+    }
+
+    public function confirmCancelRequest(): \Illuminate\Http\RedirectResponse
+    {
+        $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
+        $request->status = SchoolRequestStatus::Cancelled;
+        $request->update();
+        $this->showCancelModal = false;
+        $this->dispatch('requestCancelled');
+        return back()->with('status', __('Status successfully changed.'));
+    }
+
+    public function updateStatus($id)
+    {
+        dd($id);
+    }
+
+    public function getRequestsProperty()
+    {
+        return SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
             ->when($this->selectedFilter, function ($query) {
                 return $query->where('status', $this->selectedFilter);
             })
@@ -93,9 +120,19 @@ class StudentDashboard extends Component
                 });
             })
             ->orderBy($this->sortColumn, $this->sortDirection);
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.skeleton.placeholder');
+    }
+
+    public function render()
+    {
+        sleep(2);
 
         return view('livewire.student-dashboard', [
-            'requests' => $requests->paginate(4),
+            'requests' => $this->getRequestsProperty()->paginate(4),
             'filterOptions' => $this->getFilterOptions(),
         ]);
     }

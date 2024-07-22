@@ -1,5 +1,4 @@
 {{-- The Master doesn't talk, he acts. --}}
-<div class="w-full lg:w-1/2 flex items-center justify-center">
     <div class="max-w-md w-full space-y-4">
         <h1 class="text-4xl font-extrabold text-green-500 mb-6 text-center font-heading">{{__('Welcome Back')}}</h1>
         <h3 class="text-sm font-semibold mb-6 text-center font-heading">{{__('Welcome to the IUT Douala requests portal. Log in to access your services.')}}</h3>
@@ -54,7 +53,8 @@
                     </label>
                 </div>
                 <div>
-                    <a href="{{route('student.forgot-password')}}" class="font-semibold text-sm hover:underline text-nowrap">
+                    <a href="{{route('student.forgot-password')}}"
+                       class="font-semibold text-sm hover:underline text-nowrap">
                         {{__('Forgot your password?')}}
                     </a>
                 </div>
@@ -84,7 +84,7 @@
             </div>
             <div class="mt-6 space-y-2">
                 <div>
-                    <a href=""
+                    <a href="{{ route('socialite.auth', 'github')}}"
                        class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                         <span class="sr-only">Continuer avec Github</span>
                         <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -96,7 +96,7 @@
                     </a>
                 </div>
                 <div>
-                    <a href=""
+                    <a href="{{ route('socialite.auth', 'google') }}"
                        class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                         <span class="sr-only">Continuer avec Google</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 -ml-1" fill="currentColor" aria-hidden="true"
@@ -116,4 +116,3 @@
             </div>
         </div>
     </div>
-</div>
