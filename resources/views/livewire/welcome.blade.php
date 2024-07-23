@@ -103,7 +103,7 @@
 
             <livewire:settings.language-switcher/>
             <a class="px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-green-600 text-green-600 hover:border-green-500 hover:text-green-500 disabled:opacity-50 disabled:pointer-events-none dark:border-green-500 dark:text-green-500 dark:hover:text-green-400 dark:hover:border-green-400"
-               href="{{ route('student.home') }}">{{__('My requests')}}</a>
+               href="@if(auth()->user()) {{ route('student.home') }} @else {{ route('login') }} @endif">{{__('My requests')}}</a>
         </div>
     </div>
     <!-- End Topbar -->
@@ -111,7 +111,7 @@
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
          aria-label="Global">
         <div class="flex items-center justify-between">
-            <a class="flex-none text-xl font-semibold dark:text-white" href="#"
+            <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('home') }}"
                aria-label="Brand">{{__('IUT REQUEST MANAGEMENT')}}</a>
             <div class="sm:hidden">
                 <button type="button"
@@ -155,7 +155,7 @@
             <h2 class="text-3xl font-bold mb-4 dark:text-white">{{__('Simplify request management')}}</h2>
             <p class="text-gray-700 mb-6 dark:text-white">{{__('Our platform enables you to efficiently manage all your student requests, from enrolment applications to complaints and much more.')}}</p>
             <button id="watch-demo"
-                    class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-500 text-foreground hover:bg-green-600 disabled:opacity-50 disabled:pointer-events-none hover:scale-100 transition duration-700 ease-in-out">
+                    class="py-3 px-4 inline-flex text-nowrap items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-500 text-foreground hover:bg-green-600 disabled:opacity-50 disabled:pointer-events-none hover:scale-100 transition-all duration-700 ease-in-out">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"

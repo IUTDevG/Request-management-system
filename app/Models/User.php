@@ -7,18 +7,17 @@ namespace App\Models;
 use Filament\Panel;
 use App\Enums\RoleType;
 use Illuminate\Support\Facades\DB;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use PhpOption\None;
 
-class User extends Authenticatable implements FilamentUser,HasMedia
+class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable,HasRoles,InteractsWithMedia;
+    use HasFactory, Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -39,9 +38,6 @@ class User extends Authenticatable implements FilamentUser,HasMedia
         'last_login_at',
         'last_login_ip',
         'is_activated',
-        'facebook_id',
-        'google_id',
-        'github_id',
     ];
 
     public function google(): ?string
@@ -101,10 +97,10 @@ class User extends Authenticatable implements FilamentUser,HasMedia
 
     public function hasDepartment():bool{
         return DB::table('model_has_roles')
-        ->where('model_id', $this->id)
-        ->where('model_type', get_class($this))
-        ->whereNotNull('department_id')
-        ->exists();
+            ->where('model_id', $this->id)
+            ->where('model_type', get_class($this))
+            ->whereNotNull('department_id')
+            ->exists();
     }
     // public function getRol
 
@@ -112,42 +108,27 @@ class User extends Authenticatable implements FilamentUser,HasMedia
     {
         if($this->hasDepartment()){
             // dd('test');
-            $result = DB::select('SELECT department_id from model_has_roles WHERE model_id = ? ',[$this->id]);
+//            $result = DB::select('SELECT department_id from model_has_roles WHERE model_id = ? ',[$this->id]);
             $result  = DB::table('model_has_roles')
-            ->where('model_id', $this->id)
-            ->where('model_type', get_class($this))
-            ->value('department_id');
-                return (Department::where('id', $result)->first());
+                ->where('model_id', $this->id)
+                ->where('model_type', get_class($this))
+                ->value('department_id');
+            return (Department::where('id', $result)->first());
         }
         return null;
     }
 
-    public function assignRoleWithDepartment(array $roleName, int $departmentId = null): void
+    public function assignRoleWithDepartment(string $roleName, int $departmentId = null)
     {
         // Assigner le rôle à l'utilisateur
-        $roles = Role::query()->whereIn('name', $roleName)->get();
-        $this->syncRoles($roles);
-
-        // Vérifier si le département existe, si un departmentId est fourni
-        if ($departmentId !== null) {
-            $departmentExists = Department::where('id', $departmentId)->exists();
-            if (!$departmentExists) {
-                throw new \RuntimeException("Department with ID {$departmentId} does not exist.");
-            }
-        }
+        $role = Role::findByName($roleName);
+        $this->assignRole($role);
 
         // Mettre à jour la table model_has_roles avec le department_id
-        foreach ($roles as $role) {
-            DB::table('model_has_roles')
-                ->where('model_id', $this->id)
-                ->where('role_id', $role->id)
-                ->update(['department_id' => $departmentId]);
-        }
-    }
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('avatar')
-            ->useDisk('private')
-            ->singleFile();
+        $modelHasRole = DB::table('model_has_roles')
+            ->where('model_id', $this->id)
+            ->where('role_id', $role->id)
+            ->update(['department_id' => $departmentId]);
     }
 }
+
