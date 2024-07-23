@@ -16,7 +16,8 @@ use Livewire\WithFileUploads;
 class Profile extends Component
 {
     use WithFileUploads;
-public $user;
+
+    public $user;
     public $avatar;
     public $avatarUrl;
     public $id;
@@ -38,8 +39,14 @@ public $user;
         $this->firstName = $user->firstName;
         $this->username = $user->username;
         $this->email = $user->email;
-        $this->avatarUrl = $user->avatar ? Storage::url($user->avatar) : null;
-        $this->user=$user;
+        /* $user = \App\Models\User::query()->findOrFail(auth()->user()->id);
+                                    $name = $user->name;
+                                    $firstName = $user->firstName;
+
+                                    $src = $user->google_profile ?: \Illuminate\Support\Facades\Storage::url($user->avatar);
+         * */
+        $this->avatarUrl = $user->google_profile ?: \Illuminate\Support\Facades\Storage::url($user->avatar);
+        $this->user = $user;
     }
 
     public function updateProfile(): void
@@ -65,6 +72,9 @@ public $user;
                 // Supprimer l'ancienne image si elle existe
                 if ($user->avatar) {
                     Storage::delete($user->avatar);
+                } //  sinn si l'image est là et commence par https:// ou http://
+                else if ($user->google_profile) {
+                    $user->google_profile = null;
                 }
 
                 // Enregistrer la nouvelle image
@@ -73,7 +83,7 @@ public $user;
                 $this->avatarUrl = Storage::url($avatarPath);
             }
 
-            $user->save();
+            $user->update();
             DB::commit();
             session()->flash('saved-success', 'Profile updated successfully.');
             $this->newAvatar = null;

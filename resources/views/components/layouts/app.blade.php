@@ -29,7 +29,7 @@
 <!-- ========== HEADER ========== -->
 {{$slot}}
 <!-- ========== END FOOTER ========== -->
-<div id="video-overlay" class="video-overlay">
+<div id="video-overlay" class="video-overlay transition-all duration-700 ease-in-out">
     <div class="video-container">
         <span id="close-button" class="close-button">&times;</span>
         <video id="demo-video" class="max-w-full h-auto" controls>
@@ -48,12 +48,14 @@
     const closeButton = document.getElementById('close-button');
 
     watchDemoButton.addEventListener('click', () => {
-        videoOverlay.classList.add('show');
+        videoOverlay.classList.add('show','flex');
+
     });
 
     videoOverlay.addEventListener('click', (event) => {
         if (event.target === videoOverlay || event.target === closeButton) {
-            videoOverlay.classList.remove('show');
+            videoOverlay.classList.remove('show','flex');
+
             demoVideo.pause();
         }
     });
