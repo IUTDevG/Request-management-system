@@ -84,7 +84,7 @@
             </div>
             <div class="mt-6 space-y-2">
                 <div>
-                    <a href="{{ route('socialite.auth', 'github')}}"
+                    <a href="{{ route('socialite.auth', 'github')}}" target="_blank" rel="noopener noreferrer"
                        class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                         <span class="sr-only">Continuer avec Github</span>
                         <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -96,7 +96,7 @@
                     </a>
                 </div>
                 <div>
-                    <a href="{{ route('socialite.auth', 'google') }}"
+                    <a href="{{ route('socialite.auth', 'google') }}" target="_blank" rel="noopener noreferrer"
                        class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                         <span class="sr-only">Continuer avec Google</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 -ml-1" fill="currentColor" aria-hidden="true"
