@@ -10,9 +10,12 @@ use App\Enums\SchoolRequestStatus;
 use Filament\Support\Colors\Color;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Dashboard\Resources\SchoolRequestResource;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class ViewSchoolRequest extends ViewRecord
 {
+
+    use InteractsWithRecord;
     protected static string $resource = SchoolRequestResource::class;
 
     protected function getHeaderActions(): array
@@ -22,17 +25,11 @@ class ViewSchoolRequest extends ViewRecord
                 ->requiresConfirmation()
                 ->color(Color::Yellow)
                 ->label(__('Mark as in review'))
-                /* ->form([
-                    Forms\Components\Select::make('status')
-                    ->required()
-                    ->options(SchoolRequestStatus::class)
-                    // ->optionsLimit()
 
-                ]) */
                 ->action(function($record){
                     $record->status = SchoolRequestStatus::InReview;
                     $record->update();
-                    // Notifi
+                    return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::Submitted->value || $record->status == SchoolRequestStatus::Cancelled->value;
@@ -47,7 +44,6 @@ class ViewSchoolRequest extends ViewRecord
                     $record->status = SchoolRequestStatus::Escalated;
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
-                    // Notifi
                 })
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::InReview->value;
@@ -61,7 +57,7 @@ class ViewSchoolRequest extends ViewRecord
                 ->action(function($record){
                     $record->status = SchoolRequestStatus::Rejected;
                     $record->update();
-                    // Notifi
+                    return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::InReview->value;
@@ -87,28 +83,23 @@ class ViewSchoolRequest extends ViewRecord
     }
 
     public static function canAccess(array $parameters = []): bool{
-        $record = static::getResource()::resolveRecordRouteBinding($parameters['record']);
-
-        if (!$record) {
-            return false;
-        }
-
+        $record = $parameters['record'];
         // Vérifier si l'utilisateur a le rôle ou la permission nécessaire
         $user = User::find(auth()->user()->id);
-
         // Exemple de vérification basée sur le statut
         switch ($record->status) {
-            case SchoolRequestStatus::Submitted:
+            case SchoolRequestStatus::Submitted->value:
                 return ($user->hasRole(RoleType::HEAD_OF_DEPARTMENT) || $user->hasRole(RoleType::ACADEMIC_MANAGER));
-            case SchoolRequestStatus::Cancelled:
-                // return $user->can('review_school_requests');
-            case SchoolRequestStatus::InReview:
-                // return $user->can('process_school_requests');
-            case SchoolRequestStatus::Escalated:
+            case SchoolRequestStatus::Cancelled->value:
+                return false;
+            case SchoolRequestStatus::InReview->value:
+                return ($user->hasRole(RoleType::HEAD_OF_DEPARTMENT) || $user->hasRole(RoleType::ACADEMIC_MANAGER));
+            case SchoolRequestStatus::Escalated->value:
                 return $user->hasRole(RoleType::DIRECTOR);
-            case SchoolRequestStatus::Rejected:
-            case SchoolRequestStatus::Completed:
-                // return $user->can('view_completed_school_requests');
+            case SchoolRequestStatus::Rejected->value:
+                return false;
+            case SchoolRequestStatus::Completed->value:
+                return true;
             default:
                 return false;
         }

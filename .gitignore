@@ -7,8 +7,8 @@
 /storage/app/private
 
 /vendor
-import pino from 'pino';
 .env
+.idea
 .rnd
 .env.backup
 .env.production
