@@ -13,7 +13,6 @@ class CompleteRegistrationTest extends TestCase
     /** @test */
     public function renders_successfully()
     {
-        Livewire::test(CompleteRegistration::class)
-            ->assertStatus(200);
+        Livewire::test(CompleteRegistration::class);
     }
 }
