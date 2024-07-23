@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="artisan" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="false" path="$PROJECT_DIR$/artisan" scriptParameters="serve --port=80 --host=localhost">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="C:\PHP\php.exe" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <method v="2" />
+  </configuration>
+</component>
