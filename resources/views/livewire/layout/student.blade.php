@@ -157,11 +157,14 @@
                             class="inline-flex items-center gap-x-2 text-sm font-medium shadow-sm disabled:opacity-50 disabled:pointer-events-none ">
                             <span class="relative inline-block">
                                 @php
-                                    $user = \App\Models\User::query()->find(auth()->user()->id);
-                                        $src=\Illuminate\Support\Facades\Storage::url($user->avatar)
+                                    $user = \App\Models\User::query()->findOrFail(auth()->user()->id);
+                                    $name = $user->name;
+                                    $firstName = $user->firstName;
+
+                                    $src = $user->google_profile ?: \Illuminate\Support\Facades\Storage::url($user->avatar);
                                 @endphp
                                 <img wire:poll class="inline-block size-8 rounded-full"
-                                     src="{{$src}}"
+                                     src="{{$src ??'https://ui-avatars.com/api/?name='.$name.'+'.$firstName .'&background=random&bold=true'}}"
                                      alt="{{$user->full_name}}"
                                      title="{{$user->full_name}}">
                             </span>

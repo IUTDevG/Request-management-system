@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Enums\RoleType;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -42,7 +43,7 @@ class CompleteRegistration extends Component
             'email' => $socialUser['email'],
             'username' => $this->username,
             $socialUser['provider'] . '_id' => $socialUser['provider_id'],
-            'avatar' => $socialUser['avatar'],
+            'google_profile' => $socialUser['google_profile'],
         ];
 
         if ($this->password) {
@@ -52,6 +53,7 @@ class CompleteRegistration extends Component
         }
 
         $user = User::create($userData);
+        $user->assignRole(RoleType::STUDENT);
 
         event(new Registered($user));
         Auth::login($user, remember: true);

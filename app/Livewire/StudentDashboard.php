@@ -108,6 +108,9 @@ class StudentDashboard extends Component
 
     public function getRequestsProperty()
     {
+        if (!auth()->user()) {
+            return redirect()->route('login');
+        }
         return SchoolRequest::query()->where('user_id', '=', auth()->user()->id)
             ->when($this->selectedFilter, function ($query) {
                 return $query->where('status', $this->selectedFilter);
@@ -119,7 +122,9 @@ class StudentDashboard extends Component
                         ->orWhere('status', 'like', '%' . $search . '%');
                 });
             })
-            ->orderBy($this->sortColumn, $this->sortDirection);
+            ->orderBy($this->sortColumn, $this->sortDirection)->paginate(4);
+
+
     }
 
     public function placeholder()
@@ -132,7 +137,7 @@ class StudentDashboard extends Component
         sleep(2);
 
         return view('livewire.student-dashboard', [
-            'requests' => $this->getRequestsProperty()->paginate(4),
+            'requests' => $this->getRequestsProperty(),
             'filterOptions' => $this->getFilterOptions(),
         ]);
     }
