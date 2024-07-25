@@ -29,7 +29,7 @@ class SocialiteController extends Controller
         $this->validateProvider($provider);
 
         try {
-            $socialUser = Socialite::driver($provider)->user();
+            $socialUser = Socialite::driver($provider)->stateless()->user();
         } catch (\Exception $e) {
             return redirect()->route('login')->withErrors(['error' => __("An error occurred while connecting with :provider.", ['provider' => $provider])]);
         }
@@ -39,7 +39,7 @@ class SocialiteController extends Controller
             return redirect()->route('login')->withErrors(['email' => __("The email could not be retrieved from :provider.", ['provider' => $provider])]);
         }
 
-        $user = User::firstOrNew(['email' => $email]);
+        $user = User::query()->firstOrNew(['email' => $email]);
 
         if ($user->exists) {
             $this->updateExistingUser($user, $socialUser, $provider);
@@ -104,17 +104,18 @@ class SocialiteController extends Controller
 
     protected function storeAvatar($avatarUrl): string
     {
-        $avatarContent = file_get_contents($avatarUrl);
-        $filename = 'avatars/' . Str::random(40) . '.jpg';
-
-        Storage::put('public/' . $filename, $avatarContent);
-        return $filename;
+//        dd($avatarUrl);
+//        $avatarContent = file_get_contents($avatarUrl);
+//        $filename = 'avatars/' . Str::random(40) . '.jpg';
+//
+//        Storage::put('public/' . $filename, $avatarContent);
+        return $avatarUrl;
     }
 
     protected function updateUserAvatar(User $user, $newAvatarUrl): void
     {
         if ($user->avatar) {
-            Storage::delete('public/' . $user->avatar);
+            Storage::delete( $user->avatar);
         }
 
         $avatarPath = $this->storeAvatar($newAvatarUrl);
@@ -133,14 +134,15 @@ class SocialiteController extends Controller
 
     private function handleNewUser($socialUser, string $provider): RedirectResponse
     {
-        $avatarPath = $this->storeAvatar($socialUser->getAvatar());
+        $avatarPath = $socialUser->getAvatar();
+//        dd($avatarPath);
         session([
             'social_user' => [
                 'name' => $socialUser->getName(),
                 'email' => $socialUser->getEmail(),
                 'provider' => $provider,
                 'provider_id' => $socialUser->getId(),
-                'avatar' => $avatarPath,
+                'google_profile' => $avatarPath,
                 'username' => $socialUser->getNickname(),
             ]
         ]);
@@ -148,8 +150,8 @@ class SocialiteController extends Controller
         return redirect()->route('social.complete');
     }
 
-    private function redirectWithError(string $route, string $message): RedirectResponse
+  /*  private function redirectWithError(string $route, string $message): RedirectResponse
     {
         return redirect()->route($route)->withErrors(['error' => $message]);
-    }
+    }*/
 }

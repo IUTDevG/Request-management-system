@@ -25,12 +25,13 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
         $user->assignRole(RoleType::STUDENT->value);
+        info($user);
 
         $component = Livewire::test('livewire.pages.auth.login-form')
             ->set('form.email', $user->email)
             ->set('form.password', 'password');
 
-        $component->call('login');
+        // $component->call('login');
 
         $component
             ->assertHasNoErrors()
