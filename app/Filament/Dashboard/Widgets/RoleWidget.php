@@ -10,12 +10,27 @@ class RoleWidget extends BaseWidget
 {
     protected function getStats(): array
     {
-        $authuser = User::find(auth()->user()->id)->getRoleNames();
+        $roles = User::find(auth()->user()->id)->getRoleNames();
+        $values = '';
+        $i = 0;
+        foreach($roles as $role){
+            // dd($role);
+            if($i==0){
+            $values = $role;
+            }
+            else{
+                $values += ', '.$role;
+            }
+            $i++;
+        }
+
+        // dd($values);
+        // $values.
 
         return [
             Stat::make(
-                label: 'Meilleur fournisseur du mois:',
-                value:( $authuser[0] ?? ''),
+                label: 'Role:',
+                value:( $values ?? ''),
             ),
         ];
     }

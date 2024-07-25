@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\RoleType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
@@ -16,15 +18,15 @@ class AuthenticationTest extends TestCase
         $response = $this->get('/login');
 
         $response
-            ->assertOk()
-            ->assertSeeVolt('pages.auth.login');
+            ->assertOk();
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();
+        $user->assignRole(RoleType::STUDENT->value);
 
-        $component = Volt::test('pages.auth.login')
+        $component = Livewire::test('livewire.pages.auth.login-form')
             ->set('form.email', $user->email)
             ->set('form.password', 'password');
 
@@ -40,8 +42,10 @@ class AuthenticationTest extends TestCase
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
+        $user->assignRole(RoleType::STUDENT->value);
 
-        $component = Volt::test('pages.auth.login')
+
+        $component = Livewire::test('livewire.pages.auth.login-form')
             ->set('form.email', $user->email)
             ->set('form.password', 'wrong-password');
 
@@ -57,6 +61,7 @@ class AuthenticationTest extends TestCase
     public function test_navigation_menu_can_be_rendered(): void
     {
         $user = User::factory()->create();
+        $user->assignRole(RoleType::STUDENT->value);
 
         $this->actingAs($user);
 
@@ -70,10 +75,12 @@ class AuthenticationTest extends TestCase
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();
+        $user->assignRole(RoleType::STUDENT->value);
+
 
         $this->actingAs($user);
 
-        $component = Volt::test('layout.navigation');
+        $component = Livewire::test('layout.navigation');
 
         $component->call('logout');
 

@@ -67,7 +67,9 @@ class SchoolRequestResource extends Resource
         $user = User::find(auth()->user()->id);
         if ($user->hasRole(RoleType::ACADEMIC_MANAGER) || $user->hasRole(RoleType::HEAD_OF_DEPARTMENT) ) {
             $query
-                ->where('status', '!=', SchoolRequestStatus::Escalated->value)
+                ->where('status', '=', SchoolRequestStatus::Submitted->value)
+                ->where('status', '=', SchoolRequestStatus::Completed->value)
+                ->where('status', '=', SchoolRequestStatus::InReview->value)
                 ->where('department_id', $user->getDepartment()->id );
             ;
         } elseif($user->hasRole(RoleType::DIRECTOR)  ) {

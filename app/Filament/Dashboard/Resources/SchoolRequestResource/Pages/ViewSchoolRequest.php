@@ -34,6 +34,7 @@ class ViewSchoolRequest extends ViewRecord
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::Submitted->value || $record->status == SchoolRequestStatus::Cancelled->value;
                 })
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark as in review successfully')),
             Actions\Action::make('status_to_escalated')
@@ -45,6 +46,8 @@ class ViewSchoolRequest extends ViewRecord
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
+
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::InReview->value;
                 })
@@ -62,6 +65,7 @@ class ViewSchoolRequest extends ViewRecord
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::InReview->value;
                 })
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Cancelled successfully')),
             Actions\Action::make('status_to_completed')
@@ -76,6 +80,7 @@ class ViewSchoolRequest extends ViewRecord
                 ->visible(function($record){
                     return $record->status == SchoolRequestStatus::InReview->value ;
                 })
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark Complete')),
 
