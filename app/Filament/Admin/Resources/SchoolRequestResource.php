@@ -68,8 +68,7 @@ class SchoolRequestResource extends Resource
                 Forms\Components\TextInput::make('department_id')
                     ->label(__('Department'))
                     ->disabled()
-                    ->required()
-                    ->numeric(),
+                    ->required(),
                 Forms\Components\TextInput::make('user_id')
                     ->label(__('User'))
                     ->disabled()
