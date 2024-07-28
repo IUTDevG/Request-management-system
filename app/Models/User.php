@@ -88,7 +88,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         if($panel->getId() === 'dashboard'){
-            return $this->hasRole(RoleType::ACADEMIC_MANAGER) || $this->hasRole(RoleType::DEPUTY_DIRECTOR) || $this->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $this->hasRole(RoleType::DIRECTOR);
+            return $this->hasRole(RoleType::ACADEMIC_MANAGER) || $this->hasRole(RoleType::DEPUTY_DIRECTOR) || $this->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $this->hasRole(RoleType::DIRECTOR) || $this->hasRole(RoleType::HEAD_OF_DEPARTMENT);
         }
         elseif($panel->getId() === 'admin'){
             return $this->hasRole(RoleType::COMPUTER_CELL);
@@ -149,4 +149,3 @@ class User extends Authenticatable implements FilamentUser
             ->update(['department_id' => $departmentId]);
     }
 }
-

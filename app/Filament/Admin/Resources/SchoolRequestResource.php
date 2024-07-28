@@ -82,9 +82,10 @@ class SchoolRequestResource extends Resource
     {
         $user = User::find(auth()->user()->id);
         $query = SchoolRequest::query()
-            ->where('status', '!=', SchoolRequestStatus::Cancelled->value)
             ->where('status', '!=', SchoolRequestStatus::Draft->value)
-            ->where('status', '=', SchoolRequestStatus::Escalated->value)
+            ->where('status', '=', SchoolRequestStatus::Cancelled->value)
+            ->orWhere('status', '=', SchoolRequestStatus::Completed->value)
+            ->orwhere('status', '=', SchoolRequestStatus::Escalated->value)
             ->where('assigned_to', '=', $user->getRole());
         return $table
             ->query($query)
@@ -92,10 +93,9 @@ class SchoolRequestResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('Title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('request_code')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('Status'))
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->badge()
                     ->fontFamily('Poppins')
                     ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
@@ -123,10 +123,12 @@ class SchoolRequestResource extends Resource
                     ->label(__('Level'))
                     ->sortable()
                     ->numeric()
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('departments.name')
                     ->label(__('Department'))
                     ->numeric()
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label(__('User'))
@@ -136,7 +138,7 @@ class SchoolRequestResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(function () {
-                        $vals = ( collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
+                        $vals = (collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
                             return [$status->value => $status->label()];
                         })->toArray());
 

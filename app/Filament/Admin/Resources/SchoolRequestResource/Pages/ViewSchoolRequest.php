@@ -34,7 +34,7 @@ class ViewSchoolRequest extends ViewRecord
                             $i = 0;
                             $user = User::find(auth()->user()->id);
                             foreach ($roles as $role) {
-                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::SECRETARY_DIRECTOR->value || $role->value == RoleType::USER->value || $role->value == RoleType::HEAD_OF_DEPARTMENT->value) {
+                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::USER->value ) {
                                 } else {
                                     $result[$role->value] = $role->value;
                                 }
@@ -48,7 +48,7 @@ class ViewSchoolRequest extends ViewRecord
                     $record->status = SchoolRequestStatus::Escalated;
                     $record->assigned_to = $data['assigned_to'];
                     $record->update();
-                    return redirect()->route('filament.dashboard.resources.school-requests.index');
+                    return redirect()->route('filament.admin.resources.school-requests.index');
                 })
                 ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value || $record->status == SchoolRequestStatus::Rejected->value)
 

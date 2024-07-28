@@ -49,8 +49,8 @@ class ViewSchoolRequest extends ViewRecord
                             $i = 0;
                             $user = User::find(auth()->user()->id);
                             foreach ($roles as $role) {
-                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::SECRETARY_DIRECTOR->value || $role->value == RoleType::USER->value || $role->value == RoleType::HEAD_OF_DEPARTMENT->value) {
-                                } else {
+                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::USER->value ) {
+                            } else {
                                     $result[$role->value] = $role->value;
                                 }
                                 $i++;
@@ -123,7 +123,7 @@ class ViewSchoolRequest extends ViewRecord
             case SchoolRequestStatus::InReview->value:
                 return ($user->hasRole(RoleType::HEAD_OF_DEPARTMENT) || $user->hasRole(RoleType::ACADEMIC_MANAGER));
             case SchoolRequestStatus::Escalated->value:
-                return ($user->hasRole(RoleType::DIRECTOR) || $user->hasRole(RoleType::DEPUTY_DIRECTOR) || $user->hasRole(RoleType::SCHOOLING));
+                return ($record->assigned_to == $user->getRole());
             case SchoolRequestStatus::Rejected->value:
                 return false;
             case SchoolRequestStatus::Completed->value:
