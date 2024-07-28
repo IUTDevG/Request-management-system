@@ -26,68 +26,91 @@ class ViewSchoolRequest extends ViewRecord
                 ->color(Color::Yellow)
                 ->label(__('Mark as in review'))
 
-                ->action(function($record){
+                ->action(function ($record) {
                     $record->status = SchoolRequestStatus::InReview;
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
-                ->visible(function($record){
+                ->visible(function ($record) {
                     return $record->status == SchoolRequestStatus::Submitted->value || $record->status == SchoolRequestStatus::Cancelled->value;
                 })
-                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark as in review successfully')),
             Actions\Action::make('status_to_escalated')
                 ->requiresConfirmation()
                 ->color(Color::Yellow)
-                ->label(__('Escalate it to director'))
-                ->action(function($record){
+                ->form([
+                    Forms\Components\Select::make('assigned_to')
+                        ->required()
+                        ->options(function () {
+                            $roles = RoleType::cases();
+                            $result = [];
+                            $i = 0;
+                            $user = User::find(auth()->user()->id);
+                            foreach ($roles as $role) {
+                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::SECRETARY_DIRECTOR->value || $role->value == RoleType::USER->value || $role->value == RoleType::HEAD_OF_DEPARTMENT->value) {
+                                } else {
+                                    $result[$role->value] = $role->value;
+                                }
+                                $i++;
+                            }
+                            return ($result);
+                        })
+                ])
+                ->label(__('Assign it'))
+                ->action(function (array $data, $record) {
                     $record->status = SchoolRequestStatus::Escalated;
+                    $record->assigned_to = $data['assigned_to'];
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
-                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value || $record->status == SchoolRequestStatus::Rejected->value)
 
-                ->visible(function($record){
-                    return $record->status == SchoolRequestStatus::InReview->value;
+                ->visible(function ($record) {
+                    $user = User::find(auth()->user()->id);
+                    return ($record->status == SchoolRequestStatus::InReview->value || $record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole());
                 })
                 ->sendSuccessNotification()
-                ->successNotificationTitle(__('Escalated successfully')),
+                ->successNotificationTitle(__('Assigned successfully')),
             Actions\Action::make('status_to_reject')
                 ->requiresConfirmation()
                 ->color(Color::Red)
                 ->label(__('Reject the request'))
-                ->action(function($record){
+                ->action(function ($record) {
                     $record->status = SchoolRequestStatus::Rejected;
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
-                ->visible(function($record){
-                    return $record->status == SchoolRequestStatus::InReview->value;
+                ->visible(function ($record) {
+                    $user = User::find(auth()->user()->id);
+                    return ($record->status == SchoolRequestStatus::InReview->value || ($record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole()));
                 })
-                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Cancelled successfully')),
             Actions\Action::make('status_to_completed')
                 ->requiresConfirmation()
                 ->color(Color::Sky)
                 ->label(__('Mark it completed'))
-                ->action(function($record){
+                ->action(function ($record) {
                     $record->status = SchoolRequestStatus::Completed;
                     $record->update();
                     // Notifi
                 })
-                ->visible(function($record){
-                    return $record->status == SchoolRequestStatus::InReview->value ;
+                ->visible(function ($record) {
+                    $user = User::find(auth()->user()->id);
+                    return $record->status == SchoolRequestStatus::InReview->value || ($record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole());
                 })
-                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark Complete')),
 
         ];
     }
 
-    public static function canAccess(array $parameters = []): bool{
+    public static function canAccess(array $parameters = []): bool
+    {
         $record = $parameters['record'];
         // Vérifier si l'utilisateur a le rôle ou la permission nécessaire
         $user = User::find(auth()->user()->id);
@@ -100,7 +123,7 @@ class ViewSchoolRequest extends ViewRecord
             case SchoolRequestStatus::InReview->value:
                 return ($user->hasRole(RoleType::HEAD_OF_DEPARTMENT) || $user->hasRole(RoleType::ACADEMIC_MANAGER));
             case SchoolRequestStatus::Escalated->value:
-                return $user->hasRole(RoleType::DIRECTOR);
+                return ($user->hasRole(RoleType::DIRECTOR) || $user->hasRole(RoleType::DEPUTY_DIRECTOR) || $user->hasRole(RoleType::SCHOOLING));
             case SchoolRequestStatus::Rejected->value:
                 return false;
             case SchoolRequestStatus::Completed->value:

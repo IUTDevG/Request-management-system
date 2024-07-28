@@ -95,6 +95,24 @@ class User extends Authenticatable implements FilamentUser
         }
     }
 
+    public function getRole()
+    {
+        $roles = $this->getRoleNames();
+        $values = '';
+        $i = 0;
+        foreach($roles as $role){
+            // dd($role);
+            if($i==0){
+            $values = $role;
+            }
+            else{
+                $values += ', '.$role;
+            }
+            $i++;
+        }
+        return $values;
+    }
+
     public function hasDepartment():bool{
         return DB::table('model_has_roles')
             ->where('model_id', $this->id)

@@ -61,41 +61,73 @@ class SchoolRequestResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $query = SchoolRequest::query()
-            ->where('status', '!=', SchoolRequestStatus::Cancelled->value)
-            ->where('status', '!=', SchoolRequestStatus::Draft->value);
+        $query = SchoolRequest::query();
         $user = User::find(auth()->user()->id);
         if ($user->hasRole(RoleType::ACADEMIC_MANAGER) || $user->hasRole(RoleType::HEAD_OF_DEPARTMENT) ) {
             $query
                 ->where('status', '=', SchoolRequestStatus::Submitted->value)
-                ->where('status', '=', SchoolRequestStatus::Completed->value)
-                ->where('status', '=', SchoolRequestStatus::InReview->value)
-                ->where('department_id', $user->getDepartment()->id );
-            ;
-        } elseif($user->hasRole(RoleType::DIRECTOR)  ) {
+                ->orwhere('status', '=', SchoolRequestStatus::Completed->value)
+                ->orwhere('status', '=', SchoolRequestStatus::InReview->value)
+                ->where('department_id', $user->getDepartment()->id )
+                ->orWhere('assigned_to', $user->getRole());
+
+        } elseif($user->hasRole(RoleType::DIRECTOR) || $user->hasRole(RoleType::SCHOOLING) || $user->hasRole(RoleType::DEPUTY_DIRECTOR)) {
             $query
-                ->where('status', '==', SchoolRequestStatus::Escalated->value);
-        }
+                ->where('status', '=', SchoolRequestStatus::Escalated->value)
+                ->where('assigned_to', '=', $user->getRole());
+            }
+            // dd($query->get());
+
 
         return $table
             ->query($query)
             ->emptyStateHeading(__('Aucune requete pour l\'instant'))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('Title'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('request_code')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable()
+                    ->label(__('Status'))
                     ->badge()
-                    ->color(fn(string $state) => match($state){
-                            'submitted' => Color::Sky,
-                            'in_review' => Color::Yellow,
-                            'rejected' => Color::Red,
-                            'completed'=> Color::Emerald,
-                            'escalated' => Color::Lime,
-                    }
-                     )
-                    ,
+                    ->fontFamily('Poppins')
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
+                    ->color(fn (string $state) => match ($state) {
+                        'draft' => 'primary',
+                        'submitted' => 'secondary',
+                        'cancelled' => 'danger',
+                        'in_review' => 'warning',
+                        'escalated' => 'success',
+                        'rejected' => 'danger',
+                        'completed' => 'success',
+                        default => 'primary'
+                    })
+                    ->formatStateUsing(fn (string $state) => match ($state) {
+                        'draft' => __('Draft'),
+                        'submitted' => __('Submitted'),
+                        'cancelled' => __('Cancelled'),
+                        'in_review' => __('In review'),
+                        'escalated' => __('Escalated'),
+                        'rejected' => __('Rejected'),
+                        'completed' => __('Completed'),
+                    })
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('level.name')
+                    ->label(__('Level'))
+                    ->sortable()
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('departments.name')
+                    ->label(__('Department'))
+                    ->numeric()
+                    ->visible(function(){
+                        $user = User::find(auth()->user()->id);
+                        return ($user->getRole() == RoleType::DIRECTOR->value || $user->getRole() == RoleType::DEPUTY_DIRECTOR->value);
+                    } )
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label(__('User'))
                     ->numeric()
                     ->sortable(),
             ])

@@ -31,7 +31,7 @@ class AuthenticationTest extends TestCase
             ->set('form.email', $user->email)
             ->set('form.password', 'password');
 
-        // $component->call('login');
+        $component->call('login');
 
         $component
             ->assertHasNoErrors()
@@ -70,7 +70,7 @@ class AuthenticationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSeeVolt('layout.navigation');
+            ->assertSee('livewire.layout.dashboard');
     }
 
     public function test_users_can_logout(): void
@@ -81,7 +81,7 @@ class AuthenticationTest extends TestCase
 
         $this->actingAs($user);
 
-        $component = Livewire::test('layout.navigation');
+        $component = Livewire::test('livewire.student-dashboard');
 
         $component->call('logout');
 
