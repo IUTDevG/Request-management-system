@@ -22,8 +22,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-!/public/private/
+/public/private/
 
 .vercel
-
-.vercel
+!/.run/

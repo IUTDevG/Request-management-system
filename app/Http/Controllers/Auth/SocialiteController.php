@@ -4,13 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Filament\Events\Auth\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -31,69 +27,25 @@ class SocialiteController extends Controller
         try {
             $socialUser = Socialite::driver($provider)->stateless()->user();
         } catch (\Exception $e) {
-            return redirect()->route('login')->withErrors(['error' => __("An error occurred while connecting with :provider.", ['provider' => $provider])]);
+            return $this->redirectWithError('login', __("An error occurred while connecting with :provider.", ['provider' => $provider]));
         }
 
         $email = $socialUser->getEmail();
         if (!$email) {
-            return redirect()->route('login')->withErrors(['email' => __("The email could not be retrieved from :provider.", ['provider' => $provider])]);
+            return $this->redirectWithError('login', __("The email could not be retrieved from :provider.", ['provider' => $provider]));
         }
 
-        $user = User::query()->firstOrNew(['email' => $email]);
+        $user = User::where('email', $email)->first();
 
-        if ($user->exists) {
+        if ($user) {
             $this->updateExistingUser($user, $socialUser, $provider);
-        } else {
-            return $this->handleNewUser($socialUser, $provider);
+            Auth::login($user, true);
+            return redirect()->route('student.home');
         }
 
-        Auth::login($user, remember: true);
-        return redirect()->route('student.home');
+        $this->storeNewUserInSession($socialUser, $provider);
+        return redirect()->route('social.complete');
     }
-
-   /* public function completeRegistration(Request $request): RedirectResponse
-    {
-        $socialUser = session('social_user');
-
-        if (!$socialUser) {
-            return $this->redirectWithError('login', __('Missing session information.'));
-        }
-
-        $request->validate([
-            'username' => 'required|string|max:255|unique:users,username',
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
-        $userData = [
-            'name' => $socialUser['name'],
-            'email' => $socialUser['email'],
-            'username' => $request->username,
-            $socialUser['provider'] . '_id' => $socialUser['provider_id'],
-            'avatar' => $socialUser['avatar'],
-        ];
-        // If a password is provided, hash it. Otherwise, generate a random password.
-        if ($request->filled('password')) {
-            $userData['password'] = Hash::make($request->password);
-        } else {
-            $userData['password'] = Hash::make(Str::random(16));
-        }
-        $user = User::create($userData);
-        event(new Registered($user));
-        Auth::login($user, remember: true);
-        session()->forget('social_user');
-
-        return redirect()->route('student.home');
-    }
-
-    public function showUsernameForm()
-    {
-        if (!session('social_user')) {
-            return redirect()->route('login');
-        }
-
-        $suggestedUsername = session('social_user')['username'];
-        return view('auth.social-username', compact('suggestedUsername'));
-    }*/
 
     protected function validateProvider(string $provider): void
     {
@@ -102,56 +54,54 @@ class SocialiteController extends Controller
         }
     }
 
-    protected function storeAvatar($avatarUrl): string
-    {
-//        dd($avatarUrl);
-//        $avatarContent = file_get_contents($avatarUrl);
-//        $filename = 'avatars/' . Str::random(40) . '.jpg';
-//
-//        Storage::put('public/' . $filename, $avatarContent);
-        return $avatarUrl;
-    }
-
-    protected function updateUserAvatar(User $user, $newAvatarUrl): void
-    {
-        if ($user->avatar) {
-            Storage::delete( $user->avatar);
-        }
-
-        $avatarPath = $this->storeAvatar($newAvatarUrl);
-        $user->avatar = $avatarPath;
-        $user->save();
-    }
-
     private function updateExistingUser(User $user, $socialUser, string $provider): void
     {
-        $this->updateUserAvatar($user, $socialUser->getAvatar());
         $user->update([
             $provider . '_id' => $socialUser->getId(),
-            'username' => $user->username ?? $socialUser->getNickname(),
+            'google_profile' => $socialUser->getAvatar(),
         ]);
     }
 
-    private function handleNewUser($socialUser, string $provider): RedirectResponse
+    private function storeNewUserInSession($socialUser, string $provider): void
     {
-        $avatarPath = $socialUser->getAvatar();
-//        dd($avatarPath);
+        $name = $socialUser->getName();
+        $nameParts = explode(' ', $name);
+        $firstName = $nameParts[0];
+        $lastName = count($nameParts) > 1 ? end($nameParts) : '';
+        $parts = explode('@', $socialUser->getEmail());
+
+        $username = $this->generateUniqueUsername($provider === 'google' ? $parts[0] : $socialUser->getNickname());
+
         session([
             'social_user' => [
-                'name' => $socialUser->getName(),
+                'name' => $name,
+                'first_name' => $firstName,
+                'last_name' => $lastName,
                 'email' => $socialUser->getEmail(),
                 'provider' => $provider,
                 'provider_id' => $socialUser->getId(),
-                'google_profile' => $avatarPath,
-                'username' => $socialUser->getNickname(),
+                'google_profile' => $socialUser->getAvatar(),
+                'username' => $username,
             ]
         ]);
-
-        return redirect()->route('social.complete');
     }
 
-  /*  private function redirectWithError(string $route, string $message): RedirectResponse
+    private function generateUniqueUsername(string $base): string
+    {
+        $username = Str::slug($base);
+        $originalUsername = $username;
+        $counter = 1;
+
+        while (User::where('username', $username)->exists()) {
+            $username = $originalUsername . $counter;
+            $counter++;
+        }
+
+        return $username;
+    }
+
+    private function redirectWithError(string $route, string $message): RedirectResponse
     {
         return redirect()->route($route)->withErrors(['error' => $message]);
-    }*/
+    }
 }
