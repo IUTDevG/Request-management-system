@@ -19,8 +19,13 @@ class SchoolRequest extends Model implements HasMedia
 
     protected $fillable = [
         'title', 'request_code', 'description', 'status', 'matricule',
-        'level_id', 'department_id', 'user_id'
+        'level_id', 'department_id', 'user_id', 'assigned_to'
     ];
+
+    public function has_been_assigned_to()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
 
     public function level()
     {

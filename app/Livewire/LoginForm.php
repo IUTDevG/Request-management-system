@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
 
+#[Layout('livewire.layout.auth')]
 class LoginForm extends Component
 {
     public string $email;
@@ -44,6 +46,6 @@ class LoginForm extends Component
     }
     public function render()
     {
-        return view('livewire.pages.auth.login-form')->layout('livewire.layout.auth');
+        return view('livewire.pages.auth.login-form');
     }
 }

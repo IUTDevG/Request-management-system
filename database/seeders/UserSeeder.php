@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
         });
 
         User::factory(2)->create()->each(function ($user){
-           $user->assignRoleWithDepartment(RoleType::SCHOOLING->value,1);
+           $user->assignRole(RoleType::SCHOOLING->value);
        });
 
         User::factory(5)->create()->each(function ($user){
