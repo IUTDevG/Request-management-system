@@ -23,7 +23,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-//    protected static ?string $navigationGroup='École';
+    //    protected static ?string $navigationGroup='École';
     public static function getNavigationGroup(): string
     {
         return (__('School'));
@@ -108,7 +108,9 @@ class UserResource extends Resource
                     ->getStateUsing(function ($record) {
                         return ($record->getDepartment()->abbreviation ?? null);
                     }),
-
+                Tables\Columns\TextColumn::make('email')
+                    ->label(__('Email address'))
+                    ->copyable(true),
 
             ])
             ->filters([
@@ -118,16 +120,16 @@ class UserResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
                         ->label(__('View user'))
-                    ->color('primary'),
+                        ->color('primary'),
                     Tables\Actions\EditAction::make()
                         ->label(__('Edit user'))
-                    ->color('secondary'),
+                        ->color('secondary'),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                    ->label(__('Delete selected users')),
+                        ->label(__('Delete selected users')),
                 ]),
             ]);
     }
