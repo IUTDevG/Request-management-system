@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\RoleType;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -12,14 +13,29 @@ use Illuminate\Support\Str;
 
 class SocialiteController extends Controller
 {
+    /**
+     * The social providers that are allowed to be used.
+     *
+     * @var array
+     */
     protected const ALLOWED_PROVIDERS = ['google', 'github'];
 
+    /**
+     * @param Request $request
+     * @param string $provider
+     * @return RedirectResponse
+     */
     public function loginSocial(Request $request, string $provider): RedirectResponse
     {
         $this->validateProvider($provider);
         return Socialite::driver($provider)->redirect();
     }
 
+    /**
+     * @param Request $request
+     * @param string $provider
+     * @return RedirectResponse
+     */
     public function callbackSocial(Request $request, string $provider): RedirectResponse
     {
         $this->validateProvider($provider);
@@ -37,7 +53,11 @@ class SocialiteController extends Controller
 
         $user = User::where('email', $email)->first();
 
-        if ($user) {
+        if ($user && !$user->hasRole(RoleType::STUDENT)) {
+            Auth::login($user, true);
+            return redirect()->to('admin');
+        }
+        if ($user && $user->hasRole('admin')) {
             $this->updateExistingUser($user, $socialUser, $provider);
             Auth::login($user, true);
             return redirect()->route('student.home');
@@ -86,6 +106,10 @@ class SocialiteController extends Controller
         ]);
     }
 
+    /**
+     * @param string $base
+     * @return string
+     */
     private function generateUniqueUsername(string $base): string
     {
         $username = Str::slug($base);
@@ -100,6 +124,11 @@ class SocialiteController extends Controller
         return $username;
     }
 
+    /**
+     * @param string $route
+     * @param string $message
+     * @return RedirectResponse
+     */
     private function redirectWithError(string $route, string $message): RedirectResponse
     {
         return redirect()->route($route)->withErrors(['error' => $message]);
