@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
-                ->visible(outsidePanels: true)
+                ->visible(true,outsidePanels: true)
 //                ->circular()
                 ->flags([
                     'en' => asset('images/lang/en.svg'),

@@ -1,0 +1,38 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CL_f-ffJ.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-BmefYBbw.css",
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
+  "resources/css/utils/filepond.css": {
+    "file": "assets/filepond-BNaxTkL-.css",
+    "src": "resources/css/utils/filepond.css",
+    "isEntry": true
+  },
+  "resources/js/alpine.js": {
+    "file": "assets/alpine-DsDUR0XJ.js",
+    "name": "alpine",
+    "src": "resources/js/alpine.js",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BUclEolJ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/utils/filepond.js": {
+    "file": "assets/filepond-D_0C9SWZ.js",
+    "name": "filepond",
+    "src": "resources/js/utils/filepond.js",
+    "isEntry": true,
+    "css": [
+      "assets/filepond-B2wwZKw1.css"
+    ]
+  }
+}

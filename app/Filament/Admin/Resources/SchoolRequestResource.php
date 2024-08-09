@@ -2,19 +2,20 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Enums\SchoolRequestStatus;
-use App\Filament\Admin\Resources\SchoolRequestResource\Pages;
-use App\Filament\Admin\Resources\SchoolRequestResource\RelationManagers;
-use App\Models\SchoolRequest;
 use Carbon\Carbon;
-use Filament\Tables\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\SchoolRequest;
+use Filament\Resources\Resource;
+use App\Enums\SchoolRequestStatus;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Admin\Resources\SchoolRequestResource\Pages;
+use App\Filament\Admin\Resources\SchoolRequestResource\RelationManagers;
 
 class SchoolRequestResource extends Resource
 {
@@ -54,7 +55,7 @@ class SchoolRequestResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('status')
                     ->label(__('Status'))
-                    ->options(fn() => collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
+                    ->options(fn () => collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
                         return [$status->value => $status->label()];
                     })->toArray())
                     ->default(SchoolRequestStatus::Draft->value)
@@ -67,8 +68,7 @@ class SchoolRequestResource extends Resource
                 Forms\Components\TextInput::make('department_id')
                     ->label(__('Department'))
                     ->disabled()
-                    ->required()
-                    ->numeric(),
+                    ->required(),
                 Forms\Components\TextInput::make('user_id')
                     ->label(__('User'))
                     ->disabled()
@@ -79,19 +79,26 @@ class SchoolRequestResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $user = User::find(auth()->user()->id);
+        $query = SchoolRequest::query()
+            ->where('status', '!=', SchoolRequestStatus::Draft->value)
+            ->where('status', '=', SchoolRequestStatus::Cancelled->value)
+            ->orWhere('status', '=', SchoolRequestStatus::Completed->value)
+            ->orwhere('status', '=', SchoolRequestStatus::Escalated->value)
+            ->where('assigned_to', '=', $user->getRole());
         return $table
+            ->query($query)
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('Title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('request_code')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('Status'))
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->badge()
                     ->fontFamily('Poppins')
-                    ->tooltip(fn(SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
-                    ->color(fn(string $state) => match ($state) {
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
+                    ->color(fn (string $state) => match ($state) {
                         'draft' => 'primary',
                         'submitted' => 'secondary',
                         'cancelled' => 'danger',
@@ -101,7 +108,7 @@ class SchoolRequestResource extends Resource
                         'completed' => 'success',
                         default => 'primary'
                     })
-                    ->formatStateUsing(fn(string $state) => match ($state) {
+                    ->formatStateUsing(fn (string $state) => match ($state) {
                         'draft' => __('Draft'),
                         'submitted' => __('Submitted'),
                         'cancelled' => __('Cancelled'),
@@ -115,10 +122,12 @@ class SchoolRequestResource extends Resource
                     ->label(__('Level'))
                     ->sortable()
                     ->numeric()
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('departments.name')
                     ->label(__('Department'))
                     ->numeric()
+                    ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label(__('User'))
@@ -128,9 +137,11 @@ class SchoolRequestResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(function () {
-                        return collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
+                        $vals = (collect(SchoolRequestStatus::cases())->mapWithKeys(function ($status) {
                             return [$status->value => $status->label()];
-                        })->toArray();
+                        })->toArray());
+
+                        // array_($vals, );
                     })
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
@@ -148,7 +159,7 @@ class SchoolRequestResource extends Resource
                         })
                         ->requiresConfirmation()
                         ->action(function (SchoolRequest $record) {
-//                            Faire un modal de confirmation pour changer le status
+                            //                            Faire un modal de confirmation pour changer le status
 
                             $record->status = SchoolRequestStatus::Rejected;
                             $record->update();
@@ -157,7 +168,7 @@ class SchoolRequestResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
+                    //                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -173,7 +184,7 @@ class SchoolRequestResource extends Resource
     {
         return [
             'index' => Pages\ListSchoolRequests::route('/'),
-//            'edit' => Pages\EditSchoolRequest::route('/{record}/edit'),
+            //            'edit' => Pages\EditSchoolRequest::route('/{record}/edit'),
             'view' => Pages\ViewSchoolRequest::route('/{record}/view'),
         ];
     }

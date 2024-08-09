@@ -1,5 +1,4 @@
-{{-- Care about people's approval and you will be their prisoner. --}}
-<div class="max-w-md w-full space-y-4">
+<div class="max-w-md w-full space-y-4 text-foreground">
     <!--  <div class="flex justify-center">
           <img src="assets/images/logo.png" class="size-12" alt="logo">
       </div>-->
@@ -9,34 +8,29 @@
     <form wire:submit.prevent="submitForm" class="space-y-4">
         <!-- Your form elements go here -->
         <div>
-            <label for="name" class="block text-sm font-medium">{{__("Name")}}</label>
-            <input type="text" id="name" name="name" wire:model="name"
-                   class="mt-1 p-2 w-full border rounded-md focus:border-b-current bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+            <x-label for="name">{{__("Name")}}</x-label>
+            <x-input type="text" id="name" name="name" wire:model="name"/>
             <x-input-error for="name"></x-input-error>
         </div>
         <div>
-            <label for="matricule" class="block text-sm font-medium">{{__("Matricule")}}</label>
-            <input type="text" id="matricule" name="matricule" wire:model="matricule"
-                   class="mt-1 p-2 w-full border rounded-md focus:border-b-current bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+            <x-label for="matricule" >{{__("Matricule")}}</x-label>
+            <x-input type="text" id="matricule" name="matricule" wire:model="matricule"/>
             <x-input-error for="matricule"></x-input-error>
         </div>
         <div>
-            <label for="email" class="block text-sm font-medium">{{__("Email")}}</label>
-            <input type="text" id="email" name="email" wire:model="email"
-                   class="mt-1 p-2 w-full border rounded-md focus:border-b-current bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+            <x-label for="email">{{__("Email")}}</x-label>
+            <x-input type="email" id="email" name="email" wire:model="email"/>
             <x-input-error for="email"></x-input-error>
         </div>
         <div>
-            <label for="password" class="block text-sm font-medium">{{__('Password')}}</label>
-            <input type="password" id="password" name="password" wire:model="password"
-                   class="mt-1 p-2 w-full border rounded-md focus:border-gray-200 bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+            <x-label for="password">{{__('Password')}}</x-label>
+            <x-input type="password" id="password" name="password" wire:model="password"/>
             <x-input-error for="password"></x-input-error>
         </div>
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium">{{__("Password confirmation")}}</label>
-            <input type="password" id="password_confirmation" name="password_confirmation"
-                   wire:model="password_confirmation"
-                   class="mt-1 p-2 w-full border rounded-md focus:border-gray-200 bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+            <x-label for="password_confirmation">{{__("Password confirmation")}}</x-label>
+            <x-input type="password" id="password_confirmation" name="password_confirmation"
+                   wire:model="password_confirmation"/>
             <x-input-error for="password_confirmation"></x-input-error>
         </div>
         <div>
@@ -48,7 +42,7 @@
     </form>
     <div class="mt-4 text-sm text-gray-400 text-center">
         <p>{{__('Already registered?')}} <a href="{{route('login')}}"
-                                            class="text-black font-normal hover:underline">{{__('Login')}}</a>
+                                            class="text-foreground font-normal hover:underline">{{__('Login')}}</a>
         </p>
     </div>
     <div>
@@ -64,7 +58,7 @@
         </div>
         <div class="mt-6 space-y-2">
             <div>
-                <a href=""
+                <a href="{{ route('socialite.auth','github') }}" target="_blank" rel="noopener noreferrer"
                    class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                     <span class="sr-only">Continuer avec Github</span>
                     <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -76,7 +70,7 @@
                 </a>
             </div>
             <div>
-                <a href=""
+                <a href="{{ route('socialite.auth','google') }}" target="_blank" rel="noopener noreferrer"
                    class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                     <span class="sr-only">Continuer avec Google</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 -ml-1" fill="currentColor"
