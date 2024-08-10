@@ -1,10 +1,10 @@
 <style>
     img.logo {
+        /*height: 5.5rem;*/
         color: #DC2626;
         /*filter: saturate(200%) drop-shadow(0 0 10px);*/
 
     }
-
 
     .alink {
         color: rgb(0 135 81);
@@ -69,7 +69,7 @@
 
 
 </style>
-@if (request()->is('admin/login')||request()->is('admin/register') || request()->isMethod('post')||request()->is('admin/two-factor-authentication') )
+@if (request()->is('dashboard/login')||request()->is('dashboard/register') || request()->isMethod('post')||request()->is('dashboard/two-factor-authentication') )
     <a href="{{url('/')}}" class="alink">
         <svg style="--c-400:var(--primary-400);--c-600:var(--primary-600);"
              class="fi-link-icon h-5 w-5 text-custom-600 dark:text-custom-400" xmlns="http://www.w3.org/2000/svg"
@@ -80,10 +80,11 @@
         </svg>
 
         Retour à la page d'accueil</a>
-@elseif(request()->is('admin/email-verification/prompt')||request()->is('admin/password-reset/request'))
+@elseif(request()->is('dashboard/email-verification/prompt')||request()->is('dashboard/password-reset/request'))
 
 @else
     <!-- Code pour afficher le logo de la marque -->
+    <img src="{{asset('images/Logo_IUT_Douala.png')}}" title="iut de douala" class="logo h-20"
          alt="Logo iut">
 @endif
 

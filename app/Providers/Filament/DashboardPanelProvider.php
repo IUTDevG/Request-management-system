@@ -61,6 +61,7 @@ class DashboardPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandLogo(fn() => view('filament.adminpanel.logo'));
+            ->brandLogoHeight('3.5rem')
+            ->brandLogo(fn() => view('filament.dashbordpanel.logo'));
     }
 }

@@ -67,7 +67,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->brandLogo(fn() => view('filament.adminpanel.logo'))
-//            ->brandLogoHeight('5rem')
+            ->brandLogoHeight('3.5rem')
             ->brandName('Request management')
             ->favicon(asset('favicon.ico'));
     }
