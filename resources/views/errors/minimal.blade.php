@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+@use('App\Enums\RoleType')
+    <!DOCTYPE html>
 <html lang="{{str_replace('_','-',app()->getLocale())}}">
 <head>
     <meta charset="UTF-8">
@@ -90,6 +91,25 @@
             <p class="text-xl text-gray-600 mb-8">@yield('message')</p>
             <p class="text-gray-500 italic">{!! __('"L\'éducation est l\'arme la plus puissante pour changer le monde." - Nelson
                 Mandela') !!}</p>
+            {{--            @dd(RoleType::COMPUTER_CELL)--}}
+            {{--            @dd(auth()->user()->getRole())--}}
+            @if(View::getSection('code') === "403")
+                @php
+                    $route= (string)'';
+                        $user = auth()->user()->getRole();
+                       if($user === RoleType::STUDENT->value){
+                        $route= route('student.home');
+                       }elseif ($user=== RoleType::COMPUTER_CELL->value){
+                           $route= url('admin');
+                       }else{
+                           $route= url('dashboard');
+                       }
+                @endphp
+                <a href="{{$route}}"
+                   class="mt-5 cursor-pointer bg-iut-yellow text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-iut-green transition duration-300 shadow-md">Ma
+                    session</a>
+
+            @endif
         </div>
     </div>
 </div>
