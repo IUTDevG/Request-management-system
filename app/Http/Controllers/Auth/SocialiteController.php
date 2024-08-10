@@ -53,11 +53,15 @@ class SocialiteController extends Controller
 
         $user = User::where('email', $email)->first();
 
-        if ($user && !$user->hasRole(RoleType::STUDENT)) {
+        if ($user && $user->hasRole(RoleType::COMPUTER_CELL)) {
             Auth::login($user, true);
             return redirect()->to('admin');
         }
-        if ($user && $user->hasRole('admin')) {
+        if ($user && ($user->hasRole(RoleType::ACADEMIC_MANAGER) || $user->hasRole(RoleType::DEPUTY_DIRECTOR) || $user->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $user->hasRole(RoleType::DIRECTOR) || $user->hasRole(RoleType::HEAD_OF_DEPARTMENT))) {
+            Auth::login($user, true);
+            return redirect()->to('dashboard');
+        }
+        if ($user && $user->hasRole(RoleType::STUDENT)) {
             $this->updateExistingUser($user, $socialUser, $provider);
             Auth::login($user, true);
             return redirect()->route('student.home');
