@@ -84,7 +84,6 @@
 
 @else
     <!-- Code pour afficher le logo de la marque -->
-    <img src="{{asset('images/Logo_IUT_Douala.png')}}" title="iut de douala" class="logo h-20"
          alt="Logo iut">
 @endif
 
