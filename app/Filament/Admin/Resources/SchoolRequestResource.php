@@ -31,9 +31,12 @@ class SchoolRequestResource extends Resource
 
     public static function getModelLabel(): string
     {
+        return (__('School Request'));
+    }
+    public static function getPluralModelLabel(): string
+    {
         return (__('School Requests'));
     }
-
     public static function form(Form $form): Form
     {
         return $form

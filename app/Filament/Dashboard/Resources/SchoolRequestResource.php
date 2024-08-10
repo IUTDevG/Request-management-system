@@ -23,12 +23,12 @@ class SchoolRequestResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return (__('Request'));
+        return (__('School Request'));
     }
 
     public static function getPluralModelLabel(): string
     {
-        return (__('Requests'));
+        return (__('School Requests'));
     }
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';

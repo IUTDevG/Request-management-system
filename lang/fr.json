@@ -99,7 +99,8 @@
     "User created successfully": "Utilisateur créé avec succès",
     "By": "Par",
     "Created at": "Créé le",
-    "School Requests": "Requêtes des etudiants",
+    "School Requests": "Requêtes des étudiants",
+    "School Request": "Requête",
     "Status": "Statut",
     "Level": "Niveau",
     "Review": "Revoir",
@@ -225,7 +226,7 @@
     "The email could not be retrieved from :provider.": "L'email n'a pas pu être récupéré depuis :provider.",
     "Missing session information.": "Informations de session manquantes.",
     "Invalid provider.": "Fournisseur non valide.",
-    "Click to copy":" Cliquez pour copier.",
+    "Click to copy": " Cliquez pour copier.",
     "Completed Requests": "Requêtes completes",
     "Back to home page": "Retour à la page d'accueil"
 }
