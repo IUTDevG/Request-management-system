@@ -103,7 +103,7 @@
 
             <livewire:settings.language-switcher/>
             <a class="px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-green-600 text-green-600 hover:border-green-500 hover:text-green-500 disabled:opacity-50 disabled:pointer-events-none dark:border-green-500 dark:text-green-500 dark:hover:text-green-400 dark:hover:border-green-400"
-               href="@if(auth()->user()) {{ route('student.home') }} @else {{ route('login') }} @endif">{{__('My requests')}}</a>
+               href="@if(auth()->user() && auth()->user()->hasRole(\App\Enums\RoleType::STUDENT)) {{ route('student.home') }} @elseif(auth()->user() && !auth()->user()->hasRole(\App\Enums\RoleType::STUDENT)) @else {{ route('login') }} @endif">{{__('My requests')}}</a>
         </div>
     </div>
     <!-- End Topbar -->
@@ -112,7 +112,7 @@
          aria-label="Global">
         <div class="flex items-center justify-between">
             <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('home') }}"
-               aria-label="Brand">{{__('IUT REQUEST MANAGEMENT')}}</a>
+               aria-label="Brand"><img src="{{asset('images/Logo_IUT_Douala.png')}}" alt="Logo IUT" class="h-20">{{-- {{__('IUT REQUEST MANAGEMENT')}}--}}</a>
             <div class="sm:hidden">
                 <button type="button"
                         class="hs-collapse-toggle size-9 flex justify-center items-center text-sm font-semibold text-foreground disabled:opacity-50 disabled:pointer-events-none"
@@ -148,7 +148,7 @@
     </nav>
 </header>
 <!-- ========== END HEADER ========== -->
-<main class="ml-0 mt-20">
+<main class="ml-0 mt-28">
     <!--Landing page-->
     <div id="home" class="max-w-[85rem] mx-auto w-full px-4 py-16 lg:flex lg:items-center">
         <div class="lg:w-1/2 mb-8 lg:mb-0">
