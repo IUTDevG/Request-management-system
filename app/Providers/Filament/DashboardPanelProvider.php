@@ -60,6 +60,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->brandLogo(fn() => view('filament.adminpanel.logo'));
     }
 }
