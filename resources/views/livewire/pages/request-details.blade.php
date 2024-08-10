@@ -47,11 +47,12 @@
                                     {!! $requests->description !!}
                                 </x-textarea>
                             </div>
+{{--                            @dd($requests->level->name)--}}
                             {{--                            @dd($requests->levels->name)--}}
                             <div class="mb-3">
                                 <x-label for="description" value="{{ __('Branche') }}"/>
                                 <x-input disabled
-                                         label="{{ __('Filière') }}" :value="$requests->level->name"
+                                         label="{{ __('Filière') }}" :value="$requests->level->name" type="text"
                                 />
                             </div>
                             <div class="mb-3">

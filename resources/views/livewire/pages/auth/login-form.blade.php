@@ -1,5 +1,5 @@
 {{-- The Master doesn't talk, he acts. --}}
-    <div class="max-w-md w-full space-y-4">
+    <div class="max-w-md w-full space-y-4 text-foreground">
         <h1 class="text-4xl font-extrabold text-green-500 mb-6 text-center font-heading">{{__('Welcome Back')}}</h1>
         <h3 class="text-sm font-semibold mb-6 text-center font-heading">{{__('Welcome to the IUT Douala requests portal. Log in to access your services.')}}</h3>
 
@@ -32,23 +32,21 @@
         <form wire:submit.prevent="submitForm" method="POST" class="space-y-4">
             <!-- Your form elements go here -->
             <div>
-                <label for="email" class="block text-sm font-medium uppercase">{{__('Email')}}</label>
-                <input type="text" id="email" name="email" wire:model="email"
-                       class="mt-1 p-2 w-full border rounded-md focus:border-b-current bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+                <x-label for="email">{{__('Email')}}</x-label>
+                <x-input type="email" id="email" name="email" wire="email"/>
                 <x-input-error for="email"></x-input-error>
             </div>
             <div>
-                <label for="password" class="block text-sm font-medium">{{__('Password')}}</label>
-                <input type="password" id="password" name="password" wire:model="password"
-                       class="mt-1 p-2 w-full border rounded-md focus:border-gray-200 bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+                <x-label for="password">{{__('Password')}}</x-label>
+                <x-input type="password" id="password" name="password" wire="password"
+                       class="mt-1 p-2 w-full border rounded-md focus:border-gray-200 bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
                 <x-input-error for="password"></x-input-error>
 
             </div>
             <div class="flex items-center justify-between gap-2 mt-5">
                 <div class="flex items-center">
-                    <input id="remember" wire:model="remember" name="remember" type="checkbox"
-                           class="shrink-0 mt-0.5 rounded text-green-600 focus:ring-green-500 border-green-700 checked:bg-green-500 checked:border-green-500 focus:ring-offset-green-800"/>
-                    <label for="remember" class="ml-1 block text-sm text-nowrap">
+                    <x-checkbox id="remember" wire:model="remember" name="remember" />
+                    <label for="remember" class="ml-1 block text-base text-nowrap">
                         {{__('Remember me')}}
                     </label>
                 </div>
@@ -68,7 +66,7 @@
         </form>
         <div class="mt-4 text-sm text-gray-400 text-center">
             <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}"
-                                                    class="text-black hover:underline">{{__('register')}}</a>
+                                                    class="hover:underline text-foreground">{{__('register')}}</a>
             </p>
         </div>
         <div>
@@ -84,7 +82,7 @@
             </div>
             <div class="mt-6 space-y-2">
                 <div>
-                    <a href="{{ route('socialite.auth', 'github')}}"
+                    <a href="{{ route('socialite.auth', 'github')}}" target="_blank" rel="noopener noreferrer"
                        class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                         <span class="sr-only">Continuer avec Github</span>
                         <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -96,7 +94,7 @@
                     </a>
                 </div>
                 <div>
-                    <a href="{{ route('socialite.auth', 'google') }}"
+                    <a href="{{ route('socialite.auth', 'google') }}" target="_blank" rel="noopener noreferrer"
                        class="button inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-blend-color text-sm hover:bg-popover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body focus:ring-green-500 w-full font-normal">
                         <span class="sr-only">Continuer avec Google</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 -ml-1" fill="currentColor" aria-hidden="true"

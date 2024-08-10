@@ -28,8 +28,14 @@ class DashboardPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             ->colors([
-                'primary' => Color::Emerald,
+                'primary' => Color::hex('#008751'),
+                'secondary' => Color::hex('#fcd116'),
+                'success' => Color::hex('#004737'),
+                'info' => Color::hex('#00271F'),
+                'warning' => Color::hex('#00170F'),
+                'danger' => Color::hex('#e8001e'),
             ])
+            ->font('Figtree')
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\\Filament\\Dashboard\\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\\Filament\\Dashboard\\Pages')
             ->pages([
@@ -54,6 +60,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->brandLogo(fn() => view('filament.adminpanel.logo'));
     }
 }

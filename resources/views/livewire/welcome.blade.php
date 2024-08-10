@@ -103,7 +103,7 @@
 
             <livewire:settings.language-switcher/>
             <a class="px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-green-600 text-green-600 hover:border-green-500 hover:text-green-500 disabled:opacity-50 disabled:pointer-events-none dark:border-green-500 dark:text-green-500 dark:hover:text-green-400 dark:hover:border-green-400"
-               href="@if(auth()->user()) {{ route('student.home') }} @else {{ route('login') }} @endif">{{__('My requests')}}</a>
+               href="@if(auth()->user() && auth()->user()->hasRole(\App\Enums\RoleType::STUDENT)) {{ route('student.home') }} @elseif(auth()->user() && !auth()->user()->hasRole(\App\Enums\RoleType::STUDENT)) @else {{ route('login') }} @endif">{{__('My requests')}}</a>
         </div>
     </div>
     <!-- End Topbar -->

@@ -39,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::hex('#00170F'),
                 'danger' => Color::hex('#e8001e'),
             ])
-            ->font('Figtree')
+            ->font('Poppins')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -65,6 +65,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->brandLogo(fn() => view('filament.adminpanel.logo'))
+//            ->brandLogoHeight('5rem')
+            ->brandName('Request management')
+            ->favicon(asset('favicon.ico'));
     }
 }
