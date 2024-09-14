@@ -31,7 +31,7 @@
                 <livewire:settings.language-switcher class="inline-flex m-1 relative"/>
 
                 <!--===Global dropdown menu for notification===-->
-                <div
+               {{-- <div
                     x-data="{
             open: false,
             toggle() {
@@ -123,7 +123,7 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                </div>--}}
                 <!--===Global dropdown menu for profile===-->
                 <div
                     x-data="{
