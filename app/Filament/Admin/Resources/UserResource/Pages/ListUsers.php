@@ -13,6 +13,7 @@ use App\Models\User;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Mockery\Matcher\Not;
 use Spatie\Permission\Models\Role;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
@@ -38,6 +39,7 @@ class ListUsers extends ListRecords
                         ->maxLength(255),
                     Forms\Components\TextInput::make('username')
                         ->label(__('Username'))
+                        ->unique('users', 'username')
                         ->required()
                         ->maxLength(255),
                     PhoneInput::make('phone_number')
@@ -61,20 +63,25 @@ class ListUsers extends ListRecords
                     Forms\Components\TextInput::make('email')
                         ->label(__('Email address'))
                         ->email()
+                        ->unique('users', 'email')
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\Hidden::make('password')
+                    Forms\Components\TextInput::make('password')
                         ->label(__('Password'))
-                        ->default('password'),
+                        ->password(true)
+                        ->required()
+                        ->revealable(true),
 
                     Forms\Components\Select::make('role')
                         ->label(__('Role'))
                         ->required()
-                        ->multiple()
                         ->options(
                             function () {
                                 return collect(RoleType::cases())->mapWithKeys(function ($role) {
-                                    return [$role->value => $role->label()];
+                                    if ($role->value !== RoleType::STUDENT->value) {
+                                        return [$role->value => $role->label()];
+                                    }
+                                    return [];
                                 })->toArray();
                             }
                         ),
@@ -83,15 +90,21 @@ class ListUsers extends ListRecords
                         ->options(Department::all()->pluck('name', 'id')),
                 ])
                 ->action(function (array $data) {
-                    // dd($data);
-                    $department = $data['department_id'];
-                    $user = User::create($data);
-                    $user->assignRoleWithDepartment($data['role'], $data['department_id']);
-                    Notification::make('user_created_successfuly')
-                        ->title(__('User created successfully'))
-                        ->body('Un utilisateur avec le role ' . implode(', ', $data['role']) . ' a ete cree avec succes')
-                        ->success()
-                        ->send();
+                    try {
+                        $user = User::create($data);
+                        $user->assignRoleWithDepartment($data['role'], $data['department_id']);
+                        Notification::make('user_created_successfuly')
+                            ->title(__('User created successfully'))
+                            ->body('Un utilisateur avec le role ' . $data['role'] . ' a ete cree avec succes')
+                            ->success()
+                            ->send();
+                    } catch (\Throwable $th) {
+                        Notification::make('user_creation_failed')
+                            ->title(__('Creation de l\'utilisateur a echoue'))
+                            ->body($th->getMessage())
+                            ->danger()
+                            ->send();
+                    }
                 }),
         ];
     }

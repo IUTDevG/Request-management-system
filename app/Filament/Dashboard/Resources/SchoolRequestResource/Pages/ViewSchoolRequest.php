@@ -34,7 +34,7 @@ class ViewSchoolRequest extends ViewRecord
                 ->visible(function ($record) {
                     return $record->status == SchoolRequestStatus::Submitted->value || $record->status == SchoolRequestStatus::Cancelled->value;
                 })
-                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark as in review successfully')),
             Actions\Action::make('status_to_escalated')
@@ -44,18 +44,12 @@ class ViewSchoolRequest extends ViewRecord
                     Forms\Components\Select::make('assigned_to')
                         ->required()
                         ->options(function () {
-                            $roles = RoleType::cases();
-                            $result = [];
-                            $i = 0;
-                            $user = User::find(auth()->user()->id);
-                            foreach ($roles as $role) {
-                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::USER->value ) {
-                            } else {
-                                    $result[$role->value] = $role->value;
+                            return collect(RoleType::cases())->mapWithKeys(function ($role) {
+                                if ($role->value !== RoleType::STUDENT->value) {
+                                    return [$role->value => $role->label()];
                                 }
-                                $i++;
-                            }
-                            return ($result);
+                                return [];
+                            })->toArray();
                         })
                 ])
                 ->label(__('Assign it'))
@@ -65,7 +59,7 @@ class ViewSchoolRequest extends ViewRecord
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
-                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value || $record->status == SchoolRequestStatus::Rejected->value)
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value || $record->status == SchoolRequestStatus::Rejected->value)
 
                 ->visible(function ($record) {
                     $user = User::find(auth()->user()->id);
@@ -86,7 +80,7 @@ class ViewSchoolRequest extends ViewRecord
                     $user = User::find(auth()->user()->id);
                     return ($record->status == SchoolRequestStatus::InReview->value || ($record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole()));
                 })
-                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Cancelled successfully')),
             Actions\Action::make('status_to_completed')
@@ -102,7 +96,7 @@ class ViewSchoolRequest extends ViewRecord
                     $user = User::find(auth()->user()->id);
                     return $record->status == SchoolRequestStatus::InReview->value || ($record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole());
                 })
-                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value)
+                ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark Complete')),
 

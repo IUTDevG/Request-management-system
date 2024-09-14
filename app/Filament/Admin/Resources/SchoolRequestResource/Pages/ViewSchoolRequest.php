@@ -12,6 +12,7 @@ use App\Filament\Admin\Resources\SchoolRequestResource;
 use App\Enums\RoleType;
 use Filament\Forms;
 use Filament\Actions;
+use Illuminate\Database\Eloquent\Model;
 
 class ViewSchoolRequest extends ViewRecord
 {
@@ -22,43 +23,39 @@ class ViewSchoolRequest extends ViewRecord
         return [
             ActionGroup::make([
                 Actions\Action::make('status_to_escalated')
-                ->requiresConfirmation()
-                ->icon('heroicon-o-arrow-up-circle')
-                ->color(Color::Yellow)
-                ->form([
-                    Forms\Components\Select::make('assigned_to')
-                        ->required()
-                        ->options(function () {
-                            $roles = RoleType::cases();
-                            $result = [];
-                            $i = 0;
-                            $user = User::find(auth()->user()->id);
-                            foreach ($roles as $role) {
-                                if ($role->value == $user->getRole() || $role->value == RoleType::STUDENT->value || $role->value == RoleType::USER->value ) {
-                                } else {
-                                    $result[$role->value] = $role->value;
-                                }
-                                $i++;
-                            }
-                            return ($result);
-                        })
-                ])
-                ->label(__('Assign it'))
-                ->action(function (array $data, $record) {
-                    $record->status = SchoolRequestStatus::Escalated;
-                    $record->assigned_to = $data['assigned_to'];
-                    $record->update();
-                    return redirect()->route('filament.admin.resources.school-requests.index');
-                })
-                ->hidden(fn ($record) => $record->status == SchoolRequestStatus::Completed->value || $record->status == SchoolRequestStatus::Rejected->value)
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-arrow-up-circle')
+                    ->color(Color::Yellow)
+                    ->form([
+                        Forms\Components\Select::make('assigned_to')
+                            ->required()
+                            ->options(
+                             function () {
+                                $user = User::find(auth()->user()->id);
+                                return collect(RoleType::cases())->mapWithKeys(function ($role) use($user) {
+                                    if ($role->value !== RoleType::STUDENT->value || $user->getRole() == $role->value) {
+                                        return [$role->value => $role->label()];
+                                    }
+                                    return [];
+                                })->toArray();
+                            })
+                    ])
+                    ->label(__('Assign it'))
+                    ->action(function (array $data, $record) {
+                        $record->status = SchoolRequestStatus::Escalated;
+                        $record->assigned_to = $data['assigned_to'];
+                        $record->update();
+                        return redirect()->route('filament.admin.resources.school-requests.index');
+                    })
+                    ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value || $record->status == SchoolRequestStatus::Rejected->value)
 
-                ->visible(function ($record) {
-                    $user = User::find(auth()->user()->id);
-                    return ($record->status == SchoolRequestStatus::InReview->value || $record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole());
-                })
-                ->sendSuccessNotification()
-                ->successNotificationTitle(__('Assigned successfully')),
-            Action::make('Reject_status')
+                    ->visible(function ($record) {
+                        $user = User::find(auth()->user()->id);
+                        return ($record->status == SchoolRequestStatus::InReview->value || $record->status == SchoolRequestStatus::Escalated->value && $record->assigned_to == $user->getRole());
+                    })
+                    ->sendSuccessNotification()
+                    ->successNotificationTitle(__('Assigned successfully')),
+                Action::make('Reject_status')
                     ->icon('heroicon-o-x-circle')
                     ->label(__('Cancel Request'))
                     ->requiresConfirmation()
@@ -69,10 +66,10 @@ class ViewSchoolRequest extends ViewRecord
                         $record->update();
                     })
                     ->hidden(function ($record) {
-                      $state=  $record->status;
-                      if ($state == SchoolRequestStatus::Rejected->value) {
-                          return true;
-                      }
+                        $state =  $record->status;
+                        if ($state == SchoolRequestStatus::Rejected->value) {
+                            return true;
+                        }
                     })
                     ->color(Color::Red)
             ])

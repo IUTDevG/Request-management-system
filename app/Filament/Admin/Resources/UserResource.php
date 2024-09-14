@@ -49,6 +49,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('username')
                     ->label(__('Username'))
                     ->required()
+                    ->unique('users','username',ignoreRecord: true)
                     ->maxLength(255),
                 PhoneInput::make('phone_number')
                     ->label(__('Phone number'))
@@ -71,12 +72,9 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->label(__('Email address'))
                     ->email()
+                    ->unique('users','email',ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Hidden::make('password')
-                    ->label(__('Password'))
-                    ->default('password'),
-
 
             ]);
     }
