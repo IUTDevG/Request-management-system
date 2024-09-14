@@ -25,7 +25,7 @@ class SocialiteController extends Controller
      * @param string $provider
      * @return RedirectResponse
      */
-    public function loginSocial(Request $request, string $provider): RedirectResponse
+    public function loginSocial(string $provider): RedirectResponse
     {
         $this->validateProvider($provider);
         return Socialite::driver($provider)->redirect();
@@ -57,7 +57,7 @@ class SocialiteController extends Controller
             Auth::login($user, true);
             return redirect()->to('admin');
         }
-        if ($user && ($user->hasRole(RoleType::ACADEMIC_MANAGER) || $user->hasRole(RoleType::DEPUTY_DIRECTOR) || $user->hasRole(RoleType::SCHOOLING) || $this->hasRole(RoleType::SECRETARY_DIRECTOR ) || $user->hasRole(RoleType::DIRECTOR) || $user->hasRole(RoleType::HEAD_OF_DEPARTMENT))) {
+        if ($user && ($user->hasRole(RoleType::ACADEMIC_MANAGER) || $user->hasRole(RoleType::DEPUTY_DIRECTOR) || $user->hasRole(RoleType::SCHOOLING) || $user->hasRole(RoleType::SECRETARY_DIRECTOR) || $user->hasRole(RoleType::DIRECTOR) || $user->hasRole(RoleType::HEAD_OF_DEPARTMENT))) {
             Auth::login($user, true);
             return redirect()->to('dashboard');
         }

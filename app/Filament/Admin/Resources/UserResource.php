@@ -3,19 +3,17 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Enums\RoleType;
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use libphonenumber\PhoneNumberType;
-use Illuminate\Database\Eloquent\Builder;
-use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\UserResource\Pages;
-use App\Filament\Admin\Resources\UserResource\RelationManagers;
-use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
+use App\Models\User;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use libphonenumber\PhoneNumberType;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class UserResource extends Resource
 {
@@ -83,8 +81,9 @@ class UserResource extends Resource
 
     public static function table(Table $table): Table
     {
-        // dd(auth()->user()->department);
+        $query = User::withoutRole(RoleType::STUDENT);
         return $table
+            ->query($query)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('Name'))
@@ -110,7 +109,7 @@ class UserResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('Email address'))
-                    ->copyable(true),
+                    ->copyable(),
 
             ])
             ->filters([
@@ -124,6 +123,31 @@ class UserResource extends Resource
                     Tables\Actions\EditAction::make()
                         ->label(__('Edit user'))
                         ->color('secondary'),
+                    Tables\Actions\Action::make('edit_role')
+                        ->label(__('Edit role'))
+                        ->color('warning')
+                        ->icon('heroicon-o-user-group')
+                        ->form([
+                            Forms\Components\Select::make('role')  // Changer '' en 'role'
+                            ->label(__('Role'))
+                                ->options(function () {
+                                    return collect(RoleType::cases())
+                                        ->filter(fn($role) => $role->value !== RoleType::STUDENT->value)
+                                        ->mapWithKeys(fn($role) => [$role->value => $role->label()])
+                                        ->toArray();
+                                })
+                                ->required()
+                        ])
+                        ->action(function (array $data, Model $record) {
+                            $user = $record;
+                            $user->removeRole($user->getRole());
+                            $user->assignRole($data['role']);
+                            Notification::make('user_role_changed_successfully')
+                                ->title(__('User role changed successfully'))
+                                ->body(__('Role of user :user has been changed to :role', ['user' => $user->name, 'role' => $data['role']]))
+                                ->success()
+                                ->send();
+                        }),
                 ]),
             ])
             ->bulkActions([

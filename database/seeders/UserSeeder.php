@@ -68,10 +68,6 @@ class UserSeeder extends Seeder
             $user->assignRole(RoleType::SCHOOLING->value);
         });
 
-        User::factory(5)->create()->each(function ($user) {
-            $user->assignRole(RoleType::USER);
-        });
-
 
     }
 }

@@ -15,7 +15,7 @@ enum RoleType: string{
 
     case STUDENT = 'student';
 
-    case USER = 'user';
+//    case USER = 'user';
 
     public function label(): string
     {
@@ -28,7 +28,7 @@ enum RoleType: string{
             self::HEAD_OF_DEPARTMENT => __('Head of Department'),
             self::ACADEMIC_MANAGER => __('Academic Manager'),
             self::STUDENT => __('Student'),
-            self::USER => __('User'),
+//            self::USER => __('User'),
         };
     }
 }
