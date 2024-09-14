@@ -73,7 +73,6 @@ class UserResource extends Resource
                     ->unique('users','email',ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
-
             ]);
     }
 

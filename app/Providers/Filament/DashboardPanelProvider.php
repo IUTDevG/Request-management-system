@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -43,7 +44,13 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets'), for: 'App\\Filament\\Dashboard\\Widgets')
-
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                ->setIcon('heroicon-o-user-circle')
+                ->setNavigationGroup('Profile')
+                ->setSort(10)
+                ->shouldShowDeleteAccountForm(false)
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

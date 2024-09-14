@@ -9,6 +9,7 @@
         "bezhansalleh/filament-language-switch": "^3.1",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
+        "joaopaulolndev/filament-edit-profile": "*",
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.9",

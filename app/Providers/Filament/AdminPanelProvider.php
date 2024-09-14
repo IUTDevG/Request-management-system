@@ -20,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
@@ -65,6 +66,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                ->setIcon('heroicon-o-user-circle')
+                ->setNavigationGroup('Profile')
+                ->setSort(10)
+                ->shouldShowDeleteAccountForm(false)
             ])
             ->brandLogo(fn() => view('filament.adminpanel.logo'))
             ->brandLogoHeight('3.5rem')
