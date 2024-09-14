@@ -20,7 +20,7 @@ class SchoolRequestSeeder extends Seeder
     public function run(): void
     {
         $user =   User::factory()->create();
-        $user->assignRole(RoleType::SCHOOLING);
+        $user->assignRole(RoleType::STUDENT);
 
         $schoolRequest =SchoolRequest::create([
             'title' => 'Absence de notes en algorithme',
