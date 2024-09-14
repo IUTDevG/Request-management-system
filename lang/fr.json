@@ -6,7 +6,7 @@
     "A new verification link has been sent to your email address.": "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.",
     "About the request management system": "À propos du système de gestion de requêtes",
     "All rights reserved.": "Tous droits réservés.",
-    "Already registered?": "Déjà inscrit·e ?",
+    "Already registered?": "Déjà inscrit?",
     "Answers to the most frequently asked questions.": "Réponses aux questions les plus fréquemment posées.",
     "Are you sure you want to delete your account?": "Êtes-vous sûr·e de vouloir supprimer votre compte ?",
     "Can I cancel or modify a current request?": "Puis-je annuler ou modifier une requête en cours ?",
@@ -99,7 +99,8 @@
     "User created successfully": "Utilisateur créé avec succès",
     "By": "Par",
     "Created at": "Créé le",
-    "School Requests": "Requêtes des etudiants",
+    "School Requests": "Requêtes des étudiants",
+    "School Request": "Requête",
     "Status": "Statut",
     "Level": "Niveau",
     "Review": "Revoir",
@@ -110,6 +111,9 @@
     "Role": "Rôle",
     "View user": "Voir l'utilisateur",
     "Edit user": "Modifier l'utilisateur",
+    "Edit role": "Modifier le rôle",
+    "User role changed successfully": "Le rôle de l'utilisateur a été changé avec succès",
+    "Role of user :user has been changed to :role": "Le rôle de l'utilisateur :user a été changé en :role",
     "Add a user": "Ajouter un utilisateur",
     "Director": "Directeur",
     "Secretary Director": "Secrétaire du Directeur",
@@ -225,6 +229,7 @@
     "The email could not be retrieved from :provider.": "L'email n'a pas pu être récupéré depuis :provider.",
     "Missing session information.": "Informations de session manquantes.",
     "Invalid provider.": "Fournisseur non valide.",
-    "Click to copy":" Cliquez pour copier.",
-    "Completed Requests": "Requetes completes"
+    "Click to copy": " Cliquez pour copier.",
+    "Completed Requests": "Requêtes completes",
+    "Back to home page": "Retour à la page d'accueil"
 }

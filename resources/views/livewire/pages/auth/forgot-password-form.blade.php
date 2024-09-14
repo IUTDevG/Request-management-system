@@ -1,4 +1,4 @@
-<div class="max-w-md w-full p-6">
+<div class="max-w-md w-full p-6 text-foreground">
         <!--<div class="flex justify-center">
             <img src="assets/images/logo.png" class="size-12" alt="logo">
         </div>-->
@@ -13,8 +13,8 @@
         <form wire:submit.prevent='sendResetLink' method="POST" class="space-y-4">
             <!-- Your form elements go here -->
             <div>
-                <label for="email" class="block text-sm font-medium">{{__('Email')}}</label>
-                <input placeholder="{{__('Enter your email address here')}}" wire:model="email" type="email" id="email" name="email" class="mt-1 placeholder:text-gray-400 p-2 w-full border rounded-md focus:border-b-current bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300">
+                <x-label for="email">{{__('Email')}}</x-label>
+                <x-input placeholder="{{__('Enter your email address here')}}" wire:model="email" type="email" id="email" name="email" />
                 <x-input-error for='email'></x-input-error>
             </div>
 
@@ -23,7 +23,7 @@
             </div>
         </form>
         <div class="mt-4 text-sm text-gray-400 text-center">
-            <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}" class=" text-black hover:underline">{{__('register')}}</a>
+            <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}" class="text-foreground hover:underline">{{__('register')}}</a>
             </p>
         </div>
     </div>

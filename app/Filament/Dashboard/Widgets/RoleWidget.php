@@ -14,11 +14,14 @@ class RoleWidget extends BaseWidget
     {
         $user = User::find(auth()->user()->id);
         // $role
-
+        $user = $user->getRole();
+        if ($user){
+            $user = RoleType::tryFrom($user)->label();
+        }
         return [
             Stat::make(
                 label: 'Role:',
-                value:( $user->getRole() ?? ''),
+                value: ($user ?? ''),
             ),
         ];
     }

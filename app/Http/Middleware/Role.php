@@ -17,9 +17,7 @@ class Role
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->user()->hasRole(RoleType::STUDENT)) {
-//          On renvoie la page d'erreur 403 si l'utilisateur n'a pas le rôle student
             abort(403, __('Unauthorized'));
-
        }
         return $next($request);
     }

@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
+@use('App\Enums\RoleType')
+        <!DOCTYPE html>
+<html lang="{{str_replace('_','-',app()->getLocale())}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - IUT de Douala</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
     <!-- Production version -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -59,7 +61,7 @@
     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-iut-green via-iut-yellow to-iut-red"></div>
     <div class="flex flex-col md:flex-row">
         <div
-            class="w-full md:w-1/2 bg-gradient-to-br from-iut-green to-green-700 p-8 flex flex-col justify-center items-center text-white relative overflow-hidden">
+                class="w-full md:w-1/2 bg-gradient-to-br from-iut-green to-green-700 p-8 flex flex-col justify-center items-center text-white relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full opacity-10">
                 <div class="w-full h-full bg-repeat"
                      style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0iI2ZmZiI+PC9yZWN0Pgo8cGF0aCBkPSJNMzYgMzRoLTJsMi0yaC0ydi0yaDJ2LTJoMnYyaDJ2Mmgt    MnoiIGZpbGwtb3BhY2l0eT0iMC4zIiBmaWxsPSIjZmZmIj48L3BhdGg+Cjwvc3ZnPg==');"></div>
@@ -67,7 +69,7 @@
             <div class="relative z-10 flex flex-col items-center">
                 <div class="w-32 h-32 rounded-full bg-white p-1 mb-6 shadow-lg">
                     <div
-                        class="w-full h-full rounded-full bg-gray-200 flex items-center justify-center animate-pulse-slow">
+                            class="w-full h-full rounded-full bg-gray-200 flex items-center justify-center animate-pulse-slow">
                         <i data-lucide="book-open" class="w-16 h-16 text-iut-green"></i>
                     </div>
                 </div>
@@ -90,6 +92,25 @@
             <p class="text-xl text-gray-600 mb-8">@yield('message')</p>
             <p class="text-gray-500 italic">{!! __('"L\'éducation est l\'arme la plus puissante pour changer le monde." - Nelson
                 Mandela') !!}</p>
+            {{--            @dd(RoleType::COMPUTER_CELL)--}}
+            {{--            @dd(auth()->user()->getRole())--}}
+            @if(View::getSection('code') === "403")
+                @php
+                    $route= (string)'';
+                        $user = auth()->user()->getRole();
+                       if($user === RoleType::STUDENT->value){
+                        $route= route('student.home');
+                       }elseif ($user=== RoleType::COMPUTER_CELL->value){
+                           $route= url('admin');
+                       }else{
+                           $route= url('dashboard');
+                       }
+                @endphp
+                <a href="{{$route}}"
+                   class="mt-5 cursor-pointer bg-iut-yellow text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-iut-green transition duration-300 shadow-md">Ma
+                    session</a>
+
+            @endif
         </div>
     </div>
 </div>

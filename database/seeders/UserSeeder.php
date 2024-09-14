@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Enums\RoleType;
@@ -28,8 +29,8 @@ class UserSeeder extends Seeder
         $user->assignRoleWithDepartment(RoleType::HEAD_OF_DEPARTMENT->value, 1);
 
 
-        $user= User::factory()->create([
-            'name'=>'kenmoe',
+        $user = User::factory()->create([
+            'name' => 'kenmoe',
             'firstName' => 'russel',
             'username' => 'russelodev',
             'email' => 'russeloken@gmail.com',
@@ -38,8 +39,8 @@ class UserSeeder extends Seeder
 
         ]);
         $user->assignRole(RoleType::COMPUTER_CELL);
-        $user= User::factory()->create([
-            'name'=>'fotso',
+        $user = User::factory()->create([
+            'name' => 'fotso',
             'firstName' => 'darwin',
             'username' => 'darwin_nathan',
             'email' => 'fotsodarwin@gmail.com',
@@ -50,17 +51,22 @@ class UserSeeder extends Seeder
 
         $user->assignRole(RoleType::COMPUTER_CELL);
 
-        User::factory(2)->create()->each(function ($user){
+        $user = User::factory()->create([
+            'name' => 'Kengne',
+            'firstName' => 'Jiordi',
+            'username' => 'jiordikengne',
+            'email' => 'jiordikengne@gmail.com',
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+        ]);
+        $user->assignRole(RoleType::COMPUTER_CELL);
+        User::factory(2)->create()->each(function ($user) {
             $user->assignRoleWithDepartment(RoleType::ACADEMIC_MANAGER->value, 1);
         });
 
-        User::factory(2)->create()->each(function ($user){
-           $user->assignRole(RoleType::SCHOOLING->value);
-       });
-
-        User::factory(5)->create()->each(function ($user){
-           $user->assignRole(RoleType::USER);
-       });
+        User::factory(2)->create()->each(function ($user) {
+            $user->assignRole(RoleType::SCHOOLING->value);
+        });
 
 
     }
