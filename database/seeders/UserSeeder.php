@@ -15,35 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory()->create();
-        $user->assignRole(RoleType::DIRECTOR);
 
-        $user = User::factory()->create();
-        $user->assignRole(RoleType::SECRETARY_DIRECTOR);
-
-
-        $user = User::factory()->create();
-        $user->assignRole(RoleType::DEPUTY_DIRECTOR);
-
-        $user = User::factory()->create();
-        $user->assignRoleWithDepartment(RoleType::HEAD_OF_DEPARTMENT->value, 1);
-
-
-        $user = User::factory()->create([
-            'name' => 'kenmoe',
-            'firstName' => 'russel',
-            'username' => 'russelodev',
-            'email' => 'russeloken@gmail.com',
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-
-        ]);
-        $user->assignRole(RoleType::COMPUTER_CELL);
         $user = User::factory()->create([
             'name' => 'fotso',
             'firstName' => 'darwin',
             'username' => 'darwin_nathan',
-            'email' => 'fotsodarwin@gmail.com',
+            'email' => 'fotsodarwin+1@gmail.com',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
 
@@ -55,18 +32,12 @@ class UserSeeder extends Seeder
             'name' => 'Kengne',
             'firstName' => 'Jiordi',
             'username' => 'jiordikengne',
-            'email' => 'jiordikengne@gmail.com',
+            'email' => 'jiordikengne+1@gmail.com',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
         $user->assignRole(RoleType::COMPUTER_CELL);
-        User::factory(2)->create()->each(function ($user) {
-            $user->assignRoleWithDepartment(RoleType::ACADEMIC_MANAGER->value, 1);
-        });
 
-        User::factory(2)->create()->each(function ($user) {
-            $user->assignRole(RoleType::SCHOOLING->value);
-        });
 
 
     }
