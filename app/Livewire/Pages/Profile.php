@@ -39,13 +39,10 @@ class Profile extends Component
         $this->firstName = $user->firstName;
         $this->username = $user->username;
         $this->email = $user->email;
-        /* $user = \App\Models\User::query()->findOrFail(auth()->user()->id);
-                                    $name = $user->name;
-                                    $firstName = $user->firstName;
-
-                                    $src = $user->google_profile ?: \Illuminate\Support\Facades\Storage::url($user->avatar);
-         * */
-        $this->avatarUrl = $user->google_profile ?: \Illuminate\Support\Facades\Storage::url($user->avatar);
+        $this->avatarUrl = $user->google_profile ?:
+            ($user->avatar ? Storage::url($user->avatar)
+                : 'https://ui-avatars.com/api/?name=' . $user->name . '+' . $user->firstName
+                . '&background=random&bold=true&rounded=true&format=svg&size=512');
         $this->user = $user;
     }
 

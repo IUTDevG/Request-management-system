@@ -10,7 +10,7 @@
         'success' => 'bg-green-500',
         'error' => 'bg-red-500',
         'warning' => 'bg-yellow-500',
-        'info' => 'bg-blue-500'
+        'info' => 'bg-green-500'
     ];
     $icons = [
         'success' => '<path d="M8 12.5L10.5 15L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',

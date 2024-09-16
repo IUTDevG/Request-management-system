@@ -25,12 +25,12 @@
 
         <div>
             <x-label for="password">{{__('Password')}}</x-label>
-            <x-input type="password" id="password" name="password" wire:model='password'/>
+            <x-input :is-password="true" type="password" id="password" name="password" wire:model='password'/>
             <x-input-error for='password'></x-input-error>
         </div>
         <div>
             <x-label for="password_confirmation">{{__('Password confirmation')}}</x-label>
-            <x-input type="password" id="password_confirmation" name="password_confirmation"
+            <x-input :is-password="true" type="password" id="password_confirmation" name="password_confirmation"
                      wire:model='password_confirmation'/>
             <x-input-error for='password_confirmation'></x-input-error>
         </div>

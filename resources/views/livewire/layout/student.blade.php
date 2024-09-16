@@ -25,105 +25,107 @@
          aria-label="Global">
         <div class="flex items-center justify-between w-full">
             <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('student.home') }}"
-               aria-label="Brand">IUT Student panel</a>
+               aria-label="Brand"><img src="{{asset('images/Logo_IUT_Douala.png')}}" title="iut de douala" class="my-2
+               h-20"
+                                       alt="Logo iut"></a>
             <div class="flex sm:items-center sm:justify-end py-2 md:py-0 sm:ps-7">
                 <!--===Global dropdown menu for setting===-->
                 <livewire:settings.language-switcher class="inline-flex m-1 relative"/>
 
                 <!--===Global dropdown menu for notification===-->
-               {{-- <div
-                    x-data="{
-            open: false,
-            toggle() {
-                if (this.open) {
-                    return this.close()
-                }
+                {{-- <div
+                     x-data="{
+             open: false,
+             toggle() {
+                 if (this.open) {
+                     return this.close()
+                 }
 
-                this.$refs.button.focus()
+                 this.$refs.button.focus()
 
-                this.open = true
-            },
-            close(focusAfter) {
-                if (! this.open) return
+                 this.open = true
+             },
+             close(focusAfter) {
+                 if (! this.open) return
 
-                this.open = false
+                 this.open = false
 
-                focusAfter && focusAfter.focus()
-            }
-        }"
-                    x-on:keydown.escape.prevent.stop="close($refs.button)"
-                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                    x-id="['dropdown-button']"
-                    class="m-1 relative inline-flex">
-                    <button x-ref="button"
-                            x-on:click="toggle()"
-                            :aria-expanded="open"
-                            :aria-controls="$id('dropdown-button')"
-                            id="hs-dropdown-hover-event" type="button"
-                            class="m-1 ms-0 relative py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium disabled:opacity-50">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="size-6 text-foreground hover:text-green-600">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/>
-                        </svg>
-                        <span class="flex absolute top-0 end-0 -mt-2 -me-2">
-                            <span
-                                class="animate-ping absolute inline-flex size-full rounded-full bg-green-400 opacity-75 dark:bg-green-600"></span>
-                            <span
-                                class="relative inline-flex text-xs bg-green-500 text-white rounded-full py-0.5 px-1.5">
-                              9+
-                            </span>
-                            </span>
-                    </button>
-                    <div
-                        x-ref="panel"
-                        x-show="open"
-                        x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 scale-90"
-                        x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-300"
-                        x-transition:leave-start="opacity-100 scale-100"
-                        x-transition:leave-end="opacity-0 scale-90"
-                        x-on:click.outside="close($refs.button)"
-                        :id="$id('dropdown-button')"
-                        style="position: absolute;
-                        width: max-content;
-                            inset: 0 0 auto auto;
-                            margin: 0;
-                            transform: translate3d(-68px, 70.4px, 0px); "
-                        class="right-0 z-50  divide-y divide-gray-100 bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
-                    >
-                        <div
-                            class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
-                            Notifications
-                        </div>
-                        <div
-                            class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
-                            <a href="#"
-                               class="flex px-4 py-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
-                                <div class="w-full ps-3">
-                                    <div class="text-foreground text-sm mb-1.5">New message from <span
-                                            class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>:
-                                        "Your
-                                        request is here"
-                                    </div>
-                                    <div class="text-xs text-green-600 dark:text-green-500">a few moments ago</div>
-                                </div>
-                            </a>
-                        </div>
-                        <a href="{{ route('student.notifications') }}"
-                           class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
-                            <div class="inline-flex items-center ">
-                                <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                     xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
-                                    <path
-                                        d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
-                                </svg>
-                                View all
-                            </div>
-                        </a>
-                    </div>
-                </div>--}}
+                 focusAfter && focusAfter.focus()
+             }
+         }"
+                     x-on:keydown.escape.prevent.stop="close($refs.button)"
+                     x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                     x-id="['dropdown-button']"
+                     class="m-1 relative inline-flex">
+                     <button x-ref="button"
+                             x-on:click="toggle()"
+                             :aria-expanded="open"
+                             :aria-controls="$id('dropdown-button')"
+                             id="hs-dropdown-hover-event" type="button"
+                             class="m-1 ms-0 relative py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium disabled:opacity-50">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                              stroke="currentColor" class="size-6 text-foreground hover:text-green-600">
+                             <path stroke-linecap="round" stroke-linejoin="round"
+                                   d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/>
+                         </svg>
+                         <span class="flex absolute top-0 end-0 -mt-2 -me-2">
+                             <span
+                                 class="animate-ping absolute inline-flex size-full rounded-full bg-green-400 opacity-75 dark:bg-green-600"></span>
+                             <span
+                                 class="relative inline-flex text-xs bg-green-500 text-white rounded-full py-0.5 px-1.5">
+                               9+
+                             </span>
+                             </span>
+                     </button>
+                     <div
+                         x-ref="panel"
+                         x-show="open"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 scale-90"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-300"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-90"
+                         x-on:click.outside="close($refs.button)"
+                         :id="$id('dropdown-button')"
+                         style="position: absolute;
+                         width: max-content;
+                             inset: 0 0 auto auto;
+                             margin: 0;
+                             transform: translate3d(-68px, 70.4px, 0px); "
+                         class="right-0 z-50  divide-y divide-gray-100 bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10"
+                     >
+                         <div
+                             class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-gray-800 dark:text-white">
+                             Notifications
+                         </div>
+                         <div
+                             class="divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10">
+                             <a href="#"
+                                class="flex px-4 py-3 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
+                                 <div class="w-full ps-3">
+                                     <div class="text-foreground text-sm mb-1.5">New message from <span
+                                             class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>:
+                                         "Your
+                                         request is here"
+                                     </div>
+                                     <div class="text-xs text-green-600 dark:text-green-500">a few moments ago</div>
+                                 </div>
+                             </a>
+                         </div>
+                         <a href="{{ route('student.notifications') }}"
+                            class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+                             <div class="inline-flex items-center ">
+                                 <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                      xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                                     <path
+                                         d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                                 </svg>
+                                 View all
+                             </div>
+                         </a>
+                     </div>
+                 </div>--}}
                 <!--===Global dropdown menu for profile===-->
                 <div
                     x-data="{
@@ -161,10 +163,13 @@
                                     $name = $user->name;
                                     $firstName = $user->firstName;
 
-                                    $src = $user->google_profile ?: \Illuminate\Support\Facades\Storage::url($user->avatar);
+                                    $src = $user->google_profile ?:
+                                    ($user->avatar?\Illuminate\Support\Facades\Storage::url($user->avatar)
+                                    :'https://ui-avatars.com/api/?name='.$name.'+'.$firstName
+                                    .'&background=random&bold=true&rounded=true&format=svg&size=512');
                                 @endphp
                                 <img wire:poll class="inline-block size-8 rounded-full"
-                                     src="{{$src ??'https://ui-avatars.com/api/?name='.$name.'+'.$firstName .'&background=random&bold=true'}}"
+                                     src="{{$src}}"
                                      alt="{{$user->full_name}}"
                                      title="{{$user->full_name}}">
                             </span>
@@ -214,7 +219,7 @@
                                     :aria-expanded="open"
                                     :aria-controls="$id('dropdown-button')"
                                     type="button"
-                                    class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-800 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:focus:ring-blue-400"
+                                    class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-800 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:focus:ring-green-400"
                                 >
                                     <span>{!! __('Theme') !!}</span>
                                     <svg

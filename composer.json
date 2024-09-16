@@ -2,12 +2,16 @@
     "name": "iutdevg/request-management-system",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["request-management-system", "iut"],
+    "keywords": [
+        "request-management-system",
+        "iut"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-language-switch": "^3.1",
         "filament/filament": "^3.2",
+        "filament/notifications": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "joaopaulolndev/filament-edit-profile": "*",
         "laravel/framework": "^11.9",
@@ -44,7 +48,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
