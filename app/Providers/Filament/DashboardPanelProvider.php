@@ -28,6 +28,8 @@ class DashboardPanelProvider extends PanelProvider
             ->default()
             ->path('dashboard')
             ->login()
+            ->spa()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::hex('#008751'),
                 'secondary' => Color::hex('#fcd116'),

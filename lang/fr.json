@@ -231,5 +231,10 @@
     "Invalid provider.": "Fournisseur non valide.",
     "Click to copy": " Cliquez pour copier.",
     "Completed Requests": "Requêtes completes",
-    "Back to home page": "Retour à la page d'accueil"
+    "Back to home page": "Retour à la page d'accueil",
+    "The request has been created by :name with the code :request_code.": "La requête a été créée par :name avec le code :request_code.",
+    "draft": "Brouillon",
+    "updated": "Mis à jour",
+    "created": "Création",
+    "deleted": "Supprimé"
 }

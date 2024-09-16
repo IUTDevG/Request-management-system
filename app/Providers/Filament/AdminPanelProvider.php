@@ -2,17 +2,14 @@
 
 namespace App\Providers\Filament;
 
-use App\Livewire\Settings\LanguageSwitcher;
-use Filament\Forms\Components\View;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
+use Rmsramos\Activitylog;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -21,7 +18,6 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
-use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -32,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::hex('#008751'),
                 'secondary' => Color::hex('#fcd116'),
@@ -69,10 +66,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentEditProfilePlugin::make()
-                ->setIcon('heroicon-o-user-circle')
-                ->setNavigationGroup('Profile')
-                ->setSort(10)
-                ->shouldShowDeleteAccountForm(false)
+                    ->setIcon('heroicon-o-user-circle')
+                    ->setNavigationGroup('Profile')
+                    ->setSort(10)
+                    ->shouldShowDeleteAccountForm(false),
+                Activitylog\ActivitylogPlugin::make()
+                    ->navigationIcon('heroicon-o-shield-check')
+                    ->resource(\App\Filament\Admin\Resources\ActivityResource::class),
             ])
             ->brandLogo(fn() => view('filament.adminpanel.logo'))
             ->brandLogoHeight('3.5rem')

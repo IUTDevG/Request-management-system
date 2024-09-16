@@ -10,12 +10,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Level extends Model
 {
-    use HasFactory,LogsActivity,HasSlug;
+    use HasFactory, HasSlug;
 
-    protected $fillable = ['name','slug'];
+    protected $fillable = ['name', 'slug'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
+            ->useLogName('level')
             ->setDescriptionForEvent(fn(string $eventName) => "This level has been {$eventName}");
     }
 }

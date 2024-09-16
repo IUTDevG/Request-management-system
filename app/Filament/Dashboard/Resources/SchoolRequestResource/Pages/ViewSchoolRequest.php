@@ -10,6 +10,7 @@ use App\Enums\SchoolRequestStatus;
 use Filament\Support\Colors\Color;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Dashboard\Resources\SchoolRequestResource;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class ViewSchoolRequest extends ViewRecord
@@ -21,13 +22,13 @@ class ViewSchoolRequest extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('status_to_review')
+            Action::make('status_to_review')
                 ->requiresConfirmation()
                 ->color(Color::Yellow)
                 ->label(__('Mark as in review'))
 
                 ->action(function ($record) {
-                    $record->status = SchoolRequestStatus::InReview;
+                    $record->status = SchoolRequestStatus::InReview->value;
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
@@ -37,7 +38,7 @@ class ViewSchoolRequest extends ViewRecord
                 ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Mark as in review successfully')),
-            Actions\Action::make('status_to_escalated')
+            Action::make('status_to_escalated')
                 ->requiresConfirmation()
                 ->color(Color::Yellow)
                 ->form([
@@ -54,7 +55,7 @@ class ViewSchoolRequest extends ViewRecord
                 ])
                 ->label(__('Assign it'))
                 ->action(function (array $data, $record) {
-                    $record->status = SchoolRequestStatus::Escalated;
+                    $record->status = SchoolRequestStatus::Escalated->value;
                     $record->assigned_to = $data['assigned_to'];
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
@@ -67,12 +68,12 @@ class ViewSchoolRequest extends ViewRecord
                 })
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Assigned successfully')),
-            Actions\Action::make('status_to_reject')
+            Action::make('status_to_reject')
                 ->requiresConfirmation()
                 ->color(Color::Red)
                 ->label(__('Reject the request'))
                 ->action(function ($record) {
-                    $record->status = SchoolRequestStatus::Rejected;
+                    $record->status = SchoolRequestStatus::Rejected->value;
                     $record->update();
                     return redirect()->route('filament.dashboard.resources.school-requests.index');
                 })
@@ -83,12 +84,12 @@ class ViewSchoolRequest extends ViewRecord
                 ->hidden(fn($record) => $record->status == SchoolRequestStatus::Completed->value)
                 ->sendSuccessNotification()
                 ->successNotificationTitle(__('Cancelled successfully')),
-            Actions\Action::make('status_to_completed')
+            Action::make('status_to_completed')
                 ->requiresConfirmation()
                 ->color(Color::Sky)
                 ->label(__('Mark it completed'))
                 ->action(function ($record) {
-                    $record->status = SchoolRequestStatus::Completed;
+                    $record->status = SchoolRequestStatus::Completed->value;
                     $record->update();
                     // Notifi
                 })
