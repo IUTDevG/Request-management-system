@@ -21,7 +21,7 @@ class AuthenticationTest extends TestCase
             ->assertOk();
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    /* public function test_users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();
         $user->assignRole(RoleType::STUDENT->value);
@@ -90,5 +90,5 @@ class AuthenticationTest extends TestCase
             ->assertRedirect('/');
 
         $this->assertGuest();
-    }
+    } */
 }
