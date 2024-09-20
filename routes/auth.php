@@ -3,7 +3,7 @@
 use App\Livewire\ResetPassword;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['guest'])->domain(env('APP_URL'))->group(function () {
     Route::get('login', \App\Livewire\LoginForm::class)->name('login');
     Route::get('register', \App\Livewire\RegisterForm::class)->name('register');
 
@@ -22,14 +22,15 @@ Route::middleware(['guest'])->group(function () {
 //    Route::redirect('/auth/social/complete', '/');
 });
 
-Route::middleware(['auth','student.role'])->group(function () {
+Route::middleware(['auth', 'student.role'])->domain(env('APP_URL'))->group(function () {
     Route::prefix('student')->group(function () {
         Route::get('/', \App\Livewire\Layout\Dashboard::class)
             ->name('student.home');
         Route::get('/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
         Route::get('/new-request', \App\Livewire\Pages\NewRequest::class)->name('student.new-request');
-        Route::get('request/{id}', \App\Livewire\Pages\RequestDetails::class)->name('student.request.details');
-        Route::get('updated-request/{id}', \App\Livewire\Pages\UpdateRequest::class)->name('student.updated-request');
+        Route::get('request/{request_code}', \App\Livewire\Pages\RequestDetails::class)->name('student.request.details');
+        Route::get('updated-request/{request_code}', \App\Livewire\Pages\UpdateRequest::class)->name('student.updated-request');
+        Route::get('itinerary-request/{request_code}', \App\Livewire\Pages\ItineraryRequest::class)->name('student.request.itinerary');
         Route::get('/profile', \App\Livewire\Pages\Profile::class)->name('student.profile');
     });
 

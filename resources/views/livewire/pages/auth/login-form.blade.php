@@ -79,7 +79,7 @@
                 </div>
             </div>
         @endif
-        <form wire:submit.prevent="submitForm" method="POST" class="space-y-4">
+        <form wire:submit="submitForm" method="POST" class="space-y-4">
             <!-- Your form elements go here -->
             <div>
                 <x-label for="email">{{__('Email')}}</x-label>
@@ -95,7 +95,7 @@
             </div>
             <div class="flex items-center justify-between gap-2 mt-5">
                 <div class="flex items-center">
-                    <x-checkbox id="remember" wire:model="remember" name="remember" />
+                    <x-checkbox id="remember" wire:model.live="remember" name="remember" />
                     <label for="remember" class="ml-1 block text-base text-nowrap">
                         {{__('Remember me')}}
                     </label>

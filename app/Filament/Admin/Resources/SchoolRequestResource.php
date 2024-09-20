@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Resources;
 
-use Carbon\Carbon;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
@@ -11,11 +10,7 @@ use Filament\Tables\Table;
 use App\Models\SchoolRequest;
 use Filament\Resources\Resource;
 use App\Enums\SchoolRequestStatus;
-use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\SchoolRequestResource\Pages;
-use App\Filament\Admin\Resources\SchoolRequestResource\RelationManagers;
 
 class SchoolRequestResource extends Resource
 {
@@ -33,6 +28,8 @@ class SchoolRequestResource extends Resource
     {
         return (__('School Request'));
     }
+
+
     public static function getPluralModelLabel(): string
     {
         return (__('School Requests'));

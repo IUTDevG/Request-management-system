@@ -1,7 +1,7 @@
 @props(['submit'=>'submit'])
     <div {{$attributes->merge(['class'=>'text-[#333] max-w-full mx-auto h-screen'])}}>
         <div class="grid md:grid-cols-2 items-center gap-8 h-full bg-gray-50">
-            <form wire:submit.prevent="{{$submit}}" class="max-w-lg max-md:mx-auto w-full px-10 py-10">
+            <form wire:submit="{{$submit}}" class="max-w-lg max-md:mx-auto w-full px-10 py-10">
                {{$form}}
             </form>
             <div

@@ -10,7 +10,14 @@
     <link rel="preload" href="{{asset('videos/video.mp4')}}" as="video">
     <link rel="preload" href="{{asset('css/video-overlay.css')}}" as="style">
     @livewireStyles
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+    @filamentStyles
+    @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{asset('css/video-overlay.css')}}">
     <script src="{{asset('js/darkMode.js')}}"></script>
     @stack('styles')
@@ -313,7 +320,6 @@
     </nav>
     <!-- ========== END NAVBAR ========== -->
 </header>
-{{--@dd(request()->method())--}}
 <!-- ========== END HEADER ========== -->
 <div class="min-h-screen">
     {{$slot}}
@@ -322,12 +328,13 @@
 <footer
     class="w-full overflow-hidden bg-white shadow sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 dark:bg-gray-900 antialiased">
     <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-        &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500"
-                            target="_blank">IUT</a>. {{__('All rights reserved.')}}
+        &copy; 2024-2025 <a href="https://jd-devs.com" class="hover:underline text-success-500"
+                            target="_blank">JD-DEVS</a>. {{__('All rights reserved.')}}
     </p>
 </footer>
 <!-- ========== END FOOTER ========== -->
 <!--====== END BODY =======-->
+@filamentScripts
 @vite('resources/js/app.js')
 @stack('scripts')
 @livewireScripts

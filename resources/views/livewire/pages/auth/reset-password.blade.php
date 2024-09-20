@@ -5,7 +5,7 @@
     <h1 class="text-4xl font-extrabold text-green-500 mb-6 text-center">{{__('Reset Password')}}</h1>
     <h1 class="text-sm font-semibold mb-6 text-center">{{__('Fill in the form to reset your password')}}</h1>
 
-    <form wire:submit.prevent='resetPassword' method="POST" class="space-y-4">
+    <form wire:submit='resetPassword' method="POST" class="space-y-4">
 
         @session('success')
         <div class="bg-green-400 text-center text-sm text-white rounded-lg p-4 mt-4" role="alert">
@@ -25,13 +25,13 @@
 
         <div>
             <x-label for="password">{{__('Password')}}</x-label>
-            <x-input :is-password="true" type="password" id="password" name="password" wire:model='password'/>
+            <x-input :is-password="true" type="password" id="password" name="password" wire:model.live='password'/>
             <x-input-error for='password'></x-input-error>
         </div>
         <div>
             <x-label for="password_confirmation">{{__('Password confirmation')}}</x-label>
             <x-input :is-password="true" type="password" id="password_confirmation" name="password_confirmation"
-                     wire:model='password_confirmation'/>
+                     wire:model.live='password_confirmation'/>
             <x-input-error for='password_confirmation'></x-input-error>
         </div>
         <div>

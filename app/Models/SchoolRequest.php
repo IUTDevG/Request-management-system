@@ -60,7 +60,6 @@ class SchoolRequest extends Model implements HasMedia
         static::created(function ($model) {
             $user = $model->user;
             $department = Department::find($model->department_id);
-            // Log::alert($model->user);
             activity('request')
                 ->performedOn($model)
                 ->event('created')
@@ -69,6 +68,7 @@ class SchoolRequest extends Model implements HasMedia
                     'title' => $model->title,
                     'request_code' => $model->request_code,
                     'owner' => $user->name . ' ' . $user->firstname,
+                    'status' => $model->status,
                     'department' => $department->name,
                     'creation_date' => $model->created_at->format('Y-m-d H:i:s'),
                 ])
@@ -89,7 +89,7 @@ class SchoolRequest extends Model implements HasMedia
                     ->withProperties([
                         'old_assignee' => User::withRoleInDepartment($model->department_id, $model->getOriginal('assigned_to'))->getRole() ?? 'None',
                         'new_assignee' => $model->assigned_to,
-                        'new_status' => $model->status,
+                        'status' => $model->status,
                         'department' => $department->name,
                         'owner' => $model->user->name,
                         'request_code' => $model->request_code,
@@ -171,6 +171,10 @@ class SchoolRequest extends Model implements HasMedia
     //         ->dontLogIfAttributesChangedOnly(['updated_at']);
     // }
 
+    public function getRouteKeyName()
+    {
+        return 'request_code';
+    }
 
     //generate unique request code for school_request
 

@@ -5,32 +5,32 @@
     <h1 class="text-4xl font-extrabold mb-6 text-green-500 text-center">{{__('Register')}}</h1>
     <h1 class="text-sm font-semibold mb-6 text-center">{{__('Welcome to the IUT Douala requests portal. Log in to access your services.')}}</h1>
 
-    <form wire:submit.prevent="submitForm" class="space-y-4">
+    <form wire:submit="submitForm" class="space-y-4">
         <!-- Your form elements go here -->
         <div>
             <x-label for="name">{{__("Name")}}</x-label>
-            <x-input type="text" id="name" name="name" wire:model="name"/>
+            <x-input type="text" id="name" name="name" wire:model.live="name"/>
             <x-input-error for="name"></x-input-error>
         </div>
         <div>
             <x-label for="matricule" >{{__("Matricule")}}</x-label>
-            <x-input type="text" id="matricule" name="matricule" wire:model="matricule"/>
+            <x-input type="text" id="matricule" name="matricule" wire:model.live="matricule"/>
             <x-input-error for="matricule"></x-input-error>
         </div>
         <div>
             <x-label for="email">{{__("Email")}}</x-label>
-            <x-input type="email" id="email" name="email" wire:model="email"/>
+            <x-input type="email" id="email" name="email" wire:model.live="email"/>
             <x-input-error for="email"></x-input-error>
         </div>
         <div>
             <x-label for="password">{{__('Password')}}</x-label>
-            <x-input :is-password="true" type="password" id="password" name="password" wire:model="password"/>
+            <x-input :is-password="true" type="password" id="password" name="password" wire:model.live="password"/>
             <x-input-error for="password"></x-input-error>
         </div>
         <div>
             <x-label for="password_confirmation">{{__("Password confirmation")}}</x-label>
             <x-input :is-password="true" type="password" id="password_confirmation" name="password_confirmation"
-                   wire:model="password_confirmation"/>
+                   wire:model.live="password_confirmation"/>
             <x-input-error for="password_confirmation"></x-input-error>
         </div>
         <div>

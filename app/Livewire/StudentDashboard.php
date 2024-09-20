@@ -85,15 +85,15 @@ class StudentDashboard extends Component
         return $options;
     }
 
-    public function openCancelModal($id): void
+    public function openCancelModal(string $request_code): void
     {
-        $this->requestIdToCancel = $id;
+        $this->requestIdToCancel = $request_code;
         $this->showCancelModal = true;
     }
 
     public function confirmCancelRequest(): \Illuminate\Http\RedirectResponse
     {
-        $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
+        $request = SchoolRequest::query()->where('request_code',$this->requestIdToCancel)->first();
         $request->status = SchoolRequestStatus::Cancelled->value;
         $request->update();
         $this->showCancelModal = false;
@@ -101,10 +101,6 @@ class StudentDashboard extends Component
         return back()->with('status', __('Status successfully changed.'));
     }
 
-    public function updateStatus($id)
-    {
-        dd($id);
-    }
 
     public function getRequestsProperty()
     {

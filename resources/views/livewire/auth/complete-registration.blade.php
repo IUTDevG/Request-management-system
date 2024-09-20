@@ -13,13 +13,13 @@
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <form wire:submit.prevent="completeRegistration" class="space-y-6">
+                <form wire:submit="completeRegistration" class="space-y-6">
                     <div>
                         <label for="first_name" class="block text-sm font-medium text-gray-700">
                             Prénom
                         </label>
                         <div class="mt-1">
-                            <input id="first_name" wire:model.debounce.300ms="first_name" type="text" required
+                            <input id="first_name" wire:model.live.debounce.300ms="first_name" type="text" required
                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         </div>
                         @error('first_name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -30,7 +30,7 @@
                             Nom
                         </label>
                         <div class="mt-1">
-                            <input id="last_name" wire:model.debounce.300ms="last_name" type="text" required
+                            <input id="last_name" wire:model.live.debounce.300ms="last_name" type="text" required
                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         </div>
                         @error('last_name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -54,7 +54,7 @@
                             Mot de passe (optionnel)
                         </label>
                         <div class="mt-1 relative rounded-md shadow-sm">
-                            <input id="password" wire:model.debounce.300ms="password"
+                            <input id="password" wire:model.live.debounce.300ms="password"
                                    :type="showPassword ? 'text' : 'password'"
                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                    autocomplete="new-password">
@@ -79,7 +79,7 @@
                             Confirmer le mot de passe
                         </label>
                         <div class="mt-1 relative rounded-md shadow-sm">
-                            <input id="password_confirmation" wire:model.debounce.300ms="password_confirmation"
+                            <input id="password_confirmation" wire:model.live.debounce.300ms="password_confirmation"
                                    :type="showPassword ? 'text' : 'password'"
                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                    autocomplete="new-password">

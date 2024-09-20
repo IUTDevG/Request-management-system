@@ -16,6 +16,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\URL;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 
@@ -29,6 +30,10 @@ class DashboardPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             ->spa()
+            ->domain(value(static function () {
+                //URL::forceRootUrl($domain);
+                return env('DASHBOARD_DOMAIN');
+            }))
             ->passwordReset()
             ->colors([
                 'primary' => Color::hex('#008751'),
@@ -48,10 +53,10 @@ class DashboardPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets'), for: 'App\\Filament\\Dashboard\\Widgets')
             ->plugins([
                 FilamentEditProfilePlugin::make()
-                ->setIcon('heroicon-o-user-circle')
-                ->setNavigationGroup('Profile')
-                ->setSort(10)
-                ->shouldShowDeleteAccountForm(false)
+                    ->setIcon('heroicon-o-user-circle')
+                    ->setNavigationGroup('Profile')
+                    ->setSort(10)
+                    ->shouldShowDeleteAccountForm(false)
             ])
             ->middleware([
                 EncryptCookies::class,

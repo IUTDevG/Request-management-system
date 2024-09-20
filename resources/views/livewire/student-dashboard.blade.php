@@ -8,11 +8,11 @@
         </x-status>
     @endif
 
-    @session('error')
+    @if(session('error'))
 
-    <x-error> {!! session('error') !!} .</x-error>
+        <x-error> {!! session('error') !!} .</x-error>
 
-    @endsession
+    @endif
     <!-- End Toast -->
     <!--====Start Body====-->
     <section>
@@ -97,7 +97,7 @@
                     <!-- Filter Dropdown -->
                     <div x-data="{
         isOpen: false,
-        selectedOption: @entangle('selectedFilter'),
+        selectedOption: @entangle('selectedFilter').live,
         options: {{ json_encode($filterOptions) }},
         toggleDropdown() {
             this.isOpen = !this.isOpen;
@@ -243,8 +243,6 @@
                                         </tr>
                                         </thead>
                                         <x-students.tbody :requests="$requests" :showCancelModal="$showCancelModal"/>
-
-
                                     </table>
                                     <!-- End Table -->
                                 @endif

@@ -11,10 +11,10 @@
             allowMultiple: {{ $isMultiple ? 'true' : 'false' }},
             server: {
                 process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
-                    @this.upload('{{ $attributes['wire:model'] }}', file, load, error, progress)
+                    @this.upload('{{ $attributes['wire:model.live'] }}', file, load, error, progress)
                 },
                 revert: (fileName, load) => {
-                    @this.removeUpload('{{ $attributes['wire:model'] }}', fileName, load)
+                    @this.removeUpload('{{ $attributes['wire:model.live'] }}', fileName, load)
                 },
                 remove: (source, load, error) => {
                     @this.call('removeExistingFile', source)
@@ -63,7 +63,7 @@
     >
         <input x-ref="input"
                type="file"
-               name="{{ $attributes['wire:model'] }}"
+               name="{{ $attributes['wire:model.live'] }}"
                {{ $isMultiple ? 'multiple' : '' }}
                data-allow-reorder="true" data-max-files="3" data-max-file-size="1MB"
         />

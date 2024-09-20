@@ -7,6 +7,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
+use Illuminate\Support\Facades\URL;
 use Rmsramos\Activitylog;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -21,12 +22,21 @@ use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
+    /**
+     * @throws \Exception
+     */
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
+            ->readOnlyRelationManagersOnResourceViewPagesByDefault(false)
             ->id('admin')
-            ->path('admin')
+            ->default()
+            ->spa()
+            ->domain(value(static function () {
+                //URL::forceRootUrl($domain);
+                return env('ADMIN_DOMAIN');
+            }))
+            ->path('')
             ->login()
             ->passwordReset()
             ->colors([

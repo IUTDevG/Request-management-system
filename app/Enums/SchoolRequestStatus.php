@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\Enums;
 
 
@@ -15,7 +16,7 @@ enum SchoolRequestStatus: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::Draft => __('Draft'),
             self::Submitted => __('Submitted'),
             self::Cancelled => __('Cancelled'),
@@ -25,10 +26,11 @@ enum SchoolRequestStatus: string
             self::Completed => __('Completed'),
         };
     }
+
     //method to get a description of each status
     public function description(): string
     {
-        return match($this) {
+        return match ($this) {
             self::Draft => __('The request has been started but not yet submitted by the student.'),
             self::Submitted => __('The request has been submitted by the student and is awaiting processing.'),
             self::Cancelled => __('The request has been cancelled by the student.'),
@@ -38,8 +40,18 @@ enum SchoolRequestStatus: string
             self::Completed => __('The request has been processed and completed successfully.'),
         };
     }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::Submitted, self::Completed => 'success',
+            self::Cancelled, self::Rejected => 'danger',
+            self::InReview => 'info',
+            'warning' => 'warning',
+            default => 'primary',
+        };
+    }
 }
-?>
 
 
 

@@ -342,9 +342,9 @@
     <footer class="relative p-4 overflow-hidden shadow bg-background sm:p-6 xl:p-8 dark:border-neutral-700">
         <div class="max-w-[85rem] sm:flex sm:items-center sm:justify-center">
             <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-                &copy; 2024-2025 <a href="https://iut-dla.com" class="transition-all hover:font-bold
+                &copy; 2024-2025 <a href="https://jd-devs.com" class="transition-all hover:font-bold
                 duration-300 text-success-500"
-                    target="_blank">IUT</a>. {{ __('All rights reserved.') }}
+                    target="_blank">JD-DEVS</a>. {{ __('All rights reserved.') }}
             </p>
         </div>
     </footer>

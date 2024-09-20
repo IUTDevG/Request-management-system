@@ -19,7 +19,7 @@ class UpdateRequest extends Component
 {
     use WithFileUploads;
 
-    public $id;
+    public $request_code;
     public $title;
     public $description;
     public $level_id;
@@ -30,17 +30,17 @@ class UpdateRequest extends Component
     public $filesToRemove = [];
     public ?int $filesTotal = 3;
 
-    public function mount($id = null)
+    public function mount($request_code = null)
     {
-        $this->id = $id;
-        if ($id) {
-            $request = SchoolRequest::query()->findOrFail($this->id);
+        $this->request_code = $request_code;
+        if ($request_code) {
+            $request = SchoolRequest::query()->where('request_code',$this->request_code)->first();
 //Section pour empêcher la modification des status en Submitted
             if ($request->status !== SchoolRequestStatus::Draft->value) {
                 return redirect()->route('student.home')->with('error', __('Vous ne pouvez pas modifier cette demande.'));
             }
 
-            $this->id = $request->id;
+            $this->request_code = $request->request_code;
             $this->title = $request->title;
             $this->description = $request->description;
             $this->level_id = $request->level_id;
@@ -84,7 +84,7 @@ class UpdateRequest extends Component
 
         try {
             DB::beginTransaction();
-            $request = SchoolRequest::query()->findOrFail($this->id);
+            $request = SchoolRequest::query()->where('request_code',$this->request_code)->first();
 
             if ($request->status !== SchoolRequestStatus::Draft->value) {
                 throw new RuntimeException('Cette demande ne peut plus être modifiée.');
@@ -93,7 +93,7 @@ class UpdateRequest extends Component
             $request->update([
                 'title' => $this->title,
                 'description' => $this->description,
-                'status' => SchoolRequestStatus::Submitted,
+                'status' => SchoolRequestStatus::Submitted->value,
                 'level_id' => $this->level_id,
                 'department_id' => $this->department_id,
             ]);

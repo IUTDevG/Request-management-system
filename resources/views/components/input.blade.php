@@ -3,7 +3,8 @@
     'wire' => null,
     'placeholder' => null,
     'value' => null,
-    'isPassword' => false
+    'isPassword' => false,
+    'type' => 'text'
 ])
 
 <div x-data="{ showPassword: false,
@@ -15,9 +16,9 @@
     <input
         value="{{ $value }}"
         placeholder="{!! $placeholder !!}"
-        {{ $wire ? "wire:model.defer={$wire}" : '' }}
+        {{ $wire ? "wire:model={$wire}" : '' }}
         {{ $disabled ? 'disabled' : '' }}
-        :type="{{ $isPassword ? 'inputType' : '\'text\'' }}"
+        :type="{{ $isPassword ? 'inputType' : $type }}"
         @if($isPassword)
             x-bind:class="{ 'pr-10': {{ $isPassword}} }"
         @endif

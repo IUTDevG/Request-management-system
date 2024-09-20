@@ -79,17 +79,17 @@
                         <x-slot:form>
                             <div class="mb-3">
                                 <x-label value="{{__('Mot de passe actuel')}}"/>
-                                <x-input :is-password="true" type="password" wire:model="current_password"/>
+                                <x-input :is-password="true" type="password" wire:model.live="current_password"/>
                                 <x-input-error for="current_password"/>
                             </div>
                             <div class="mb-3">
                                 <x-label value="{{__('Nouveau mot de passe')}}"/>
-                                <x-input :is-password="true" type="password" wire:model="new_password"/>
+                                <x-input :is-password="true" type="password" wire:model.live="new_password"/>
                                 <x-input-error for="new_password"/>
                             </div>
                             <div class="mb-3">
                                 <x-label value="{{__('Confirmation du nouveau mot de passe')}}"/>
-                                <x-input :is-password="true" type="password" wire:model="new_password_confirmation"/>
+                                <x-input :is-password="true" type="password" wire:model.live="new_password_confirmation"/>
                                 <x-input-error for="new_password_confirmation"/>
                             </div>
                         </x-slot:form>

@@ -25,11 +25,11 @@
         </div>
     @endif
 
-        <form wire:submit.prevent='sendResetLink' method="POST" class="space-y-4">
+        <form wire:submit='sendResetLink' method="POST" class="space-y-4">
             <!-- Your form elements go here -->
             <div>
                 <x-label for="email">{{__('Email')}}</x-label>
-                <x-input placeholder="{{__('Enter your email address here')}}" wire:model="email" type="email" id="email" name="email" />
+                <x-input placeholder="{{__('Enter your email address here')}}" wire:model.live="email" type="email" id="email" name="email" />
                 <x-input-error for='email'/>
             </div>
 

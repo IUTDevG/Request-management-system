@@ -3,7 +3,7 @@
     'size' => 'md',
     'src' => null,
     'alt' => 'Profile Avatar',
-    'wire:model' => null,
+    'wire:model.live' => null,
     'default',
     'wire'=>null
 ])
@@ -73,7 +73,7 @@
                     </svg>
                 </div>
             </div>
-            <input wire:model="{{$wire}}"
+            <input wire:model.live="{{$wire}}"
                     type="file"
                     {{ $attributes->wire('model') }}
                     x-ref="fileInput"

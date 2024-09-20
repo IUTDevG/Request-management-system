@@ -43,7 +43,7 @@ class ActivityResource extends Resource
 
                         TextInput::make('subject_type')
                             ->afterStateHydrated(function ($component, ?Model $record, $state) {
-                                /** @var Activity&ActivityModel $record */
+                                /** @var Activity $record */
                                 return $state ? $component->state(Str::of($state)->afterLast('\\')->headline() . ' # ' . $record->subject_id) : '-';
                             })
                             ->label(__('activitylog::forms.fields.subject_type.label')),
@@ -56,7 +56,7 @@ class ActivityResource extends Resource
                     Section::make([
                         Placeholder::make('log_name')
                             ->content(function (?Model $record): string {
-                                /** @var Activity&ActivityModel $record */
+                                /** @var Activity $record */
                                 return $record->log_name ? ucwords($record->log_name) : '-';
                             })
                             ->label(__('activitylog::forms.fields.log_name.label')),
@@ -78,7 +78,7 @@ class ActivityResource extends Resource
                         Placeholder::make('created_at')
                             ->label(__('activitylog::forms.fields.created_at.label'))
                             ->content(function (?Model $record): string {
-                                /** @var Activity&ActivityModel $record */
+                                /** @var Activity $record */
                                 return $record->created_at ? "{$record->created_at->format('d/m/Y')}" : '-';
                             }),
                     ])->grow(false)
@@ -89,7 +89,7 @@ class ActivityResource extends Resource
                     ->columns()
                     ->visible(fn($record) => $record->properties?->count() > 0)
                     ->schema(function (?Model $record) {
-                        /** @var Activity&ActivityModel $record */
+                        /** @var Activity $record */
                         $properties = $record->properties->except(['attributes', 'old']);
 
                         $schema = [];
