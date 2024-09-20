@@ -11,8 +11,6 @@ use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Admin\Resources\SchoolRequestResource;
 use App\Enums\RoleType;
 use Filament\Forms;
-use Filament\Actions;
-use Illuminate\Database\Eloquent\Model;
 
 class ViewSchoolRequest extends ViewRecord
 {
@@ -22,7 +20,7 @@ class ViewSchoolRequest extends ViewRecord
     {
         return [
             ActionGroup::make([
-                Actions\Action::make('status_to_escalated')
+                Action::make('status_to_escalated')
                     ->requiresConfirmation()
                     ->icon('heroicon-o-arrow-up-circle')
                     ->color(Color::Yellow)
@@ -30,19 +28,20 @@ class ViewSchoolRequest extends ViewRecord
                         Forms\Components\Select::make('assigned_to')
                             ->required()
                             ->options(
-                             function () {
-                                $user = User::find(auth()->user()->id);
-                                return collect(RoleType::cases())->mapWithKeys(function ($role) use($user) {
-                                    if ($role->value !== RoleType::STUDENT->value || $user->getRole() == $role->value) {
-                                        return [$role->value => $role->label()];
-                                    }
-                                    return [];
-                                })->toArray();
-                            })
+                                function () {
+                                    $user = User::find(auth()->user()->id);
+                                    return collect(RoleType::cases())->mapWithKeys(function ($role) use ($user) {
+                                        if ($role->value !== RoleType::STUDENT->value || $user->getRole() == $role->value) {
+                                            return [$role->value => $role->label()];
+                                        }
+                                        return [];
+                                    })->toArray();
+                                }
+                            )
                     ])
                     ->label(__('Assign it'))
                     ->action(function (array $data, $record) {
-                        $record->status = SchoolRequestStatus::Escalated;
+                        $record->status = SchoolRequestStatus::Escalated->value;
                         $record->assigned_to = $data['assigned_to'];
                         $record->update();
                         return redirect()->route('filament.admin.resources.school-requests.index');
@@ -62,7 +61,7 @@ class ViewSchoolRequest extends ViewRecord
                     ->modalHeading(__('Reject status'))
                     ->modalDescription(__('Are you sure you want to reject :request ?', ['request' => $this->record->title]))
                     ->action(function ($record) {
-                        $record->status = SchoolRequestStatus::Rejected;
+                        $record->status = SchoolRequestStatus::Rejected->value;
                         $record->update();
                     })
                     ->hidden(function ($record) {

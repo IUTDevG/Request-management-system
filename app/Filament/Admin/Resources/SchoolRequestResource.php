@@ -83,6 +83,7 @@ class SchoolRequestResource extends Resource
     public static function table(Table $table): Table
     {
         $user = User::find(auth()->user()->id);
+        // dd($user->getRole());
         $query = SchoolRequest::query()
             ->where('status', '!=', SchoolRequestStatus::Draft->value)
             ->where('status', '=', SchoolRequestStatus::Cancelled->value)

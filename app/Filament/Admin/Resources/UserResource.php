@@ -106,7 +106,9 @@ class UserResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('Email address'))
-                    ->copyable(),
+                    ->copyable(true)
+                    ->copyMessage('Copied')
+                    ->copyMessageDuration('1500'),
 
             ])
             ->filters([

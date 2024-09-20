@@ -94,7 +94,7 @@ class StudentDashboard extends Component
     public function confirmCancelRequest(): \Illuminate\Http\RedirectResponse
     {
         $request = SchoolRequest::query()->findOrFail($this->requestIdToCancel);
-        $request->status = SchoolRequestStatus::Cancelled;
+        $request->status = SchoolRequestStatus::Cancelled->value;
         $request->update();
         $this->showCancelModal = false;
         $this->dispatch('requestCancelled');

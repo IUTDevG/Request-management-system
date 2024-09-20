@@ -87,15 +87,19 @@ class ListUsers extends ListRecords
                         ),
                     Forms\Components\Select::make('department_id')
                         ->label(__('Department'))
+                        ->requiredIf('role', [RoleType::ACADEMIC_MANAGER->value, RoleType::HEAD_OF_DEPARTMENT->value])
                         ->options(Department::all()->pluck('name', 'id')),
                 ])
                 ->action(function (array $data) {
                     try {
                         $user = User::create($data);
-                        $user->assignRoleWithDepartment($data['role'], $data['department_id']);
+                        if ($data['role'] == RoleType::ACADEMIC_MANAGER->value || $data['role'] == RoleType::HEAD_OF_DEPARTMENT->value) {
+                            $user->assignRoleWithDepartment($data['role'], $data['department_id']);
+                        }
+                        $role = RoleType::tryFrom($data['role'])->label();
                         Notification::make('user_created_successfuly')
                             ->title(__('User created successfully'))
-                            ->body('Un utilisateur avec le role ' . $data['role'] . ' a ete cree avec succes')
+                            ->body('Un utilisateur avec le role ' . $role . ' a ete cree avec succes')
                             ->success()
                             ->send();
                     } catch (\Throwable $th) {
