@@ -54,7 +54,7 @@
                                     @foreach($existingFiles as $file)
                                         <div class="flex items-center space-x-2 mb-2">
                                             <a href="{{ $file['url'] }}" target="_blank"
-                                               class="text-blue-600 hover:underline">
+                                               class="text-green-600 hover:underline">
                                                 {{ $file['name'] }}
                                             </a>
                                             <button type="button" wire:click="markFileForRemoval({{ $file['id'] }})"

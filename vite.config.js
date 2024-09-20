@@ -1,12 +1,8 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-// import dotenv from 'dotenv'
+import laravel, { refreshPaths } from 'laravel-vite-plugin'
 
 // dotenv.config()
 export default defineConfig({
-    process:{
-        env:true
-    },
     plugins: [
         laravel({
             input: [
@@ -17,10 +13,10 @@ export default defineConfig({
                 'resources/js/utils/filepond.js',
                 'resources/js/alpine.js',
             ],
-            refresh: true,
+            refresh: [
+                ...refreshPaths,
+                'app/Livewire/**',
+            ],
         }),
     ],
-   server: {
-        host: process.env.VITE_URL
-    },
 });

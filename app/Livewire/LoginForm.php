@@ -3,17 +3,10 @@
 namespace App\Livewire;
 
 use App\Enums\RoleType;
-use App\Models\User;
-use Livewire\Component;
-use Livewire\Attributes\Validate;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('livewire.layout.auth')]
 class LoginForm extends Component
@@ -23,8 +16,8 @@ class LoginForm extends Component
     public string $password;
     public bool $remember = false;
 
-    public function submitForm()
-{
+    /*public function submitForm()
+    {
     $this->validate([
         'email' => 'required|max:255',
         'password' => ['required', Password::min(6)]
@@ -56,7 +49,52 @@ class LoginForm extends Component
 
     session()->flash('error', __('Données d\'authentification incorrectes'));
     return redirect()->back()->withInput($this->except('password'));
-}
+}*/
+    protected $rules = [
+        'email' => 'required|max:255',
+        'password' => ['required', 'min:6'],
+    ];
+
+    public function submitForm()
+    {
+        $this->validate();
+
+        $credentials = [
+            'password' => $this->password,
+            'is_activated' => true
+        ];
+
+        if (filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            $credentials['email'] = $this->email;
+        } else {
+            $credentials['matricule'] = $this->email;
+        }
+
+        if (Auth::attempt($credentials, $this->remember)) {
+            $user = Auth::user();
+
+            session()->flash('success', __('Successfully logged in, redirecting...'));
+
+            if ($user->hasRole(RoleType::COMPUTER_CELL)) {
+                $this->js("setTimeout(() => window.location.href = '/admin', 3000)");
+            } elseif ($user->hasAnyRole([
+                RoleType::ACADEMIC_MANAGER,
+                RoleType::DEPUTY_DIRECTOR,
+                RoleType::SCHOOLING,
+                RoleType::SECRETARY_DIRECTOR,
+                RoleType::DIRECTOR,
+                RoleType::HEAD_OF_DEPARTMENT
+            ])) {
+                $this->js("setTimeout(() => window.location.href = '/dashboard', 3000)");
+            } else {
+                $this->js("setTimeout(() => window.location.href = '".route('student.home')."', 3000)");
+            }
+
+        } else {
+            session()->flash('error', __('Incorrect login credentials'));
+            return redirect()->back()->withInput($this->except('password'));
+        }
+    }
     public function render()
     {
         return view('livewire.pages.auth.login-form');

@@ -236,5 +236,7 @@
     "draft": "Brouillon",
     "updated": "Mis à jour",
     "created": "Création",
-    "deleted": "Supprimé"
+    "deleted": "Supprimé",
+    "Successfully logged in, redirecting...": "Connexion réussie, redirection...",
+    "Incorrect login credentials": "Données d'authentification incorrectes"
 }

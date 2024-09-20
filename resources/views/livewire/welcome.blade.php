@@ -111,7 +111,7 @@
             <div class="flex items-center justify-between">
                 <a class="flex items-center justify-center" href="{{ route('home') }}" aria-label="Brand"><img
                         src="{{ asset('images/Logo_IUT_Douala.png') }}" alt="Logo IUT"
-                        class="h-20">{{-- {{__('IUT REQUEST MANAGEMENT')}} --}}</a>
+                        class="h-20 mb-2">{{-- {{__('IUT REQUEST MANAGEMENT')}} --}}</a>
                 <div class="sm:hidden">
                     <button type="button"
                         class="flex items-center justify-center text-sm font-semibold hs-collapse-toggle size-9 text-foreground disabled:opacity-50 disabled:pointer-events-none"
@@ -342,7 +342,8 @@
     <footer class="relative p-4 overflow-hidden shadow bg-background sm:p-6 xl:p-8 dark:border-neutral-700">
         <div class="max-w-[85rem] sm:flex sm:items-center sm:justify-center">
             <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-                &copy; 2024-2025 <a href="https://iut-dla.com" class="hover:underline text-success-500"
+                &copy; 2024-2025 <a href="https://iut-dla.com" class="transition-all hover:font-bold
+                duration-300 text-success-500"
                     target="_blank">IUT</a>. {{ __('All rights reserved.') }}
             </p>
         </div>

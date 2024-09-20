@@ -3,32 +3,82 @@
         <h1 class="text-4xl font-extrabold text-green-500 mb-6 text-center font-heading">{{__('Welcome Back')}}</h1>
         <h3 class="text-sm font-semibold mb-6 text-center font-heading">{{__('Welcome to the IUT Douala requests portal. Log in to access your services.')}}</h3>
 
-        @session('success')
-        <div class="bg-green-400 text-center text-sm text-white rounded-lg p-4 mt-4" role="alert">
-            {{session('success')}}
-        </div>
-        @endsession
-        @session('error')
-        <div class="bg-red-500 text-center text-sm text-white rounded-lg p-4 my-4" role="alert">
-            {{session('error')}}
-        </div>
-        @endsession
+        @if(session('success'))
+            <div
+                x-data="{ show: false }"
+                x-init="() => {
+        setTimeout(() => show = true, 100);
+        setTimeout(() => show = false, 3000);
+    }"
+                x-show="show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform translate-y-2"
+                x-transition:enter-end="opacity-100 transform translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform translate-y-0"
+                x-transition:leave-end="opacity-0 transform translate-y-2"
+                class="bg-green-400 text-center text-sm text-white rounded-lg p-4 mt-4"
+                role="alert"
+            >
+                {{session('success')}}
+            </div>
+        @endif
 
-        @session('status')
-        <div class="rounded-md bg-green-50 p-4 mb-5">
-            <div class="flex inherit">
-                <div class="shrink-0">
-                    <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                         fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd"
-                              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-                              clip-rule="evenodd"></path>
-                    </svg>
-                    {{session('status')}}
+        @if(session('error'))
+            <div
+                x-data="{ show: false }"
+                x-init="() => {
+        setTimeout(() => show = true, 100);
+        setTimeout(() => show = false, 3000);
+    }"
+                x-show="show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform translate-y-2"
+                x-transition:enter-end="opacity-100 transform translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform translate-y-0"
+                x-transition:leave-end="opacity-0 transform translate-y-2"
+                class="bg-red-500 text-center text-sm text-white rounded-lg p-4 my-4"
+                role="alert"
+            >
+                {{session('error')}}
+            </div>
+        @endif
+
+        @if(session('status'))
+            <div
+                x-data="{ show: false }"
+                x-init="() => {
+        setTimeout(() => show = true, 100);
+        setTimeout(() => show = false, 3000);
+    }"
+                x-show="show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform translate-y-2"
+                x-transition:enter-end="opacity-100 transform translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform translate-y-0"
+                x-transition:leave-end="opacity-0 transform translate-y-2"
+                class="rounded-md bg-green-500 p-4 mb-5"
+                role="alert"
+            >
+                <div class="flex">
+                    <div class="shrink-0">
+                        <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                             fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-white">
+                            {{session('status')}}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        @endsession
+        @endif
         <form wire:submit.prevent="submitForm" method="POST" class="space-y-4">
             <!-- Your form elements go here -->
             <div>
@@ -38,7 +88,7 @@
             </div>
             <div>
                 <x-label for="password">{{__('Password')}}</x-label>
-                <x-input type="password" id="password" name="password" wire="password"
+                <x-input :is-password="true" type="password" id="password" name="password" wire="password"
                        class="mt-1 p-2 w-full border rounded-md focus:border-gray-200 bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
                 <x-input-error for="password"></x-input-error>
 

@@ -20,7 +20,9 @@
          aria-label="Global">
         <div class="flex items-center justify-between">
             <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('home') }}"
-               aria-label="Brand">{{__('IUT REQUEST MANAGEMENT')}}</a>
+               aria-label="Brand"><img src="{{asset('images/Logo_IUT_Douala.png')}}" title="iut de douala"
+                                       class="h-20 my-2"
+                                       alt="Logo iut"></a>
             <div class="sm:hidden">
                 <button type="button"
                         class="hs-collapse-toggle size-9 flex justify-center items-center text-sm font-semibold text-foreground disabled:opacity-50 disabled:pointer-events-none"
@@ -46,7 +48,7 @@
              class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end sm:ps-7">
                 <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-800 hover:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 transition-colors"
-                   href="{{ route('home') }}#home">{{__('Home')}}</a>
+                   href="{{ route('home') }}">{{__('Home')}}</a>
                 <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-800 hover:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 transition-colors"
                    href="{{ route('home') }}#about-us">{{__('About')}}</a>
                 <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-800 hover:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 transition-colors"

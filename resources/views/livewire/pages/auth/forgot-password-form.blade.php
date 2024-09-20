@@ -4,18 +4,33 @@
         </div>-->
         <h1 class="text-4xl font-extrabold text-green-500 mb-6 text-center">{{__('Password forgot')}}</h1>
         <h1 class="text-sm font-semibold mb-6 text-center">{{__('Fill in the form if you have forgotten your password')}}</h1>
-        @session('status')
-        <div class="bg-blue-600 text-center text-sm text-dark rounded-lg p-4 mt-4" role="alert">
-            {{session('status')}}
+    @if(session('status'))
+        <div
+            x-data="{ show: false }"
+            x-init="() => {
+        setTimeout(() => show = true, 100);
+        setTimeout(() => show = false, 3000);
+    }"
+            x-show="show"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform translate-y-2"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform translate-y-2"
+            class="bg-success-500 text-center text-sm text-dark rounded-lg p-4 mt-4 shadow-lg"
+            role="alert"
+        >
+            {{ session('status') }}
         </div>
-        @endsession
+    @endif
 
         <form wire:submit.prevent='sendResetLink' method="POST" class="space-y-4">
             <!-- Your form elements go here -->
             <div>
                 <x-label for="email">{{__('Email')}}</x-label>
                 <x-input placeholder="{{__('Enter your email address here')}}" wire:model="email" type="email" id="email" name="email" />
-                <x-input-error for='email'></x-input-error>
+                <x-input-error for='email'/>
             </div>
 
             <div>
