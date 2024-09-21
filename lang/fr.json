@@ -240,5 +240,9 @@
     "created": "Création",
     "deleted": "Supprimé",
     "Successfully logged in, redirecting...": "Connexion réussie, redirection...",
-    "Incorrect login credentials": "Données d'authentification incorrectes"
+    "Incorrect login credentials": "Données d'authentification incorrectes",
+    "Date": "Date",
+    "Event": "Événement",
+    "Assigned by": "Assigné de",
+    "Assigned to": "Assigné à"
 }

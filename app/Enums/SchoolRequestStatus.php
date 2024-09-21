@@ -47,7 +47,6 @@ enum SchoolRequestStatus: string
             self::Submitted, self::Completed => 'success',
             self::Cancelled, self::Rejected => 'danger',
             self::InReview => 'info',
-            'warning' => 'warning',
             default => 'primary',
         };
     }

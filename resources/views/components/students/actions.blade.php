@@ -33,7 +33,8 @@
         x-transition:leave-end="opacity-0 scale-95"
         @keydown.escape.window="open = false"
         @keydown.tab.prevent="$focus.wrap()"
-        class="absolute right-[1rem] top-[-1rem] max-sm:translate-x-[1rem] z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
+        class="absolute right-[1rem] top-[-3rem] max-sm:translate-x-[1rem] z-10 w-screen divide-y divide-gray-100
+        rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"
     >
 
         <div class="p-1">
@@ -62,7 +63,7 @@
                 href="{{ route('student.request.itinerary',$request_code) }}"
                 class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors
                 duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 hover:bg-gray-50
-                focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 text-custom-500"
+                focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 text-info-200"
                 type="button">
                 <svg class="size-5"
                      xmlns="http://www.w3.org/2000/svg"

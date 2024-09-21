@@ -129,9 +129,7 @@ class StudentDashboard extends Component
     }
 
     public function render()
-    {
-        sleep(2);
-
+    {#
         return view('livewire.student-dashboard', [
             'requests' => $this->getRequestsProperty(),
             'filterOptions' => $this->getFilterOptions(),
