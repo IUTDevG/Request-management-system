@@ -69,7 +69,8 @@
                                         @endphp
                                         @foreach($activities as $activity)
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-gray-100">
+                                                <td class="px-6 py-4 whitespace-no-wrap text-nowrap text-sm leading-5
+                                                text-gray-900 dark:text-gray-100">
                                                     {{ $activity->created_at->format('d-m-Y H:i') }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">

@@ -27,7 +27,7 @@ Route::middleware(['auth', 'student.role'])->domain(env('APP_URL'))->group(funct
         Route::get('/', \App\Livewire\Layout\Dashboard::class)
             ->name('student.home');
         Route::get('/notifications', \App\Livewire\Notifications::class)->name('student.notifications');
-        Route::get('/new-request', \App\Livewire\Pages\NewRequest::class)->name('student.new-request');
+        Route::get('/request', \App\Livewire\Pages\NewRequest::class)->name('student.request');
         Route::get('request/{request_code}', \App\Livewire\Pages\RequestDetails::class)->name('student.request.details');
         Route::get('updated-request/{request_code}', \App\Livewire\Pages\UpdateRequest::class)->name('student.updated-request');
         Route::get('itinerary-request/{request_code}', \App\Livewire\Pages\ItineraryRequest::class)->name('student.request.itinerary');

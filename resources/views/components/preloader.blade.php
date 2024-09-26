@@ -1,5 +1,18 @@
 
-<div id="preloader" class="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-background z-[100]">
+<div x-data="{ loading: true }"
+     x-init="$nextTick(() => {
+     loading = false;
+     })"
+     x-show="loading"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-300"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     @wire:navigate.start="loading = true"
+     @wire:navigate.end="loading = false"
+     id="preloader" class="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-background z-[100]">
     <div style="z-index: 1000" aria-label="Loading..." role="status"
          class="flex overflow-hidden justify-center items-center space-x-2 w-screen h-screen">
         <svg class="h-20 w-20 animate-spin stroke-gray-500" viewBox="0 0 256 256">
@@ -23,6 +36,3 @@
         <span class="text-4xl font-medium text-gray-500">{{__('Loading...')}}</span>
     </div>
 </div>
-@push('scripts')
-    <script src="{{asset('js/preloader.js')}}"></script>
-@endpush
