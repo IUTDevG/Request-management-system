@@ -94,13 +94,10 @@ class SchoolRequestResource extends Resource
                     ->fontFamily('Poppins')
                     ->tooltip(fn (SchoolRequest $record) => __('By') . ' ' . $record->user->full_name)
                     ->color(fn (string $state) => match ($state) {
-                        'draft' => 'primary',
                         'submitted' => 'secondary',
-                        'cancelled' => 'danger',
+                        'cancelled', 'rejected' => 'danger',
                         'in_review' => 'warning',
-                        'escalated' => 'success',
-                        'rejected' => 'danger',
-                        'completed' => 'success',
+                        'escalated', 'completed' => 'success',
                         default => 'primary'
                     })
                     ->formatStateUsing(fn (string $state) => match ($state) {

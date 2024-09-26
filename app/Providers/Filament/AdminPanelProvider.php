@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
                 //URL::forceRootUrl($domain);
                 return env('ADMIN_DOMAIN');
             }))
-            ->path('')
+            ->path('/')
             ->login()
             ->passwordReset()
             ->colors([

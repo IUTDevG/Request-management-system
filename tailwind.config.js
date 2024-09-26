@@ -109,10 +109,10 @@ export default {
                 ring: "hsl(var(--ring))",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
-               /* primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
-                },*/
+                /* primary: {
+                     DEFAULT: "hsl(var(--primary))",
+                     foreground: "hsl(var(--primary-foreground))",
+                 },*/
                 secondary: {
                     DEFAULT: "hsl(var(--secondary))",
                     foreground: "hsl(var(--secondary-foreground))",
@@ -137,7 +137,9 @@ export default {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
-
+                'iut-green': '#008751',
+                'iut-yellow': '#fcd116',
+                'iut-red': '#e8001e',
             },
             borderRadius: {
                 lg: `var(--radius)`,

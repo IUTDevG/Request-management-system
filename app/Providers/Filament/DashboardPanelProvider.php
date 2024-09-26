@@ -27,13 +27,10 @@ class DashboardPanelProvider extends PanelProvider
         return $panel
             ->id('dashboard')
             ->default()
-            ->path('dashboard')
+            ->path('/')
             ->login()
             ->spa()
-            ->domain(value(static function () {
-                //URL::forceRootUrl($domain);
-                return env('DASHBOARD_DOMAIN');
-            }))
+            ->domain(env('DASHBOARD_DOMAIN'))
             ->passwordReset()
             ->colors([
                 'primary' => Color::hex('#008751'),

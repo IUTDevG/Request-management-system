@@ -1,11 +1,12 @@
 @use('App\Enums\RoleType')
-        <!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="{{str_replace('_','-',app()->getLocale())}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - IUT de Douala</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{--    <script src="https://cdn.tailwindcss.com"></script>--}}
+    @vite('resources/css/app.css')
     <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
     <!-- Production version -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -42,7 +43,7 @@
             }
         }
     </style>
-    <script>
+    {{--<script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -54,14 +55,14 @@
                 }
             }
         }
-    </script>
+    </script>--}}
 </head>
 <body class="antialiased bg-gray-100 min-h-screen flex items-center justify-center p-4">
 <div class="relative z-10 max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-iut-green via-iut-yellow to-iut-red"></div>
     <div class="flex flex-col md:flex-row">
         <div
-                class="w-full md:w-1/2 bg-gradient-to-br from-iut-green to-green-700 p-8 flex flex-col justify-center items-center text-white relative overflow-hidden">
+            class="w-full md:w-1/2 bg-gradient-to-br from-iut-green to-green-700 p-8 flex flex-col justify-center items-center text-white relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full opacity-10">
                 <div class="w-full h-full bg-repeat"
                      style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0iI2ZmZiI+PC9yZWN0Pgo8cGF0aCBkPSJNMzYgMzRoLTJsMi0yaC0ydi0yaDJ2LTJoMnYyaDJ2Mmgt    MnoiIGZpbGwtb3BhY2l0eT0iMC4zIiBmaWxsPSIjZmZmIj48L3BhdGg+Cjwvc3ZnPg==');"></div>
@@ -69,7 +70,7 @@
             <div class="relative z-10 flex flex-col items-center">
                 <div class="w-32 h-32 rounded-full bg-white p-1 mb-6 shadow-lg">
                     <div
-                            class="w-full h-full rounded-full bg-gray-200 flex items-center justify-center animate-pulse-slow">
+                        class="w-full h-full rounded-full bg-gray-200 flex items-center justify-center animate-pulse-slow">
                         <i data-lucide="book-open" class="w-16 h-16 text-iut-green"></i>
                     </div>
                 </div>
