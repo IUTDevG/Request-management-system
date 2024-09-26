@@ -18,7 +18,6 @@
 
 <body :class="themeClass" class="overflow-x-hidden bg-background/95">
 
-{{--@dd(auth()->user()->roles())--}}
 @session("error")
 
 <x-error> {!! session('error') !!} .</x-error>
@@ -49,13 +48,13 @@
     const closeButton = document.getElementById('close-button');
 
     watchDemoButton.addEventListener('click', () => {
-        videoOverlay.classList.add('show','flex');
+        videoOverlay.classList.add('show', 'flex');
 
     });
 
     videoOverlay.addEventListener('click', (event) => {
         if (event.target === videoOverlay || event.target === closeButton) {
-            videoOverlay.classList.remove('show','flex');
+            videoOverlay.classList.remove('show', 'flex');
 
             demoVideo.pause();
         }
