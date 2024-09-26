@@ -5,7 +5,7 @@
         <section class="px-4">
             @if($requests->status === SchoolRequestStatus::Draft->value)
             <div class="flex justify-end">
-                <a href="{{ route('student.updated-request',$requests->id) }}"
+                <a href="{{ route('student.updated-request',$requests->id) }}" wire:navigate.hover
                    class="py-3 px-4 inline-flex items-center gap-x-2 font-semibold  border border-transparent gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-gray-700 dark:text-gray-200 hover:bg-info-500 focus-visible:bg-info-700 bg-info-500 dark:hover:bg-info-300 dark:focus-visible:bg-white/5">
                     <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                          color="#ffffff" fill="none">

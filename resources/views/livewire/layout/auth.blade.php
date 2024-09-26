@@ -19,7 +19,7 @@
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
          aria-label="Global">
         <div class="flex items-center justify-between">
-            <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('home') }}"
+            <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('home') }}" wire:navigate.hover
                aria-label="Brand"><img src="{{asset('images/Logo_IUT_Douala.png')}}" title="iut de douala"
                                        class="h-20 my-2"
                                        alt="Logo iut"></a>
@@ -48,11 +48,11 @@
              class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end sm:ps-7">
                 <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-800 hover:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 transition-colors"
-                   href="{{ route('home') }}">{{__('Home')}}</a>
+                   href="{{ route('home') }}" wire:navigate.hover>{{__('Home')}}</a>
                 <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-800 hover:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 transition-colors"
-                   href="{{ route('home') }}#about-us">{{__('About')}}</a>
+                   href="{{ route('home') }}#about-us" wire:navigate.hover>{{__('About')}}</a>
                 <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-800 hover:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 transition-colors"
-                   href="{{ route('home') }}#faq">{{__('FAQ')}}</a>
+                   href="{{ route('home') }}#faq" wire:navigate.hover>{{__('FAQ')}}</a>
             </div>
         </div>
     </nav>

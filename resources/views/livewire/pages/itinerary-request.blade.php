@@ -6,7 +6,8 @@
             <div class="flex justify-center max-[835px]:flex-col text-foreground">
                 <div class="flex items-center w-full min-[835px]:w-full">
                     <div class="grow flex items-center gap-x-2">
-                        <a class="hover:scale-110 transition-transform duration-300 ease-in-out shadow-2xl shadow-neutral-400/5 hover:shadow-neutral-500/10 dark:shadow-neutral-400/5 dark:hover:shadow-neutral-500/10 rounded-lg"
+                        <a wire:navigate.hover class="hover:scale-110 transition-transform duration-300 ease-in-out shadow-2xl
+                        shadow-neutral-400/5 hover:shadow-neutral-500/10 dark:shadow-neutral-400/5 dark:hover:shadow-neutral-500/10 rounded-lg"
                            href="{{route
                         ('student.home')}}">
                             <x-heroicon-o-chevron-left class="w-6 h-6 text-gray-800 dark:text-neutral-200"/>

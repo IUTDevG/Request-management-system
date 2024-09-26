@@ -31,7 +31,7 @@
     <nav class="relative max-w-[85rem] w-full mx-auto px-4 filepond flex items-center justify-between sm:px-6 lg:px-8"
          aria-label="Global">
         <div class="flex items-center justify-between w-full">
-            <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('student.home') }}"
+            <a class="flex-none text-xl font-semibold dark:text-white" href="{{ route('student.home') }}" wire:navigate.hover
                aria-label="Brand"><img src="{{asset('images/Logo_IUT_Douala.png')}}" title="iut de douala" class="my-2
                h-20"
                                        alt="Logo iut"></a>
@@ -291,7 +291,7 @@
                         </div>
                         <div class="mt-2 py-2 first:pt-0 last:pb-0">
                             <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5 focus:ring-2 dark:text-neutral-400"
-                               href="{{ route('student.profile') }}">
+                               href="{{ route('student.profile') }}" wire:navigate.hover>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" width="24"
                                      height="24">

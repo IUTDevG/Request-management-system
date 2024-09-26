@@ -101,7 +101,7 @@
                     </label>
                 </div>
                 <div>
-                    <a href="{{route('student.forgot-password')}}"
+                    <a href="{{route('student.forgot-password')}}" wire:navigate.hover
                        class="font-semibold text-sm hover:underline text-nowrap">
                         {{__('Forgot your password?')}}
                     </a>
@@ -115,7 +115,7 @@
             </div>
         </form>
         <div class="mt-4 text-sm text-gray-400 text-center">
-            <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}"
+            <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}" wire:navigate.hover
                                                     class="hover:underline text-foreground">{{__('register')}}</a>
             </p>
         </div>

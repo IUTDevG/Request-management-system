@@ -41,7 +41,7 @@
         </div>
     </form>
     <div class="mt-4 text-sm text-gray-400 text-center">
-        <p>{{__('Already registered?')}} <a href="{{route('login')}}"
+        <p>{{__('Already registered?')}} <a href="{{route('login')}}" wire:navigate.hover
                                             class="text-foreground font-normal hover:underline">{{__('Login')}}</a>
         </p>
     </div>

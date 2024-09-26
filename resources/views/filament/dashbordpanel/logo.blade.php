@@ -70,7 +70,7 @@
 
 </style>
 @if (request()->is('dashboard/login')||request()->is('dashboard/register') || request()->isMethod('post')||request()->is('dashboard/two-factor-authentication') )
-    <a href="{{url('/')}}" class="alink">
+    <a href="{{url('/')}}" wire:navigate.hover class="alink">
         <svg style="--c-400:var(--primary-400);--c-600:var(--primary-600);"
              class="fi-link-icon h-5 w-5 text-custom-600 dark:text-custom-400" xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">

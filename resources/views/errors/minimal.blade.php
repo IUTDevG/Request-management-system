@@ -77,7 +77,7 @@
                 <h1 class="text-3xl font-bold mb-2 text-center">IUT de Douala</h1>
                 <p class="text-lg mb-6 text-center">Institut Universitaire de Technologie</p>
                 <div class="flex space-x-4">
-                    <a href="{{ route('home') }}"
+                    <a href="{{ route('home') }}" wire:navigate.hover
                        class="bg-white text-iut-green px-6 py-3 rounded-full font-semibold hover:bg-iut-yellow hover:text-gray-800 transition duration-300 shadow-md">
                         <i data-lucide="home" class="inline-block mr-2 w-5 h-5"></i>Accueil
                     </a>
@@ -107,7 +107,7 @@
                            $route= url('dashboard');
                        }
                 @endphp
-                <a href="{{$route}}"
+                <a href="{{$route}}"  wire:navigate.hover
                    class="mt-5 cursor-pointer bg-iut-yellow text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-iut-green transition duration-300 shadow-md">Ma
                     session</a>
 

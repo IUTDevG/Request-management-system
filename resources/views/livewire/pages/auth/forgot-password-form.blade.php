@@ -38,7 +38,7 @@
             </div>
         </form>
         <div class="mt-4 text-sm text-gray-400 text-center">
-            <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}" class="text-foreground hover:underline">{{__('register')}}</a>
+            <p>{{__('Don\'t have an account?')}} <a href="{{route('register')}}" wire:navigate.hover class="text-foreground hover:underline">{{__('register')}}</a>
             </p>
         </div>
     </div>

@@ -233,7 +233,7 @@
                 @endif
             @endif
             @if($status === SchoolRequestStatus::Draft->value)
-                <a href="{{ route('student.updated-request',$request_code) }}"
+                <a href="{{ route('student.updated-request',$request_code) }}" wire:navigate.hover
                    class="flex w-full items-center gap-2 whitespace-nowrap rounded-md p-2 text-sm transition-colors duration-75 outline-none disabled:pointer-events-none disabled:opacity-70 text-gray-700 dark:text-gray-200 hover:bg-gray-50 focus-visible:bg-gray-50 dark:hover:bg-white/5 dark:focus-visible:bg-white/5">
                     <svg class="size-5"
                          xmlns="http://www.w3.org/2000/svg"
