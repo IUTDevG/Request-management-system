@@ -29,7 +29,7 @@ class ItineraryRequest extends Component
 
     public function getActivityForRequest()
     {
-        $activity = Activity::where('causer_id', $this->request->user_id)->where('subject_id', $this->request->id);
+        $activity = Activity::where('subject_id', $this->request->id);
         return $activity->get();
     }
 

@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Enums\RoleType;
 use App\Filament\Admin\Resources\UserResource\Pages;
+use App\Models\Department;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -47,7 +48,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('username')
                     ->label(__('Username'))
                     ->required()
-                    ->unique('users','username',ignoreRecord: true)
+                    ->unique('users', 'username', ignoreRecord: true)
                     ->maxLength(255),
                 PhoneInput::make('phone_number')
                     ->label(__('Phone number'))
@@ -70,7 +71,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->label(__('Email address'))
                     ->email()
-                    ->unique('users','email',ignoreRecord: true)
+                    ->unique('users', 'email', ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
             ]);
@@ -128,22 +129,33 @@ class UserResource extends Resource
                         ->icon('heroicon-o-user-group')
                         ->form([
                             Forms\Components\Select::make('role')  // Changer '' en 'role'
-                            ->label(__('Role'))
+                                ->label(__('Role'))
                                 ->options(function () {
                                     return collect(RoleType::cases())
                                         ->filter(fn($role) => $role->value !== RoleType::STUDENT->value)
                                         ->mapWithKeys(fn($role) => [$role->value => $role->label()])
                                         ->toArray();
                                 })
-                                ->required()
+                                ->required(),
+                            Forms\Components\Select::make('department_id')
+                                ->label(__('Department'))
+                                ->requiredIf('role', [RoleType::ACADEMIC_MANAGER->value, RoleType::HEAD_OF_DEPARTMENT->value])
+                                ->options(Department::all()->pluck('name', 'id')),
                         ])
                         ->action(function (array $data, Model $record) {
                             $user = $record;
-                            $user->removeRole($user->getRole());
-                            $user->assignRole($data['role']);
+
+                            if ($user->getRole()) {
+                                $user->removeRole($user->getRole());
+                            }
+                            if ($data['role'] == RoleType::ACADEMIC_MANAGER->value || $data['role'] == RoleType::HEAD_OF_DEPARTMENT->value) {
+                                $user->assignRoleWithDepartment($data['role'], $data['department_id']);
+                            } else {
+                                $user->assignRole($data['role']);
+                            }
                             Notification::make('user_role_changed_successfully')
                                 ->title(__('User role changed successfully'))
-                                ->body(__('Role of user :user has been changed to :role', ['user' => $user->name, 'role' => $data['role']]))
+                                ->body(__('Role of user :user has been changed to :role', ['user' => $user->name, 'role' => RoleType::tryFrom($data['role'])->label()]))
                                 ->success()
                                 ->send();
                         }),
