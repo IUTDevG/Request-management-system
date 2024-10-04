@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Prompts\Terminal;
 use PhpOption\None;
 
 class User extends Authenticatable implements FilamentUser
@@ -97,7 +98,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function getRole()
     {
-        return $this->getRoleNames()[0];
+        return $this->getRoleNames()[0]?? null;
     }
 
     public function hasDepartment(): bool
@@ -129,6 +130,62 @@ class User extends Authenticatable implements FilamentUser
             ->select('id');
 
         return User::find($userId);
+    }
+    public static function withRoleInDepartmentExists(string $departmentId, string $role)
+    {
+        // dd(Role::where('name', $role)->get());
+        $roleId = Role::where('name', $role)->first()->id;
+
+        return DB::table('model_has_roles')
+            ->where('role_id', $roleId)
+            ->where('department_id', $departmentId)
+            ->exists();
+    }
+
+    public static function existWithRole($role)
+    {
+        $roleId = Role::where('name', $role)->first()->id;
+
+        return DB::table('model_has_roles')
+            ->where('role_id', $roleId)
+            ->exists();
+    }
+
+    public static function existWithRoleInDepartement($departmentId, $role)
+    {
+        $roleId = Role::where('name', $role)->first()->id;
+
+        return DB::table('model_has_roles')
+            ->where('role_id', $roleId)
+            ->where('department_id', $departmentId)
+            ->exists();
+    }
+
+    public static function HasTheRole()
+    {
+
+        $roles = function () {
+            return collect(RoleType::cases())->mapWithKeys(function ($role) {
+                if ($role->value !== RoleType::STUDENT->value) {
+                    return [$role->value];
+                }
+                return [];
+            })->toArray();
+        };
+        $find = true;
+        $departments = Department::all();
+        foreach ($roles as $role) {
+            if ($role == RoleType::ACADEMIC_MANAGER || $role == RoleType::HEAD_OF_DEPARTMENT) {
+                foreach ($departments as $department) {
+                    $find = User::withRoleInDepartmentExists($department->id, $role);
+                    if (!$find) return $find;
+                }
+            } else {
+                $find = User::existsWithRole($role);
+                if (!$find) return $find;
+            }
+        }
+        return $find;
     }
 
     public function getDepartment()

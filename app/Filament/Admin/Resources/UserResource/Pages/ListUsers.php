@@ -96,6 +96,9 @@ class ListUsers extends ListRecords
                         if ($data['role'] == RoleType::ACADEMIC_MANAGER->value || $data['role'] == RoleType::HEAD_OF_DEPARTMENT->value) {
                             $user->assignRoleWithDepartment($data['role'], $data['department_id']);
                         }
+                        else{
+                            $user->assignRole($data['role']);
+                        }
                         $role = RoleType::tryFrom($data['role'])->label();
                         Notification::make('user_created_successfuly')
                             ->title(__('User created successfully'))

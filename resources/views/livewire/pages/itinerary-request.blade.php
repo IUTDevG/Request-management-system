@@ -92,10 +92,18 @@
                                                             }}">{{$status}}</x-filament::badge>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-gray-100">
-                                                    {{ $activity->properties['old_assignee'] ?? 'N/A'}}
+                                                @php
+                                                    $old_assignee = $activity->properties['old_assignee'] ?? null;
+                                                    $old_assignee = $old_assignee ?\App\Enums\RoleType::tryFrom($old_assignee)->label() : 'N/A';
+                                                @endphp
+                                                    {{ $old_assignee }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-gray-100">
-                                                    {{ $activity->properties['new_assignee'] ?? 'N/A'}}
+                                                @php
+                                                    $new_assignee = $activity->properties['new_assignee'] ?? null;
+                                                    $new_assignee = $new_assignee ?\App\Enums\RoleType::tryFrom($new_assignee)->label() : 'N/A';
+                                                @endphp
+                                                    {{ $new_assignee }}
                                                 </td>
                                             </tr>
                                         @endforeach

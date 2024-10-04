@@ -66,6 +66,7 @@ class SchoolRequest extends Model implements HasMedia
                 ->causedBy($user)
                 ->withProperties([
                     'title' => $model->title,
+                    'new_assignee' => RoleType::SECRETARY_DIRECTOR->value,
                     'request_code' => $model->request_code,
                     'owner' => $user->name . ' ' . $user->firstname,
                     'status' => $model->status,
@@ -75,40 +76,39 @@ class SchoolRequest extends Model implements HasMedia
                 ->log("The request has been created by {$user->name} with the code {$model->request_code}");
         });
         static::updated(function ($model) {
+            $user = User::find(Auth::user()->id);
+            //case if the assigned_to and the status is also updated
             if ($model->isDirty('assigned_to') && $model->isDirty('status') !== $model->getOriginal('status')) {
-                $previousAssignee = $model->getOriginal('assigned_to') ? User::withRoleInDepartment($model->department_id, $model->getOriginal('assigned_to')) : 'None';
-                if ($previousAssignee) {
-                    $prevRole = RoleType::tryFrom($previousAssignee->getRole())?->label() ?? $previousAssignee->getRole();
-                    $resRole = $model->assigned_to;
-                    $resRole = RoleType::tryFrom($resRole)?->label() ?? $resRole;
-                    $status = $model->status;
-                    $department = Department::find($model->department_id);
-                    activity('request')
-                        ->performedOn($model)
-                        ->by($previousAssignee)
-                        ->event('updated')
-                        ->withProperties([
-                            'old_assignee' => User::withRoleInDepartment($model->department_id, $model->getOriginal('assigned_to'))->getRole() ?? 'None',
-                            'new_assignee' => $model->assigned_to,
-                            'status' => $model->status,
-                            'department' => $department->name,
-                            'owner' => $model->user->name,
-                            'request_code' => $model->request_code,
-                            'title' => $model->title,
-                        ])
-                        ->log("The request has been assigned to {$resRole} by {$prevRole}, and the status has been updated to {$status}.");
-                }
-            } elseif ($model->isDirty('assigned_to')) {
                 $resRole = $model->assigned_to;
+                Log::info(1);
                 $resRole = RoleType::tryFrom($resRole)?->label() ?? $resRole;
-                $previousAssignee = $model->getOriginal('assigned_to') ? User::withRoleInDepartment($model->department_id, $model->getOriginal('assigned_to')) : 'None';
-                $prevRole = RoleType::tryFrom($previousAssignee->getRole())?->label() ?? $previousAssignee->getRole();
+                $status = $model->status;
                 $department = Department::find($model->department_id);
                 activity('request')
                     ->performedOn($model)
-                    ->by($previousAssignee)
+                    ->by($user)
+                    ->event('updated')
                     ->withProperties([
-                        'old_assignee' => User::withRoleInDepartment($model->department_id, $model->getOriginal('assigned_to'))->getRole() ?? 'None',
+                        'old_assignee' => $user->getRole(),
+                        'new_assignee' => $model->assigned_to,
+                        'status' => $model->status,
+                        'department' => $department->name,
+                        'owner' => $model->user->name,
+                        'request_code' => $model->request_code,
+                        'title' => $model->title,
+                    ])
+                    ->log("The request has been assigned to {$resRole} by {$user->getRole()}, and the status has been updated to {$status}.");
+            } elseif ($model->isDirty('assigned_to') && $model->isDirty('status') == $model->getOriginal('status')) {
+                //case if the assigned_to is update but not the status
+                $resRole = $model->assigned_to;
+                $resRole = RoleType::tryFrom($resRole)?->value ?? $resRole;
+                $department = Department::find($model->department_id);
+                Log::info(2);
+                activity('request')
+                    ->performedOn($model)
+                    ->by($user)
+                    ->withProperties([
+                        'old_assignee' => $user->getRole(),
                         'new_assignee' => $model->assigned_to,
                         'department' => $department->name,
                         'owner' => $model->user->name,
@@ -117,17 +117,36 @@ class SchoolRequest extends Model implements HasMedia
                         'status' => $model->status,
                     ])
                     ->event('updated')
-                    ->log("The request as been assigned to {$resRole} by {$prevRole}.");
-            }
-
-            if ($model->isDirty('status')) {
+                    ->log("The request as been assigned to {$resRole} by {$user->getRole()}.");
+            } elseif ($model->isDirty('status') && $model->isDirty('assigned_to') == $model->getOriginal('assigned_to')) {
+                //case if the status is update but not the assigned_to
                 $department = Department::find($model->department_id);
-                $status = SchoolRequestStatus::tryFrom($model->status)->label();
+                $status = SchoolRequestStatus::tryFrom($model->status)->value;
+                Log::info(3);
                 activity('request')
                     ->performedOn($model)
-                    ->by(Auth::user())
+                    ->by($user)
                     ->event('updated')
                     ->withProperties([
+                        'old_assignee' => $user->getRole(),
+                        'status' => $model->status,
+                        'department' => $department->name,
+                        'owner' => $model->user->name,
+                        'request_code' => $model->request_code,
+                        'title' => $model->title,
+                    ])
+                    ->log("The request is in status {$status}");
+            } elseif ($model->getOriginal('status') == SchoolRequestStatus::Draft->value) {
+                //case if the status is update from draft to submitted
+                $status = SchoolRequestStatus::tryFrom($model->status)->value;
+                $department = Department::find($model->department_id);
+                activity('request')
+                    ->performedOn($model)
+                    ->by($user)
+                    ->event('updated')
+                    ->withProperties([
+                        'old_assignee' => $user->getRole(),
+                        'new_assignee' => RoleType::SECRETARY_DIRECTOR->value,
                         'status' => $model->status,
                         'department' => $department->name,
                         'owner' => $model->user->name,
@@ -138,40 +157,6 @@ class SchoolRequest extends Model implements HasMedia
             }
         });
     }
-
-    // public function getActivitylogOptions(): LogOptions
-    // {
-    //     return LogOptions::defaults()
-    //         ->logOnly(['status', 'has_been_assigned_to.name'])
-    //         ->logOnlyDirty()
-    //         ->dontSubmitEmptyLogs()
-    //         ->setDescriptionForEvent(function (string $eventName) {
-    //             /*   if ($eventName === 'created') {
-    //                 $user = $this->user;
-    //                 return "This request has been created by {$user->name}.";
-    //             } elseif ($eventName === 'updated' && $this->isDirty('assigned_to') && $this->isDirty('status')) {
-    //                 $previousAssignee = $this->getOriginal('assigned_to')
-    //                     ? User::find($this->getOriginal('assigned_to'))->getRole()
-    //                     : 'None';
-    //                 $resRole = $this->has_been_assigned_to->getRole();
-    //                 $resRole = RoleType::tryFrom($resRole)?->label() ?? $resRole;
-    //                 $status = $this->status;
-    //                 return "This request has been assigned to {$resRole} by {$previousAssignee}, and the status has been updated to {$status}.";
-    //             } elseif ($eventName === 'updated' && $this->isDirty('status')) {
-    //                 return "The status of the has been updated to status {$this->status}.";
-    //             } elseif ($eventName === 'updated' && $this->isDirty('assigned_to')) {
-    //                 $previousAssignee = $this->getOriginal('assigned_to')
-    //                     ? User::find($this->getOriginal('assigned_to'))->getRole()
-    //                     : 'None';
-    //                 $resRole = $this->has_been_assigned_to->getRole();
-    //                 $resRole = RoleType::tryFrom($resRole)?->label() ?? $resRole;
-    //                 return "This request has been assigned to {$resRole} by {$previousAssignee}.";
-    //             }
-    //            */
-    //             return "This request has been {$eventName}.";
-    //         })
-    //         ->dontLogIfAttributesChangedOnly(['updated_at']);
-    // }
 
     public function getRouteKeyName()
     {
