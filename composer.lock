@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4efa0b074dd8d603d238a53ded214a04",
+    "content-hash": "7340cd2871e649001c4a8207ee27f1a8",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2435,6 +2435,67 @@
                 }
             ],
             "time": "2020-06-13T08:05:20+00:00"
+        },
+        {
+            "name": "jiordiviera/laravel-log-cleaner",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jiordiviera/laravel-log-cleaner.git",
+                "reference": "eeb52cf622edb400a5e3cfe00d8755b8e9bbf286"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jiordiviera/laravel-log-cleaner/zipball/eeb52cf622edb400a5e3cfe00d8755b8e9bbf286",
+                "reference": "eeb52cf622edb400a5e3cfe00d8755b8e9bbf286",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^7.0|^8.0|^9.0|^10.0|^11.0",
+                "illuminate/support": "^7.0|^8.0|^9.0|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.46",
+                "pestphp/pest": "^1.23",
+                "pestphp/pest-plugin-laravel": "^1.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JiordiViera\\LaravelLogCleaner\\LaravelLogCleanerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JiordiViera\\LaravelLogCleaner\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jiordi Viera",
+                    "email": "jiordikengne@gmail.com",
+                    "role": "Owner"
+                }
+            ],
+            "description": "A Laravel package to easily clean the log files.",
+            "keywords": [
+                "cleaner",
+                "laravel",
+                "log",
+                "logging"
+            ],
+            "support": {
+                "issues": "https://github.com/jiordiviera/laravel-log-cleaner/issues",
+                "source": "https://github.com/jiordiviera/laravel-log-cleaner/tree/v1.0.2"
+            },
+            "time": "2024-10-09T21:29:55+00:00"
         },
         {
             "name": "joaopaulolndev/filament-edit-profile",
